@@ -7,11 +7,15 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
-
+  const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+  
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
-
+  const handleEcoFriendlyChange = () => {
+    setIsEcoFriendly(!isEcoFriendly);
+  };
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
@@ -22,6 +26,10 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     console.log('KK Location:', kkLocation);
     onClose(); // Close the modal after payment
   };
+
+  // Calculate the total price including both eco-friendly package and bring own container
+  const updatedTotalPrice = isEcoFriendly ? totalPrice + 1: totalPrice;
+
 
   if (!isOpen) return null;
 
@@ -41,8 +49,20 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
               </li>
             ))}
           </ul>
+          {/* Eco-friendly package option */}
+          <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                  <label >
+                    <input 
+                      type="checkbox"
+                      checked={isEcoFriendly}
+                      onChange={handleEcoFriendlyChange}
+                      className="reserve-checkbox"
+                    />
+                    <span >Choose eco-friendly package (+RM 1.00)</span>
+                  </label>
+                </div>
           <div>-------------------------------------------------------</div>
-          <b>Total Price: RM{totalPrice.toFixed(2)} </b>
+          <b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b>
           <div>-------------------------------------------------------</div>
         </div>    
 

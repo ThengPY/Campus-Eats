@@ -7,10 +7,35 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [cardNumber, setCardNumber] = useState('');
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
+  const [isOwnContainer, setIsOwnContainer] = useState(false);
+  const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+
+  const handleEcoFriendlyChange = () => {
+    setIsEcoFriendly(!isEcoFriendly);
+  };
+  const handleOwnContainerChange = () => {
+    setIsOwnContainer(!isOwnContainer);
+  };
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
+  
+  // Calculate the total price including both eco-friendly package and bring own container
+  // Function to calculate the total price based on eco-friendly and own container options
+  const calculateTotalPrice = (totalPrice, isEcoFriendly, isOwnContainer) => {
+    let updatedTotalPrice = totalPrice;
+
+    if (isEcoFriendly && isOwnContainer) {
+      updatedTotalPrice = (updatedTotalPrice + 1) * 0.9; // Add RM 1 and apply 10% discount
+    } else if (isEcoFriendly) {
+      updatedTotalPrice = updatedTotalPrice + 1; // Add RM 1 for eco-friendly
+    } else if (isOwnContainer) {
+      updatedTotalPrice = updatedTotalPrice * 0.9; // Apply 10% discount for own container
+    }
+
+  return updatedTotalPrice;
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,8 +78,32 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             ))}
           </ul>
         </div>
+        {/* Eco-friendly package option */}
+        <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                  <label >
+                    <input 
+                      type="checkbox"
+                      checked={isEcoFriendly}
+                      onChange={handleEcoFriendlyChange}
+                      className="reserve-checkbox"
+                    />
+                    <span >Choose eco-friendly package (+RM 1.00)</span>
+                  </label>
+          </div>
+           {/*Bring own tableware option */}
+         <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                  <label style={{paddingBottom: "5px"}}>
+                    <input 
+                      type="checkbox"
+                      checked={isOwnContainer}
+                      onChange={handleOwnContainerChange}
+                      className="reserve-checkbox"
+                    />
+                    <span  >Bring your own container (get 10% discount)</span>
+                  </label>
+                </div>
         <div>-------------------------------------------------------</div>
-        <b>Total Price: RM{totalPrice.toFixed(2)} </b>
+        <b>Total Price: RM{calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer).toFixed(2)} </b>
         <div>-------------------------------------------------------</div>
 
 

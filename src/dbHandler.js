@@ -194,6 +194,56 @@ const getUsersOrders = (username, callback) => {
     });
 };
 
+const createCommentsTable = () => {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS comments (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              username TEXT NOT NULL,
+              comment TEXT NOT NULL,
+              FOREIGN KEY (username) REFERENCES users(Username)
+        )
+    `;
+
+    db.run(sql, (err) => {
+        if (err) {
+            console.error('Error creating comments table: ' + err.message);
+        } else {
+            console.log('Comments table created or already exists.');
+        }
+    });
+};
+
+// Function to insert a comment
+const insertComment = (username, comment) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO comments(username, comment) VALUES (?, ?)';
+
+        db.run(sql, [username, comment], function(err) {
+            if (err) {
+                console.error('Error inserting comment: ' + err.message);
+                reject(err); // Reject the promise on error
+            } else {
+                console.log(`Comment added with ID: ${this.lastID}`);
+                resolve(); // Resolve the promise on success
+            }
+        });
+    });
+};
+
+//Function to get all comments
+const getComments = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM comments`;
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
+    });
+};
+
+
 createTable()
 createReservationsTable()
 createOrdersTable()
@@ -201,4 +251,7 @@ createOrdersTable()
 
 
 // Export the database connection for use in other modules
-module.exports = { db,createTable,insertUser,loginUser,createReservationsTable,insertReservation,getUser, createOrdersTable, insertOrder, getUsersOrders };
+module.exports ={ db,createTable,insertUser,loginUser,createReservationsTable,
+                    insertReservation,getUser, createOrdersTable, insertOrder,
+                    getUsersOrders,createCommentsTable,insertComment,getComments
+                };
