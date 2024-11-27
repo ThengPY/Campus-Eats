@@ -14,12 +14,12 @@ const db = new sqlite3.Database(dbPath, (err) => {
 const createTable = () => {
     const sql = `
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            Username TEXT NOT NULL,
-            Email TEXT NOT NULL,
-            Password TEXT NOT NULL,
-            status TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+             id INTEGER PRIMARY KEY AUTOINCREMENT,
+             Username TEXT NOT NULL,
+             Email TEXT NOT NULL,
+             Password TEXT NOT NULL,
+             status TEXT NOT NULL,
+             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     `;
 
@@ -69,12 +69,12 @@ const loginUser  = (username, email, password, callback) => {
 const createReservationsTable = () => {
     const sql = `
         CREATE TABLE IF NOT EXISTS reservations (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL,
-            table_number INTEGER NOT NULL,
-            pax INTEGER NOT NULL,
-            reservation_time DATETIME NOT NULL,
-            location TEXT NOT NULL
+                                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                    username TEXT NOT NULL,
+                                                    table_number INTEGER NOT NULL,
+                                                    pax INTEGER NOT NULL,
+                                                    reservation_time DATETIME NOT NULL,
+                                                    location TEXT NOT NULL
         )
     `;
 
@@ -119,13 +119,16 @@ const getUser = (email) => {
 const createOrdersTable = () => {
     const sql = `
         CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL,
-            order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            order_item TEXT NOT NULL,
-            price REAL NOT NULL,
-            status TEXT NOT NULL,
-            FOREIGN KEY ussername REFERENCES user(Usesrname)
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              username TEXT NOT NULL,
+              order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              order_item TEXT NOT NULL,
+              price REAL NOT NULL,
+              payment_method TEXT NOT NULL,
+              card_number TEXT,
+              pickup_date DATE,
+              pickup_time TIME,
+              FOREIGN KEY (username) REFERENCES users(Username)
         )
     `;
 
@@ -135,17 +138,36 @@ const createOrdersTable = () => {
     });
 };
 
-//Function to insert an order
-const insertOrder = (username, order_item, price, status = 'pending') => {
+// Function to insert an order
+const insertOrder = (username, order_item, price, payment_method, card_number = null, pickup_date = null, pickup_time = null) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO orders (username, oder_item, price, status) VALUES (?, ?, ?, ?)';
-        db.run(sql, [username, order_items, price, status], function(err){
-            if (err){
+        // Construct the SQL query dynamically
+        let sql = 'INSERT INTO orders(username, order_item, price, payment_method';
+        const values = [username, order_item, price,payment_method];
+
+        // Check for optional fields and add them to the SQL query and values array
+        if (card_number !== null) {
+            sql += ', card_number';
+            values.push(card_number);
+        }
+        if (pickup_date !== null) {
+            sql += ', pickup_date';
+            values.push(pickup_date);
+        }
+        if (pickup_time !== null) {
+            sql += ', pickup_time';
+            values.push(pickup_time);
+        }
+
+        sql += ') VALUES (?' + ', ?'.repeat(values.length - 1) + ')'; // Create placeholders for values
+
+        db.run(sql, values, function(err) {
+            if (err) {
                 console.error('Error inserting order: ' + err.message);
-                reject(err); 
-            } else  {
-                console.log(`Order added with ID: ${this.lastID}`);
-                resolve();
+                reject(err);
+            } else {
+                console.log(`Order added with ID: ${username}`);
+                resolve(username); // Resolve with the last inserted ID
             }
         });
     });

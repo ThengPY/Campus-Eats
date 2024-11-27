@@ -45,7 +45,7 @@ app.post('/user/login', (req, res) => {
 
 // Route to create a reservation
 app.post('/reservation/create/:username', (req, res) => {
-    const username= req.params.username
+    const username= req.params.username;
     const { table_number, pax, reservation_time, location } = req.body;
 
     // Input validation
@@ -82,7 +82,7 @@ app.post('/user/forgot-password', (req, res) => {
             console.log('User  Password:', user.Password); // Ensure the case matches your database column
 
             // Respond back to the client
-            res.json({ success: true, message: `Password retrieved successfully.  Pasword : ${user.Password}` });
+            res.json({ success: true, message: `Password retrieved successfully.  Password : ${user.Password}` });
         })
         .catch(error => {
             console.error('Error fetching password:', error);
@@ -90,25 +90,25 @@ app.post('/user/forgot-password', (req, res) => {
         });
 });
 
-app.post('/user/oder-history', (req, res) =>{
-    const { username } = req.query;
+// Route to create an order
+app.post('/order/create/:username', (req, res) => {
+    const username = req.params.username;
+    const { order_item, price, payment_method, card_number, pickup_date, pickup_time } = req.body;
 
-    if(!username){
-        return res.status(400).json({ message: 'Username is required'});
+    // Input validation
+    if (!username || !order_item || !price) {
+        return res.status(400).send('Username, order item, and price are required');
     }
 
-    getUsersOrders(username, (err, orders) => {
-        if (err) {
-            console.error('Error fetching order hsitory:', err);
-            return res.status(500).json({ message: 'Failed to fetch order history'});
-        }
-
-        if (orders) {
-            res.status(200).json({ orders });
-        } else {
-            res.status(404).json({ message: 'No orders found fpr this user'});
-        }
-    });
+    // Insert order into the database
+    dbHandler.insertOrder(username, order_item, price, payment_method, card_number, pickup_date, pickup_time)
+        .then((orderId) => {
+            res.status(201).send(`Order created successfully with ID: ${orderId}`);
+        })
+        .catch((err) => {
+            console.error('Error creating order:', err);
+            res.status(500).send('Internal server error');
+        });
 });
 
 // Start the server
