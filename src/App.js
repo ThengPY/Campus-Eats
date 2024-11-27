@@ -13,6 +13,7 @@ import CartModal from './components/CartModal.js';
 import SignUpPage from './components/SignUpPage.js';
 import AiMealPlanner from './components/AiMealPlanner.js';
 import OrderHistory from './components/OrderHistory.js';
+import CommunityBoard from './components/CommunityBoard.js'; 
 import kk12 from './img/kk12.JPG';
 import kk1 from './img/kk1.png';
 import kk2 from './img/kk2.png';
@@ -40,7 +41,7 @@ const App = () => {
   const [isMealPlannerOpen, setIsMealPlannerOpen] = useState(false);
   const [isDineInModalOpen, setIsDineInModalOpen] = useState(false);
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
-
+  const [isCommunityBoardOpen, setIsCommunityBoardOpen] = useState(false);
 
 
   //set default username
@@ -330,11 +331,26 @@ const App = () => {
     setIsOrderHistoryOpen(false);
   }
 
+  //Community Board
+  const handleCommunityBoardClick = () => {
+    setIsCommunityBoardOpen(true);
+  }
+
+  const handleCommunityBoardClose = () => {
+    setIsCommunityBoardOpen(false);
+  }
+
   return (
     <div className="App">
       <ToastContainer />
 
-      <Header onCartClick={handleCartToggle} onOrderHistoryClick={handleOrderHistoryClick} onProfileClick={handleProfileClick} onMealPlannerClick={handleMealPlannerClick} />
+      <Header 
+        onCartClick={handleCartToggle} 
+        onOrderHistoryClick={handleOrderHistoryClick} 
+        onProfileClick={handleProfileClick} 
+        onMealPlannerClick={handleMealPlannerClick} 
+        onCommunityBoardClick={handleCommunityBoardClick} 
+      />
 
       <CafeteriaList cafeterias={cafeterias} onSelect={handleCafeteriaSelect} />
 
@@ -387,6 +403,11 @@ const App = () => {
     <OrderHistory
       isOpen={isOrderHistoryOpen}
       onClose={handleOrderHistoryClose}
+    />
+
+    <CommunityBoard
+      isOpen={isCommunityBoardOpen}
+      onClose={handleCommunityBoardClose}
     />
 
     </div>
