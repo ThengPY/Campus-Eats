@@ -32,6 +32,7 @@ header {
   transition: transform 0.3s ease-in-out; /* Smooth hover animation */
   cursor: pointer;
   color: #FFCB59;
+  font-size: 30px;
 }
 
 .material-symbols-rounded:hover {
