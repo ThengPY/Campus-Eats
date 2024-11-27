@@ -8,19 +8,14 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isOwnTableware, setIsOwnTableware] = useState(false);
-
-
+  
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
   const handleEcoFriendlyChange = () => {
     setIsEcoFriendly(!isEcoFriendly);
   };
-  const handleOwnTablewareChange = () => {
-    setIsOwnTableware(!isEcoFriendly);
-  };
-  
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
@@ -32,8 +27,9 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     onClose(); // Close the modal after payment
   };
 
-  // Calculate the total price including the eco-friendly package
-  const updatedTotalPrice = isEcoFriendly ? totalPrice + 1 : totalPrice;
+  // Calculate the total price including both eco-friendly package and bring own container
+  const updatedTotalPrice = isEcoFriendly ? totalPrice + 1: totalPrice;
+
 
   if (!isOpen) return null;
 
