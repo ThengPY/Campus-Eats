@@ -29,6 +29,7 @@ import kk11 from './img/kk11.jpg';
 import kk13 from './img/kk13.png';
 import he_and_she from './img/he_and_she.jpeg'
 import QBistro from './img/QBistro.jpeg';
+import HamburgerMenu from './components/HamburgerMenu.js';
 
 const App = () => {
   const [selectedCafeteria, setSelectedCafeteria] = useState(null);
@@ -361,7 +362,7 @@ const App = () => {
         onAddToCart={(item) => handleAddToCart(item, selectedCafeteria)}
         cafeteria={cafeterias.find(cafeteria => cafeteria.id === selectedCafeteria)}
       />
-
+      {/* <HamburgerMenu></> */}
       <CartModal
         onDeliveryClick={handleDeliveryClick}
         onDineInClick={handleDineInClick}

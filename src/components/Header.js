@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../styles.css';
-import ad1 from '../img/ad1.jpg';
-import HamburgerMenu from "./HamburgerMenu.js"; 
+import logo from '../img/logo.png';
+//import mealplannerIcon from '../img/mealplanner.png'; // Adjust the path as necessary
+import ad1 from '../img/ad1.jpg'; // Ensure this is the correct path
 
-function Header() {
+function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlannerClick, onCommunityBoardClick }) {
     return (
         <>
             <header> 
                 <div className="logo"></div>
-                <HamburgerMenu />
+                <div className="right-icons">  
+                    <span className="material-symbols-rounded" onClick={onCartClick}>shopping_bag</span>
+                    <span className="material-symbols-rounded" onClick={onOrderHistoryClick}>history</span>
+                    <span className="material-symbols-rounded" onClick={onMealPlannerClick}>smart_toy</span>
+                    <span className="material-symbols-rounded" onClick={onProfileClick}>person</span>
+                    <span className="material-symbols-rounded" onClick={onCommunityBoardClick}>forum</span>
+                    </div>
             </header>
 
             <main>
-                <h2>Welcome!</h2>
-                <p style={{ color: "black" }}>Campus food made easy: Dine-in, Pickup, or Instant Delivery right to your dorm!</p>
+                <h2>Welcome Back!</h2>
+                <p style={{ color: "black" }}>Start shopping for unbeatable deals on food you love.</p>
                 <div className="ads">
                     <img src={ad1} alt="Ad 1" />
                     <img src={ad1} alt="Ad 2" />
                     <img src={ad1} alt="Ad 3" />
                 </div>
-                <h3 style={{marginBottom: "0px", paddingTop: "15px"}}>Start ordering now!</h3>
+                <h3>Start ordering now!</h3>
             </main>
         </>
     );
