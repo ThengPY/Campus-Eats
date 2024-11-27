@@ -49,6 +49,7 @@ h2 {
     height: 2.5rem; /* Adjust height for very small screens */
   }
 }
+
 .right-icons {
   display: flex;
   gap: 15px;
