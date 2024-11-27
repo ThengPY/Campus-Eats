@@ -22,8 +22,8 @@ h2 {
 .logo {
   background-image: url("./img/logo.png");
   background-size: cover;
-  width: 550px;
-  height: 90px;
+  width: 200px;
+  height: 35px;
   background-repeat: no-repeat;
 }
 
