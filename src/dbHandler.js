@@ -243,7 +243,6 @@ const getComments = () => {
     });
 };
 
-
 createTable()
 createReservationsTable()
 createOrdersTable()

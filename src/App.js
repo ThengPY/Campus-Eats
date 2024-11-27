@@ -403,6 +403,7 @@ const App = () => {
     <OrderHistory
       isOpen={isOrderHistoryOpen}
       onClose={handleOrderHistoryClose}
+      username={localStorage.getItem('username')}
     />
 
     <CommunityBoard
