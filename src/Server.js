@@ -13,6 +13,7 @@ app.use(cors());
 dbHandler.createTable();
 dbHandler.createReservationsTable();
 dbHandler.createOrdersTable();
+dbHandler.createCommentsTable()
 
 // Route to register a new user
 app.post('/user/register', (req, res) => {
@@ -108,6 +109,44 @@ app.post('/order/create/:username', (req, res) => {
         .catch((err) => {
             console.error('Error creating order:', err);
             res.status(500).send('Internal server error');
+        });
+});
+
+// Route to create a comment
+app.post('/comment/create/:username', (req, res) => {
+    const username = req.params.username;
+    const { comment } = req.body;
+
+    // Input validation
+    if (!username || !comment) {
+        return res.status(400).send('Username and comment are required');
+    }
+
+    // Insert the comment into the database
+    dbHandler.insertComment(username, comment)
+        .then(() => {
+            res.status(201).send('Comment added successfully');
+        })
+        .catch((err) => {
+            console.error('Error adding comment:', err);
+            res.status(500).send('Internal server error');
+        });
+});
+
+// Route to get all comments
+app.get('/comments', (req, res) => {
+    // Query the database to get all comments
+    dbHandler.getComments()
+        .then(comments => {
+            if (comments.length === 0) {
+                return res.status(404).json({ success: false, message: 'No comments found.' });
+            }
+            // Respond back to the client with the comments
+            res.json({ success: true, comments });
+        })
+        .catch(error => {
+            console.error('Error fetching comments:', error);
+            res.status(500).json({ success: false, message: 'An error occurred while processing your request.' });
         });
 });
 
