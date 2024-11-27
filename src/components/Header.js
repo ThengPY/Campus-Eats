@@ -13,8 +13,8 @@ function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlanne
                     <span className="material-symbols-rounded" onClick={onCartClick}>shopping_bag</span>
                     <span className="material-symbols-rounded" onClick={onOrderHistoryClick}>history</span>
                     <span className="material-symbols-rounded" onClick={onMealPlannerClick}>smart_toy</span>
-                    <span className="material-symbols-rounded" onClick={onProfileClick}>person</span>
                     <span className="material-symbols-rounded" onClick={onCommunityBoardClick}>forum</span>
+                    <span className="material-symbols-rounded" onClick={onProfileClick}>person</span>
                     </div>
             </header>
 
