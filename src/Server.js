@@ -64,7 +64,7 @@ app.post('/reservation/create/:username', (req, res) => {
             res.status(500).send('Internal server error');
         });
 });
-
+//route to retrieve password
 app.post('/user/forgot-password', (req, res) => {
     const { email } = req.body;
 
