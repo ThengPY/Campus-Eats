@@ -1,0 +1,50 @@
+{
+  "name": "food-service-app",
+  "version": "1.0.0",
+  "description": "A food service application",
+  "main": "index.js",
+  "scripts": {
+    "test": "react-scripts test",
+    "start": "concurrently \"react-scripts start\" \"node src/Server.js\"",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "server": "node src/Server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThengPY/Food-Service-App.git"
+  },
+  "author": "Theng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThengPY/Food-Service-App/issues"
+  },
+  "homepage": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "flowbite-react": "^0.10.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^7.0.1",
+    "react-scripts": "^5.0.1",
+    "react-toastify": "^10.0.6",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "concurrently": "^6.5.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
