@@ -65,19 +65,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
                     <span >Choose eco-friendly package (+RM 1.00)</span>
                   </label>
                 </div>
-
-          {/* Bring own tableware option */}
-          {/* <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={isOwnTableware}
-                      onChange={handleOwnTablewareChange}
-                      className="reserve-checkbox"
-                    />
-                    <span>Bring your own tableware (10% discount)</span>
-                  </label>
-                </div> */}
           <div>-------------------------------------------------------</div>
           <b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b>
           <div>-------------------------------------------------------</div>

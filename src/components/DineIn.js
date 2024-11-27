@@ -4,7 +4,13 @@ import './Checkout.css'; // Make sure to create a CSS file for styling
 const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
 const [tableBooking, setTableBooking] = useState({ numPeople: '', tableNumber: '',location: ''}); // State for table booking
+const [isOwnTableware, setIsOwnTableware] = useState(false);
+const handleOwnTablewareChange = () => {
+  setIsOwnTableware(!isOwnTableware);
+};
 
+// Calculate the total price including the eco-friendly package
+const updatedTotalPrice = isOwnTableware ? totalPrice * 90 / 100 : totalPrice;
 const handleCheckboxChange = (item) => {
     setSelectedReservations((prev) => {
       if (prev.includes(item)) {
@@ -59,9 +65,7 @@ const handleCheckboxChange = (item) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={onClose}>
-          X
-        </button>
+     
         <h2>Dine-In Reservations</h2>
 
         {/* Order Summary */}
@@ -77,12 +81,23 @@ const handleCheckboxChange = (item) => {
             ))}
           </ul>
         </div>
-        <b>Total Price: RM{totalPrice.toFixed(2)} </b>
+         {/*Bring own tableware option */}
+         <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                  <label style={{paddingBottom: "5px"}}>
+                    <input 
+                      type="checkbox"
+                      checked={isOwnTableware}
+                      onChange={handleOwnTablewareChange}
+                      className="reserve-checkbox"
+                    />
+                    <span  >Bring your own tableware (get 10% discount)</span>
+                  </label>
+                </div>
+        <b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b>
 
          {/* Dine-In Reservations Section */}
          <div className="reservation-section">
-          <div style={{marginTop: "10px", marginBottom: "0px"}}>          <div>-------------------------------------------------------</div>
-          </div>
+          <div style={{marginTop: "10px", marginBottom: "0px"}}>--------------------------------------------------------</div>
 
           <h3 >Reserve A Seat:</h3>
           <p>  (Bring your own tableware for 10% discount!)</p>
