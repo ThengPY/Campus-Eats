@@ -1,5 +1,7 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
 body {
-  font-family: Arial, sans-serif;
   background-color: #FFFAF7;
   padding: 10px;
   font-family: "Averia Serif Libre", serif;
@@ -36,22 +38,6 @@ header {
   transform: scale(1.1); /* Slightly enlarge on hover */
 }
 
-/* Add Cart Text on Hover */
-.cart-icon:hover::after {
-  content: "Cart"; /* Display 'Cart' text */
-  position: absolute; /* Position the text relative to the icon */
-  top: 50%; /* Align vertically */
-  left: 100%; /* Position it next to the icon */
-  transform: translateY(-50%); /* Center it vertically */
-  margin-left: 10px; /* Space between the icon and the text */
-  font-size: 14px; /* Adjust text size */
-  color: #000000; /* Text color */
-  font-weight: bold; /* Optional: Make text bold */
-  white-space: nowrap; /* Prevent text from wrapping */
-  opacity: 1; /* Ensure the text is visible on hover */
-  transition: opacity 0.2s ease-in-out; /* Smooth transition for opacity */
-}
-
 .mealplanner-icon {
   width: 24px; /* Adjust size as needed */
   height: 24px; /* Adjust size as needed */
@@ -61,6 +47,7 @@ header {
 
 .cafeteria-list {
   padding-top: 10px;
+  cursor: pointer;
 }
 
 .steps {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './SignUpPage.css'; 
 import ForgetPasswordOverlay from './ForgetPasswordOverlay';
+import eating from '../img/eating.png';
 
 const SignUpPage = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
@@ -147,51 +148,44 @@ const SignUpPage = ({ isOpen, onClose }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={onClose}>X</button>
-        <h2>Log In / Sign Up</h2>
+        <div className = "close-btn">
+          <span class="material-symbols-rounded" onClick={onClose}>close</span>
+        </div>
+        <h2>Account</h2>
+        <div className = "img-wrapper"><img className = "signup-img" src = {eating} /></div>
         <form onSubmit={handleSubmit} className="sign-up-form">
-          <div>
-            <label>Username:</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
+          <div className = "input-container">
+            <div className = "input-wrapper">
+              <i className="material-symbols-rounded">account_circle</i>
+              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder = "Enter Username" required />
+            </div>
           </div>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <div className = "input-container">
+            <div className = "input-wrapper">
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder = "Enter Email" required />
+              <i className="material-symbols-rounded">email</i>
+            </div>
           </div>
-          <div>
-            <label>Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+          <div className = "input-container">
+            <div className = "input-wrapper">
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder = "Enter Password" required />
+              <i className="material-symbols-rounded">lock</i>
+            </div>
           </div>
-          <div>
-            <label>Confirm Password (for sign up only):</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
+          <div className = "input-container">
+            <div className = "input-wrapper">
+              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder = "Confirm Password (SIGNUP)" required />
+              <i className="material-symbols-rounded">enhanced_encryption</i>
+            </div>
           </div>
           {passwordMatchError && (
             <p style={{ color: 'red', marginTop: '-10px' }}>Passwords do not match</p>
           )}
-          <button type="button" className="submit-btn" onClick={handleSignUp}>Sign Up</button>
-          <button type="button" className="submit-btn" onClick={handleLogin}>Log In</button>
-          <button type="button" className="submit-btn" onClick={handleForgetPassword}>Forget Password</button>
+          <div className = "account-btns">
+            <button type="button" className="submit-btn" onClick={handleSignUp}>Sign Up</button>
+            <button type="button" className="submit-btn" onClick={handleLogin}>Log In</button>
+          </div>
+          <button type="button" className="forget-btn" onClick={handleForgetPassword}>Forget Password</button>
         </form>
       </div>
       {isForgetPasswordOverlayOpen && (

@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles.css';
+import logo from'../img/logo.png'
 //import mealplannerIcon from '../img/mealplanner.png'; // Adjust the path as necessary
 
 
@@ -7,13 +8,15 @@ function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlanne
     return (
         <header> 
             {/* <span className = "material-symbols-rounded">menu</span>  */}
-            <h1>Campus Eats</h1>
+            <img src={logo} style={{width: "23%"}}></img>
             <div className = "right-icons">  
                 <span className="material-symbols-rounded" onClick={onCartClick}>shopping_bag </span>
                 <span className="material-symbols-rounded" onClick={onOrderHistoryClick}>history</span>
+                <span className="material-symbols-rounded" onClick={onMealPlannerClick}>smart_toy</span>
                 <span className="material-symbols-rounded" onClick={onProfileClick}>person</span>
-                <span className="material-symbols-rounded" onClick={onMealPlannerClick}>meal</span>
             </div>
+            {/* <div><h3>Hello</h3></div> */}
+       
         </header>
     );
 }

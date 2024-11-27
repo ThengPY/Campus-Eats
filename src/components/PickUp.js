@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Checkout.css'; // Make sure to create a CSS file for styling
+import '../styles.css';
 
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -52,9 +53,10 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             ))}
           </ul>
         </div>
-        <div>--------------------------------------------------------------------------</div>
+        <div>-------------------------------------------------------</div>
         <b>Total Price: RM{totalPrice.toFixed(2)} </b>
-        <div>--------------------------------------------------------------------------</div>
+        <div>-------------------------------------------------------</div>
+
 
         {/* Form Section */}
         <form onSubmit={handleSubmit}>
@@ -106,7 +108,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
           </div>
 
           {/* Payment Method Section */}
-        <div>--------------------------------------------------------------------------</div>
+          <div style={{paddingTop: "15px"}}>-------------------------------------------------------</div>
           <h3 className="payment-method">Choose Payment Method</h3>
           <div>
             <label>

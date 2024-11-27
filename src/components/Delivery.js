@@ -41,9 +41,9 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
               </li>
             ))}
           </ul>
-          <div>--------------------------------------------------------------------------</div>
+          <div>-------------------------------------------------------</div>
           <b>Total Price: RM{totalPrice.toFixed(2)} </b>
-          <div>--------------------------------------------------------------------------</div>
+          <div>-------------------------------------------------------</div>
         </div>    
 
         <form onSubmit={handleSubmit}>
@@ -94,7 +94,8 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
             </select>
           </div>
           {/* Payment Method Section */}
-          <div>--------------------------------------------------------------------------</div>
+          <div>-------------------------------------------------------</div>
+
           <h3>Choose Payment Methods</h3>
           <div>
             <label>

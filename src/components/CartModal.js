@@ -23,7 +23,7 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
           </div>
           <h2>My Cart</h2>
           {cartItems.length === 0 ? (
-            <p>Your cart is empty!</p>
+            <p style={{fontSize: "20px"}}>Your cart is empty!</p>
           ) : (
             <ul>
               {cartItems.map(item => (
@@ -31,13 +31,13 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
                   <span>
                     {`${item.name} (${item.cafeteria})  [ x${item.quantity} ] --- RM${(item.price * item.quantity).toFixed(2)}`}
                   </span>
-                  <button className="RemoveBtn" onClick={() => onRemoveFromCart(item.id)}>Remove</button>
+                  <span class="material-symbols-rounded" onClick={() => onRemoveFromCart(item.id)}>delete</span>
                 </li>
               ))}
               <div >
-                <div>--------------------------------------------------------------------------</div>
+                <div style={{paddingTop: "20px"}}>-------------------------------------------------------</div>
                 <b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b>
-                <div style={{paddingBottom: "10px"}}>--------------------------------------------------------------------------</div>
+                <div style={{paddingBottom: "10px"}}>-------------------------------------------------------</div>
                 <h3 style={{ marginBottom: '0px' }}>Choose how you’d like to enjoy your meal: </h3>
                 {!isDineInAllowed() && (
                     <p style={{ color: 'red', fontSize: '12px', marginBottom: '5px' }}>(Dine-in is only available when all orders are from the same cafeteria.)</p>

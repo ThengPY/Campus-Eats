@@ -1,4 +1,7 @@
 /* Container for Checkout Modal */
+* {
+  font-family: "Poppins", sans-serif;
+}
 .checkout-container {
     max-width: 600px;
     margin: 20px auto;
@@ -63,7 +66,7 @@
   /* Buttons */
   .pay-btn {
     /* padding: 12px 25px; */
-    background-color: #2d7cfb;
+    background-color: #FFCB59;
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -74,7 +77,9 @@
   }
  
 .pay-btn:hover {
-    background-color: #0056b3;
+  background-color: #F2BF50;
+  transition: background-color 0.2s ease-in-out;
+  transform: scale(1.05);
   }
   
   

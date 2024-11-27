@@ -76,7 +76,7 @@ const MenuModal = ({ isOpen, onClose, foodItems, onAddToCart ,cafeteria}) => {
               {food.map((item) => (
                 <li key={item.id}>
                   {`- ${item.name}  (RM ${item.price.toFixed(2)})`}
-                  <button className="AddCartBtn" onClick={() => onAddToCart(item)}>Add to Cart</button>
+                  <span class="material-symbols-rounded" onClick={() => onAddToCart(item)}>add</span>
                 </li>
               ))}
             </ul>
@@ -91,7 +91,7 @@ const MenuModal = ({ isOpen, onClose, foodItems, onAddToCart ,cafeteria}) => {
               {drinks.map((item) => (
                 <li key={item.id}>
                   {`- ${item.name}  (RM ${item.price.toFixed(2)})`}
-                  <button className="AddCartBtn" onClick={() => onAddToCart(item)}>Add to Cart</button>
+                  <span class="material-symbols-rounded" onClick={() => onAddToCart(item)}>add</span>
                 </li>
               ))}
             </ul>

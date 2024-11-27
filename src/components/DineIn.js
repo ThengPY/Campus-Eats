@@ -81,7 +81,8 @@ const handleCheckboxChange = (item) => {
 
          {/* Dine-In Reservations Section */}
          <div className="reservation-section">
-          <div style={{marginTop: "10px", marginBottom: "0px"}}>--------------------------------------------------------------------------</div>
+          <div style={{marginTop: "10px", marginBottom: "0px"}}>          <div>-------------------------------------------------------</div>
+          </div>
 
           <h3 >Reserve A Seat:</h3>
           <p>  (Bring your own tableware for 10% discount!)</p>
