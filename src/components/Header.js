@@ -8,8 +8,7 @@ function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlanne
     return (
         <>
             <header> 
-                <div className="logo">
-                </div>
+                <div className="logo"></div>
                 <div className="right-icons">  
                     <span className="material-symbols-rounded" onClick={onCartClick}>shopping_bag</span>
                     <span className="material-symbols-rounded" onClick={onOrderHistoryClick}>history</span>
