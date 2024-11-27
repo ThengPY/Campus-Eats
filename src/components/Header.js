@@ -1,21 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles.css';
-import logo from '../img/logo.png';
-//import mealplannerIcon from '../img/mealplanner.png'; // Adjust the path as necessary
-import ad1 from '../img/ad1.jpg'; // Ensure this is the correct path
+import ad1 from '../img/ad1.jpg';
+import HamburgerMenu from "./HamburgerMenu.js"; 
 
-function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlannerClick, onCommunityBoardClick }) {
+function Header() {
     return (
         <>
             <header> 
                 <div className="logo"></div>
-                <div className="right-icons">  
-                    <span className="material-symbols-rounded" onClick={onCartClick}>shopping_bag</span>
-                    <span className="material-symbols-rounded" onClick={onOrderHistoryClick}>history</span>
-                    <span className="material-symbols-rounded" onClick={onMealPlannerClick}>smart_toy</span>
-                    <span className="material-symbols-rounded" onClick={onProfileClick}>person</span>
-                    <span className="material-symbols-rounded" onClick={onCommunityBoardClick}>forum</span>
-                    </div>
+                <HamburgerMenu />
             </header>
 
             <main>
