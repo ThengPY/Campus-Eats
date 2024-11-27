@@ -13,20 +13,20 @@ function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlanne
                     <span className="material-symbols-rounded" onClick={onCartClick}>shopping_bag</span>
                     <span className="material-symbols-rounded" onClick={onOrderHistoryClick}>history</span>
                     <span className="material-symbols-rounded" onClick={onMealPlannerClick}>smart_toy</span>
-                    <span className="material-symbols-rounded" onClick={onProfileClick}>person</span>
                     <span className="material-symbols-rounded" onClick={onCommunityBoardClick}>forum</span>
+                    <span className="material-symbols-rounded" onClick={onProfileClick}>person</span>
                     </div>
             </header>
 
             <main>
-                <h2>Welcome Back!</h2>
-                <p style={{ color: "black" }}>Start shopping for unbeatable deals on food you love.</p>
+                <h2>Welcome!</h2>
+                <p style={{ color: "black" }}>Campus food made easy: Dine-in, Pickup, or Instant Delivery right to your dorm!</p>
                 <div className="ads">
                     <img src={ad1} alt="Ad 1" />
                     <img src={ad1} alt="Ad 2" />
                     <img src={ad1} alt="Ad 3" />
                 </div>
-                <h3>Start ordering now!</h3>
+                <h3 style={{marginBottom: "0px", paddingTop: "15px"}}>Start ordering now!</h3>
             </main>
         </>
     );
