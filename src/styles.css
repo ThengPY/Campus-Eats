@@ -19,14 +19,36 @@ h2 {
   padding: 20px;
 }
 
+/* Base styles for the logo */
 .logo {
   background-image: url("./img/logo.png");
-  background-size: cover;
-  width: 25rem;
-  height: 4.1rem;
+  background-size: contain; /* Makes sure the logo scales proportionally */
   background-repeat: no-repeat;
+  width: 25rem; /* Default width for larger screens */
+  height: 4.1rem; /* Default height for larger screens */
 }
 
+/* Responsive styles for smaller screens */
+@media (max-width: 1024px) {
+  .logo {
+    width: 20rem; /* Adjust width for medium screens like tablets */
+    height: 3.5rem; /* Adjust height for medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    width: 15rem; /* Adjust width for small screens like tablets and mobile */
+    height: 3rem; /* Adjust height for small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    width: 12rem; /* Adjust width for very small screens like mobile */
+    height: 2.5rem; /* Adjust height for very small screens */
+  }
+}
 .right-icons {
   display: flex;
   gap: 15px;
