@@ -46,7 +46,8 @@ header {
   gap: 10px; 
   white-space: nowrap; 
   scroll-behavior: smooth; 
-  max-width: 500px;
+  /* max-width: 500px; */
+  width: 100%;
 }
 
 .ads img {
