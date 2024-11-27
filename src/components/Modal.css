@@ -25,13 +25,15 @@
 
 /* Modal Content */
 .modal-content {
-  background-color: white;
+  background-color: #FFF;
   padding: 20px;
-  max-height: 80vh; /* Adjust based on your needs */
-  overflow-y: auto; /* Enable vertical scrolling */
-  width: 80%; /* Set to any size you want */
-  max-width: 500px; /* Maximum width */
-  border-radius: 10px;
+  border-radius: 8px;
+  max-width: 80%;
+  width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  height: 90%;
+  max-height: 650px;
 }
 
 /* Lists styling */
@@ -40,18 +42,17 @@ ul {
   padding: 0;
 }
 
+.cart-section {
+  height: 400px;
+}
+
 li {
   display: flex;
   justify-content: space-between;
   padding: 5px 0; /* Added more padding between the list items */
+  vertical-align: middle;
+  margin-bottom: 10px;
 }
-
-/* Cart icon styling */
-.cart-icon {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-  }
 
 /* Buttons Styling */
 button {
@@ -63,21 +64,6 @@ button {
   cursor: pointer;
   font-size: 14px;
   border-radius: 5px; 
-}
-.AddCartBtn {
-  margin-bottom: 6px;
-  margin-top: 0px;
-  background-color: #FFCB59;
-  color: #fff;
-  width: 40%;
-  max-width: 120px;
-  font-family: "Sanchez", serif;
-  
-}
-.AddCartBtn:hover {
-  transition: background-color 0.2s ease-in-out;
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .DineInBtn, .DeliveryBtn, .PickupBtn, .pay-btn {
@@ -92,24 +78,10 @@ button {
   transform: scale(1.05);
 }
 
-.RemoveBtn {
-    color: rgb(255, 255, 255);
-    background-color: rgb(247, 76, 76);
-}
-
-.RemoveBtn:hover {
-    background-color: #ff0000;
-    transition: background-color 0.2s ease;
-    transform: scale(1.05);
-}
-
 .reserve-btn {
     background-color: #FFCB59;
     transition: background-color 0.2s ease-in-out;
     transform: scale(1.05);
-    margin-top: 4%;
-    margin-bottom: 1%;
-    font-family: "Sanchez", serif;
 }
 
 .reserve-btn:hover {
@@ -133,10 +105,6 @@ button {
   color: #333;
 }
 
-.close-btn:hover {
-  color: red;
-}
-
 /* Book Table Styling */
 .table-input, .num-ppl-input {
   margin-left: 3%;
@@ -147,7 +115,6 @@ button {
   border: 1px solid #959595;
   background-color: white;
   padding: 5px;
-  font-family: "Sanchez", serif;
 }
 
 p {
@@ -159,5 +126,15 @@ p {
 .reservation-section h2 {
   border-top: 1px solid #959595;
   padding-top: 20px;
+}
+
+.reservation-section h2, .total-price {
+  border-top: 1px solid #959595;
+  padding-top: 10px;
+}
+
+.total-price h4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
