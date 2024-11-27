@@ -22,8 +22,8 @@ h2 {
 .logo {
   background-image: url("./img/logo.png");
   background-size: cover;
-  width: 200px;
-  height: 35px;
+  width: 550px;
+  height: 90px;
   background-repeat: no-repeat;
 }
 
@@ -46,7 +46,8 @@ header {
   gap: 10px; 
   white-space: nowrap; 
   scroll-behavior: smooth; 
-  max-width: 500px;
+  /* max-width: 500px; */
+  width: 100%;
 }
 
 .ads img {
@@ -145,7 +146,6 @@ hr {
   display: none; /* This will completely hide the horizontal rule */
 }
 
-/* ai thing here */ 
 /* Modal container */
 .modal {
   display: flex;
@@ -172,6 +172,8 @@ hr {
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.3s ease-in-out;
+  max-height: 80vh; /* Limit the height */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Close button */
@@ -208,4 +210,60 @@ hr {
 .modal-content p {
   margin-top: 10px;
 
+}
+
+/* Comment section */
+.comment-form {
+  margin-bottom: 20px;
+}
+
+.username-input
+{
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.comment-textarea{
+  width: 95%;
+  height: 100px; /* Fixed height */
+  resize: none; /* Disable manual resizing */
+  padding: 10px; /* Optional for better spacing */
+  font-size: 14px; /* Optional for readability */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.type {
+  padding: 10px 20px;
+  background-color: #FFCB59;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.type:hover {
+  background-color: #FFCB59;
+}
+
+.comments-list {
+  margin-top: 20px;
+}
+
+.comment-user {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  color: #FFCB59;
+}
+
+.comment-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
