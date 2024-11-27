@@ -14,8 +14,13 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     setIsEcoFriendly(!isEcoFriendly);
   };
   const handleOwnContainerChange = () => {
-    isOwnContainer(!isOwnContainer);
+    setIsOwnContainer(!isOwnContainer);
   };
+
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+  
   // Calculate the total price including both eco-friendly package and bring own container
   // Function to calculate the total price based on eco-friendly and own container options
   const calculateTotalPrice = (totalPrice, isEcoFriendly, isOwnContainer) => {
@@ -94,7 +99,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                       onChange={handleOwnContainerChange}
                       className="reserve-checkbox"
                     />
-                    <span  >Bring your own tableware (get 10% discount)</span>
+                    <span  >Bring your own container (get 10% discount)</span>
                   </label>
                 </div>
         <div>-------------------------------------------------------</div>
