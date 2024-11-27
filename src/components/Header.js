@@ -19,14 +19,14 @@ function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlanne
             </header>
 
             <main>
-                <h2>Welcome Back!</h2>
-                <p style={{ color: "black" }}>Start shopping for unbeatable deals on food you love.</p>
+                <h2>Welcome!</h2>
+                <p style={{ color: "black" }}>Campus food made easy: Dine-in, Pickup, or Instant Delivery right to your dorm!</p>
                 <div className="ads">
                     <img src={ad1} alt="Ad 1" />
                     <img src={ad1} alt="Ad 2" />
                     <img src={ad1} alt="Ad 3" />
                 </div>
-                <h3>Start ordering now!</h3>
+                <h3 style={{paddingTop: "15px", marginBottom: "0px"}}>Start ordering now!</h3>
             </main>
         </>
     );
