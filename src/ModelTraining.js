@@ -58,15 +58,15 @@ async function retrainModel(data) {
     const normalizedData = normalizeData(data, 24, 7); // Normalize the data
 
     // Prepare the training data
-    const xs = tf.tensor2d(normalizedData.map(item => [item[0], item[1]]));  // Input features
+    const xs = tf.tensor2d(normalizedData);  // Input features
     const ys = tf.tensor2d(data.map(item => [item.deliveries]));  // Output (deliveries)
 
     // Log the input and output tensors
-    //console.log('Input features (xs):', xs.arraySync());
-    //console.log('Output labels (ys):', ys.arraySync());
+    console.log('Input features (xs):', xs.arraySync());
+    console.log('Output labels (ys):', ys.arraySync());
 
     // Retrain the model using new data
-    await model.fit(xs, ys, {epochs: 10});
+    await model.fit(xs, ys, {epochs: 50});
     console.log('Model retrained with new data');
 
     await model.save('file:///Users/keste/IdeaProjects/Campus-Eats/src/model');  // Save the updated model

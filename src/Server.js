@@ -16,7 +16,7 @@ dbHandler.createTable();
 dbHandler.createReservationsTable();
 dbHandler.createOrdersTable();
 dbHandler.createCommentsTable()
-dbHandler.createModelDataTable();
+dbHandler.createModelDataTable()
 
 // Route to register a new user
 app.post('/user/register', (req, res) => {
