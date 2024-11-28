@@ -65,43 +65,6 @@ const loginUser  = (username, email, password, callback) => {
     });
 };
 
-// Function to create the reservations table if it doesn't exist
-const createReservationsTable = () => {
-    const sql = `
-        CREATE TABLE IF NOT EXISTS reservations (
-                                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                    username TEXT NOT NULL,
-                                                    table_number INTEGER NOT NULL,
-                                                    pax INTEGER NOT NULL,
-                                                    reservation_time DATETIME NOT NULL,
-                                                    location TEXT NOT NULL
-        )
-    `;
-
-    db.run(sql, (err) => {
-        if (err) {console.error('Error creating reservations table: ' + err.message);
-        } else {console.log('Reservations table created or already exists.');
-        }
-    });
-};
-
-// Function to insert a reservation
-const insertReservation = (username,table_number,pax,reservation_time, location) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO reservations(username,table_number,pax,reservation_time, location) VALUES (?,?,?,?,?)';
-
-        db.run(sql, [username,table_number,pax,reservation_time, location], function(err) {
-            if (err) {
-                console.error('Error inserting reservation: ' + err.message);
-                reject(err); // Reject the promise on error
-            } else {
-                console.log(`Reservation added with ID: ${this.lastID}`);
-                resolve(); // Resolve the promise on success
-            }
-        });
-    });
-};
-
 // Function to get a user by email
 const getUser = (email) => {
     return new Promise((resolve, reject) => {
@@ -299,14 +262,9 @@ const getComments = () => {
     });
 };
 
-createTable()
-createReservationsTable()
-createOrdersTable()
-
-
 
 // Export the database connection for use in other modules
-module.exports ={ db,createTable,insertUser,loginUser,createReservationsTable,
-                    insertReservation,getUser, createOrdersTable, insertOrder,
-                    getUsersOrders,createCommentsTable,insertComment,getComments
+module.exports ={ db,createTable,insertUser,loginUser, getUser,
+                    createOrdersTable, insertOrder, getUsersOrders,
+                    createCommentsTable,insertComment, getComments
                 };

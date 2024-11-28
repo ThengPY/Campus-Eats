@@ -11,7 +11,6 @@ app.use(cors());
 
 // Create the users table
 dbHandler.createTable();
-dbHandler.createReservationsTable();
 dbHandler.createOrdersTable();
 dbHandler.createCommentsTable()
 
@@ -68,48 +67,6 @@ app.post('/user/forgot-password', (req, res) => {
         .catch(error => {
             console.error('Error fetching password:', error);
             res.status(500).json({ success: false, message: 'An error occurred while processing your request.' });
-        });
-});
-
-// Route to create a reservation
-app.post('/reservation/create/:username', (req, res) => {
-    const username= req.params.username;
-    const { table_number, pax, reservation_time, location } = req.body;
-
-    // Input validation
-    if (!username || !table_number || !pax || !reservation_time || !location) {
-        return res.status(400).send('username, table number, number of people, reservation time, and location are required');
-    }
-
-    // Insert the reservation into the database
-    dbHandler.insertReservation(username, table_number, pax, reservation_time, location)
-        .then(() => {
-            res.status(201).send('Reservation created successfully');
-        })
-        .catch((err) => {
-            console.error('Error creating reservation:', err);
-            res.status(500).send('Internal server error');
-        });
-});
-
-// Route to create an order
-app.post('/order/create/:username', (req, res) => {
-    const username = req.params.username;
-    const { order_item, price, payment_method, card_number, pickup_date, pickup_time } = req.body;
-
-    // Input validation
-    if (!username || !order_item || !price) {
-        return res.status(400).send('Username, order item, and price are required');
-    }
-
-    // Insert order into the database
-    dbHandler.insertOrder(username, order_item, price, payment_method, card_number, pickup_date, pickup_time)
-        .then((orderId) => {
-            res.status(201).send(`Order created successfully with ID: ${orderId}`);
-        })
-        .catch((err) => {
-            console.error('Error creating order:', err);
-            res.status(500).send('Internal server error');
         });
 });
 
@@ -171,18 +128,29 @@ app.get('/comments', (req, res) => {
         });
 });
 
-//Route to payments
-app.post('/payment', (req, res) => {
-    const { username, price, card_number } = req.body;
+// Route to create an order(dont delete first)
+// used as alternative test
+app.post('/order/create/:username', (req, res) => {
+    const username = req.params.username;
+    const { order_item, price, payment_method, card_number, pickup_date, pickup_time } = req.body;
 
-    if(!username || !price || !card_number) {
-        return res.status(400).send('Log in is required.');
+    // Input validation
+    if (!username || !order_item || !price) {
+        return res.status(400).send('Username, order item, and price are required');
     }
-    console.log(`Processing payment for user: ${username}, price: ${price}, card number: ${card_number}`);
-    res.status(200).json({ success: true, message: 'Payment successful' });
+
+    // Insert order into the database
+    dbHandler.insertOrder(username, order_item, price, payment_method, card_number, pickup_date, pickup_time)
+        .then((orderId) => {
+            res.status(201).send(`Order created successfully with ID: ${orderId}`);
+        })
+        .catch((err) => {
+            console.error('Error creating order:', err);
+            res.status(500).send('Internal server error');
+        });
 });
 
-// Route to payments
+// Route to create order
 app.post('/payment/:username', (req, res) => {
     const username = req.params.username;
     const { order_item, price, payment_method, option, reservation_time, delivery_name, eco_package, bring_container, address, phone_num, card_number, pickup_date, pickup_time, own_tableware} = req.body;
