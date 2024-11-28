@@ -70,7 +70,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
           <span class="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
         <h2>Checkout (Pick-Up)</h2>
-
+        
         {/* Order Summary */}
         <div className="order-summary">
           <h3>Order Summary</h3>
