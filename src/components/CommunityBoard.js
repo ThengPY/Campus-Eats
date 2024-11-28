@@ -90,6 +90,7 @@ const CommunityBoard = ({isOpen, onClose}) => {
         <div className = "close-btn">
           <span class="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
+           <h2>Community Board</h2>
             {/* Comment Form */}
             <form onSubmit={handleAddComment} className="comment-form">
             <input
