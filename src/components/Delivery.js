@@ -44,7 +44,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
       username: username,
     }
 
-    fetch('http://localhost:5000/user/order/payment', {
+    fetch('http://localhost:5000/payment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
