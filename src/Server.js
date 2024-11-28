@@ -177,8 +177,6 @@ app.post('/payment/:username', (req, res) => {
 });
 
 // New endpoint to trigger model training
-
-// Example endpoint to trigger model training
 app.get('/model/train', (req, res) => {
     getDataForModelTraining()
         .then(data => {

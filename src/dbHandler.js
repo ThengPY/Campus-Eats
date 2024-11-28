@@ -335,7 +335,6 @@ const getDataForModelTraining = () => {
     });
 };
 
-
 // Create the table for model data
 // Function to initialize the model_data table
 const createModelDataTable = () => {
@@ -358,6 +357,7 @@ const createModelDataTable = () => {
         });
     });
 };
+
 //generate number model_data
 /*
 // Function to insert multiple rows of model data
