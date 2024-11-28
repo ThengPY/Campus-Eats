@@ -18,6 +18,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     setPaymentMethod(e.target.value);
   };
   const handleEcoFriendlyChange = () => {
+
     setIsEcoFriendly(!isEcoFriendly);
   };
 
@@ -43,11 +44,20 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     console.log('Name:', name);
     console.log('Phone Number:', phoneNumber);
     console.log('KK Location:', kkLocation);
+    // Create an array of order names from cartItems
+    const order_itemArray = cartItems.map(item => item.name);
+
+    // Join the order names into a single string
+    const order_item = order_itemArray.join(', ');
 
     const paymentData = {
-      price: updatedTotalPrice,
       username: username,
-      card_number: card_number
+      order_item: order_item,
+      eco_package: isEcoFriendly,
+      price: updatedTotalPrice,
+      delivery_name: name,
+      phone_num: phoneNumber,
+      card_number: cardNumber
     }
 
     fetch('http://localhost:5000/payment', {

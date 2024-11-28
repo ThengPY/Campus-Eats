@@ -123,6 +123,7 @@ const createOrdersTable = () => {
               option TEXT,
               reservation_time TIME,
               username TEXT NOT NULL,
+              delivery_name TEXT,
               order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               order_item TEXT NOT NULL,
               eco_package TEXT,
@@ -145,7 +146,7 @@ const createOrdersTable = () => {
 };
 
 // Function to insert an order
-const insertOrder = (username, order_item, price, payment_method, option = null, reservation_time = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null, pickup_date = null, pickup_time = null) => {
+const insertOrder = (username, order_item, price, payment_method, option = null, reservation_time = null, delivery_name = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null, pickup_date = null, pickup_time = null) => {
     return new Promise((resolve, reject) => {
         // Construct the SQL query dynamically
         let sql = 'INSERT INTO orders(username, order_item, price, payment_method';
@@ -159,6 +160,10 @@ const insertOrder = (username, order_item, price, payment_method, option = null,
         if (reservation_time !== null) {
             sql += ', reservation_time';
             values.push(reservation_time);
+        }
+        if (delivery_name !== null) {  // Check for delivery_name
+            sql += ', delivery_name';
+            values.push(delivery_name);
         }
         if (eco_package !== null) {
             sql += ', eco_package';
