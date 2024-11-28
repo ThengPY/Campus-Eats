@@ -175,8 +175,20 @@ const insertOrder = (username, order_item, price, payment_method, card_number = 
 
 //Function to retrieve user's order history
 const getUsersOrders = (username, callback) => {
-    const sql = 'SELECT * FROM orders WHERE username = ?';
-
+    const sql = `
+    SELECT 
+        id, 
+        STRFTIME('%d/%m/%Y, %H:%M', order_date) AS formatted_order_date, 
+        order_item, 
+        price, 
+        payment_method,  
+        STRFTIME('%d/%m/%Y', pickup_date) AS formatted_pickup_date, 
+        STRFTIME('%H:%M', pickup_time) AS formatted_pickup_time 
+    FROM 
+        orders 
+    WHERE 
+        username = ?;
+`;
     db.all(sql, [username], (err, rows) => {
         if (err) {
             console.error('Error querying orders: '+  err.message);
@@ -242,7 +254,6 @@ const getComments = () => {
         });
     });
 };
-
 
 createTable()
 createReservationsTable()

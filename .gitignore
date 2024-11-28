@@ -13,6 +13,9 @@ node_modules/
 #intelliJ out
 .idea
 
+#prevent database changes
+.db
+
 # Build directories
 build/
 dist/
