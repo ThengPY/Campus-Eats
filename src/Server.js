@@ -172,13 +172,12 @@ app.get('/comments', (req, res) => {
 
 //Route to payments
 app.post('/payment', (req, res) => {
-    const { username, price } = req.body;
+    const { username, price, card_number } = req.body;
 
-    if(!username || !price) {
+    if(!username || !price || !card_number) {
         return res.status(400).send('Log in is required.');
     }
-
-    console.log(`Processing payment for user: ${username}, price: ${price}`);
+    console.log(`Processing payment for user: ${username}, price: ${price}, card number: ${card_number}`);
     res.status(200).json({ success: true, message: 'Payment successful' });
 });
 

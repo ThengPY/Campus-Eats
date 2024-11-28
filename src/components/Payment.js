@@ -9,7 +9,7 @@ const handlesubmit = (e) => {
     onClose();
 }
 
-const Payment = ({ paymentMethod, onClose, onSubmit }) => {
+const Payment = ({ paymentMethod, onClose, onSubmit, card_number, setcard_number }) => {
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className = "modal-content" onClick={(e) => e.stopPropagation()}>
@@ -21,7 +21,7 @@ const Payment = ({ paymentMethod, onClose, onSubmit }) => {
                             <form onSubmit={onSubmit}>
                                 <div>
                                     <label>Card Number:</label>
-                                    <input type="text" required/>
+                                    <input type="text" value={card_number} onChange={(e) => setcard_number(e.target.value)} required/>
                                 </div>
                                 <div>
                                     <label>Expiration Date:</label>

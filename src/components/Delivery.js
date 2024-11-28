@@ -12,7 +12,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
   const [isOwnTableware, setIsOwnTableware] = useState(false);
-  const [isPayment, setIsPayment] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
 
   const handlePaymentMethodChange = (e) => {
@@ -25,7 +25,16 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     setIsOwnTableware(!isEcoFriendly);
   };
   
-  const handleSubmit = (e) => {
+  const handlePayment = (e) => {
+    e.preventDefault();
+    console.log('Payment Method:', paymentMethod);
+    console.log('Name:', name);
+    console.log('Phone Number:', phoneNumber);
+    console.log('KK Location:', kkLocation);
+    setIsPaymentOpen(true);
+  }
+
+  const handlePaymentSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
     const username = localStorage.getItem('username');
@@ -42,6 +51,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     const paymentData = {
       price: updatedTotalPrice,
       username: username,
+      card_number: card_number
     }
 
     fetch('http://localhost:5000/payment', {
@@ -107,7 +117,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
           <div>-------------------------------------------------------</div>
         </div>    
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handlePayment}>
           {/* Delivery Information */}
           <h3>Delivery Information</h3>
           
@@ -199,8 +209,10 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
         {isPayment && (
           <Payment
             paymentMethod={paymentMethod}
-            onClose={() => setIsPayment(false)}
-            onSubmit={handleSubmit}
+            onClose={() => setIsPaymentOpen(false)}
+            onSubmit={handlePaymentSubmit}
+            cardNumber={setCardNumber}
+            setcard_number={setCardNumber}
           />
         )}
       </div>
