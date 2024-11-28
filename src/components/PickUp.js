@@ -94,6 +94,9 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
       console.error('Payment error:', error);
       toast.error('An error occured while processing your payment.');
       setIsPaymentOpen(false);
+    })
+    .finally(() => {
+      setIsPaymentOpen(false);
     });
   };
 
@@ -240,8 +243,8 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             paymentMethod={paymentMethod}
             onClose={() => setIsPaymentOpen(false)}
             onSubmit={handlePaymentSubmit}
-            cardNumber={setCardNumber}
-            setcard_number={setCardNumber}
+            cardNumber={cardNumber}
+            setCardNumber={setCardNumber}
           />
         )}
       </div>

@@ -212,7 +212,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
             onClose={() => setIsPaymentOpen(false)}
             onSubmit={handlePaymentSubmit}
             cardNumber={setCardNumber}
-            setcard_number={setCardNumber}
+            setCardNumber={setCardNumber}
           />
         )}
       </div>
