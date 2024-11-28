@@ -44,26 +44,6 @@ app.post('/user/login', (req, res) => {
     });
 });
 
-// Route to create a reservation
-app.post('/reservation/create/:username', (req, res) => {
-    const username= req.params.username;
-    const { table_number, pax, reservation_time, location } = req.body;
-
-    // Input validation
-    if (!username || !table_number || !pax || !reservation_time || !location) {
-        return res.status(400).send('username, table number, number of people, reservation time, and location are required');
-    }
-
-    // Insert the reservation into the database
-    dbHandler.insertReservation(username, table_number, pax, reservation_time, location)
-        .then(() => {
-            res.status(201).send('Reservation created successfully');
-        })
-        .catch((err) => {
-            console.error('Error creating reservation:', err);
-            res.status(500).send('Internal server error');
-        });
-});
 //route to retrieve password
 app.post('/user/forgot-password', (req, res) => {
     const { email } = req.body;
@@ -88,6 +68,27 @@ app.post('/user/forgot-password', (req, res) => {
         .catch(error => {
             console.error('Error fetching password:', error);
             res.status(500).json({ success: false, message: 'An error occurred while processing your request.' });
+        });
+});
+
+// Route to create a reservation
+app.post('/reservation/create/:username', (req, res) => {
+    const username= req.params.username;
+    const { table_number, pax, reservation_time, location } = req.body;
+
+    // Input validation
+    if (!username || !table_number || !pax || !reservation_time || !location) {
+        return res.status(400).send('username, table number, number of people, reservation time, and location are required');
+    }
+
+    // Insert the reservation into the database
+    dbHandler.insertReservation(username, table_number, pax, reservation_time, location)
+        .then(() => {
+            res.status(201).send('Reservation created successfully');
+        })
+        .catch((err) => {
+            console.error('Error creating reservation:', err);
+            res.status(500).send('Internal server error');
         });
 });
 
@@ -179,6 +180,29 @@ app.post('/payment', (req, res) => {
     }
     console.log(`Processing payment for user: ${username}, price: ${price}, card number: ${card_number}`);
     res.status(200).json({ success: true, message: 'Payment successful' });
+});
+
+// Route to payments
+app.post('/payment/:username', (req, res) => {
+    const username = req.params.username;
+    const { order_item, price, payment_method, option, reservation_time, delivery_name, eco_package, bring_container, address, phone_num, card_number, pickup_date, pickup_time, own_tableware} = req.body;
+
+    // Validate required fields
+    if (!username || !price || !order_item ) {
+        return res.status(400).send('Log in is required and all fields must be provided.');
+    }
+    console.log(`Processing payment for user: ${username}, price: ${price}`);
+
+    // Call the insertOrder function
+    dbHandler.insertOrder(username, order_item, price, payment_method, option, reservation_time, delivery_name, eco_package, bring_container, address, phone_num, card_number, pickup_date, pickup_time, own_tableware)
+        .then(orderId => {
+            console.log(`Order inserted with ID: ${orderId}`);
+            res.status(200).json({ success: true, message: 'Payment successful', orderId });
+        })
+        .catch(err => {
+            console.error('Error inserting order:', err);
+            res.status(500).json({ success: false, message: 'Payment failed. Please try again.' });
+        });
 });
 
 // Start the server

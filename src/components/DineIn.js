@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Checkout.css'; // Make sure to create a CSS file for styling
+import './Checkout.css';
+import {toast} from "react-toastify"; // Make sure to create a CSS file for styling
 
 const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [tableBooking, setTableBooking] = useState({ numPeople: '', tableNumber: '', location: '' }); // State for table booking
@@ -13,14 +14,14 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const updatedTotalPrice = isOwnTableware ? totalPrice * 90 / 100 : totalPrice;
 
   const handleReserveTable = () => {
-    if (localStorage.getItem('username') === '') {
+    const username = localStorage.getItem('username');
+    if (username === '') {
       alert('Please log in before reserving');
       return;
     } else if (!tableBooking.numPeople || !tableBooking.tableNumber) {
       alert('Please fill in table booking details.');
       return;
     }
-    const username = localStorage.getItem('username');
 
     // Get the cafeteria name from cartItems (assuming all items have the same cafeteria)
     const cafeteriaName = cartItems[0].cafeteria; // Get cafeteria name from the first item
@@ -32,16 +33,16 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
     const order_item = order_itemArray.join(', ');
 
     const reservationData = {
-      username: username,
+      payment_method: "Credit Card",
       order_item: order_item,
-      bring_container: isOwnTableware,
+      // bring_container: isOwnTableware,
       price: updatedTotalPrice,
       pax: tableBooking.numPeople,
-      table_number: tableBooking.tableNumber,
-      location: cafeteriaName
+      //table_number: tableBooking.tableNumber,
+      //location: cafeteriaName
     };
 
-    fetch(`http://localhost:5001/reservation/create/${username}}`, {
+    fetch(`http://localhost:5000/payment/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
         return response.text(); // Assuming your server responds with text (or you can change it to JSON)
       })
       .then(data => {
-        alert(`Reservation successful: ${localStorage.getItem('username')}`);
+        toast.success(`Reservation successful: ${localStorage.getItem('username')}`);
         setTableBooking({ numPeople: '', tableNumber: '', location: '' }); // Reset table booking details
         onClose(); // Close the modal after successful reservation
       })

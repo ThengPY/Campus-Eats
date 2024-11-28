@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const payment = require("./components/Payment");
 
 // Specify the path to the database file
 const dbPath = path.join(__dirname, 'database.db');
@@ -132,7 +133,7 @@ const createOrdersTable = () => {
               price REAL NOT NULL,
               address TEXT,
               phone_num INTEGER,
-              payment_method TEXT NOT NULL,
+              payment_method TEXT,
               card_number TEXT,
               pickup_date DATE,
               pickup_time TIME,
@@ -147,13 +148,17 @@ const createOrdersTable = () => {
 };
 
 // Function to insert an order
-const insertOrder = (username, order_item, price, payment_method, option = null, reservation_time = null, delivery_name = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null, pickup_date = null, pickup_time = null, own_tableware = null) => {
+const insertOrder = (username, order_item, price, payment_method = null, option = null, reservation_time = null, delivery_name = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null, pickup_date = null, pickup_time = null, own_tableware = null) => {
     return new Promise((resolve, reject) => {
         // Construct the SQL query dynamically
-        let sql = 'INSERT INTO orders(username, order_item, price, payment_method';
+        let sql = 'INSERT INTO orders(username, order_item, price';
         const values = [username, order_item, price, payment_method];
 
         // Check for optional fields and add them to the SQL query and values array
+        if (payment_method !== null) {
+            sql += ', payment_method';
+            values.push(payment_method);
+        }
         if (option !== null) {
             sql += ', option';
             values.push(option);

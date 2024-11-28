@@ -51,7 +51,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     const order_item = order_itemArray.join(', ');
 
     const paymentData = {
-      username: username,
       order_item: order_item,
       eco_package: isEcoFriendly,
       price: updatedTotalPrice,
@@ -60,7 +59,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
       card_number: cardNumber
     }
 
-    fetch('http://localhost:5000/payment', {
+    fetch(`http://localhost:5000/payment/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
