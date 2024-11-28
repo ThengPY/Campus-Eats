@@ -16,7 +16,7 @@ async function useModel(inputData) {
 
 // Example usage
 (async () => {
-    const inputData = [2 / 24, 6 / 7]; // Example input: normalized [hour, day_of_week]
+    const inputData = [1 / 24, 1 / 7]; // Example input: normalized [hour, day_of_week]
     const predictions = await useModel(inputData);
     console.log(predictions.arraySync()); // Print the predictions as an array
 })();
