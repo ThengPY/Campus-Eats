@@ -1,6 +1,8 @@
 const express = require('express');
 const dbHandler = require('./dbHandler');
 const cors = require('cors');
+const { retrainModel } = require('./ModelTraining');
+const {getDataForModelTraining} = require("./dbHandler");
 
 const app = express();
 const PORT =  5000;
@@ -13,6 +15,7 @@ app.use(cors());
 dbHandler.createTable();
 dbHandler.createOrdersTable();
 dbHandler.createCommentsTable()
+dbHandler.createModelDataTable()
 
 // Route to register a new user
 app.post('/user/register', (req, res) => {
@@ -172,6 +175,22 @@ app.post('/payment/:username', (req, res) => {
             res.status(500).json({ success: false, message: 'Payment failed. Please try again.' });
         });
 });
+
+// New endpoint to trigger model training
+app.get('/model/train', (req, res) => {
+    getDataForModelTraining()
+        .then(data => {
+            return retrainModel(data); // Pass the retrieved data to retrain the model
+        })
+        .then(() => {
+            res.status(200).send('Model training completed successfully.');
+        })
+        .catch(err => {
+            console.error('Error during model training:', err);
+            res.status(500).send('Error during model training.');
+        });
+});
+
 
 // Start the server
 app.listen(PORT, () => {

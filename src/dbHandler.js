@@ -65,6 +65,43 @@ const loginUser  = (username, email, password, callback) => {
     });
 };
 
+// Function to create the reservations table if it doesn't exist
+const createReservationsTable = () => {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS reservations (
+                                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                    username TEXT NOT NULL,
+                                                    table_number INTEGER NOT NULL,
+                                                    pax INTEGER NOT NULL,
+                                                    reservation_time DATETIME NOT NULL,
+                                                    location TEXT NOT NULL
+        )
+    `;
+
+    db.run(sql, (err) => {
+        if (err) {console.error('Error creating reservations table: ' + err.message);
+        } else {console.log('Reservations table created or already exists.');
+        }
+    });
+};
+
+// Function to insert a reservation
+const insertReservation = (username,table_number,pax,reservation_time, location) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO reservations(username,table_number,pax,reservation_time, location) VALUES (?,?,?,?,?)';
+
+        db.run(sql, [username,table_number,pax,reservation_time, location], function(err) {
+            if (err) {
+                console.error('Error inserting reservation: ' + err.message);
+                reject(err); // Reject the promise on error
+            } else {
+                console.log(`Reservation added with ID: ${this.lastID}`);
+                resolve(); // Resolve the promise on success
+            }
+        });
+    });
+};
+
 // Function to get a user by email
 const getUser = (email) => {
     return new Promise((resolve, reject) => {
@@ -263,8 +300,144 @@ const getComments = () => {
 };
 
 
+const insertModelData = (hour, day_of_week, deliveries) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO model_data (hour, day_of_week, deliveries) VALUES (?, ?, ?)';
+        db.run(sql, [hour, day_of_week, deliveries], function(err) {
+            if (err) {
+                console.error('Error inserting model data: ' + err.message);
+                reject(err);
+            } else {
+                console.log(`Model data added with ID: ${this.lastID}`);
+                resolve(); // Resolve the promise on success
+            }
+        });
+    });
+};
+
+const getDataForModelTraining = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT hour, day_of_week, deliveries FROM model_data`; // Select relevant columns
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                console.error('Error retrieving data for model training: ' + err.message);
+                reject(err);
+            } else {
+                // Map the rows to the expected format
+                const formattedData = rows.map(row => ({
+                    hour: row.hour,
+                    day_of_week: row.day_of_week,
+                    deliveries: row.deliveries
+                }));
+                resolve(formattedData); // Resolve with the formatted data
+            }
+        });
+    });
+};
+
+// Create the table for model data
+// Function to initialize the model_data table
+const createModelDataTable = () => {
+    return new Promise((resolve, reject) => {
+        db.serialize(() => {
+            db.run(`CREATE TABLE IF NOT EXISTS model_data (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                hour INTEGER,
+                day_of_week INTEGER,
+                deliveries INTEGER
+            )`, (err) => {
+                if (err) {
+                    console.error('Error creating model_data table: ' + err.message);
+                    reject(err);
+                } else {
+                    console.log('model_data table created successfully.');
+                    resolve(); // Resolve the promise on success
+                }
+            });
+        });
+    });
+};
+
+//generate number model_data
+/*
+// Function to insert multiple rows of model data
+const insertMultipleModelData = (dataArray) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO model_data (hour, day_of_week, deliveries) VALUES (?, ?, ?)';
+        const stmt = db.prepare(sql); // Prepare the statement for efficiency
+
+        dataArray.forEach(({ hour, day_of_week, deliveries }) => {
+            stmt.run(hour, day_of_week, deliveries, (err) => {
+                if (err) {
+                    console.error('Error inserting model data: ' + err.message);
+                    reject(err);
+                }
+            });
+        });
+
+        stmt.finalize((err) => {
+            if (err) {
+                console.error('Error finalizing statement: ' + err.message);
+                reject(err);
+            } else {
+                console.log(`Inserted ${dataArray.length} rows of model data.`);
+                resolve(); // Resolve the promise on success
+            }
+        });
+    });
+};
+
+// Function to generate delivery data
+const generateProbabilisticDeliveries = () => {
+    const data = [];
+    const peakHours = [...Array(5).keys()].map(i => i + 10) // 10 AM to 2 PM (10, 11, 12, 13, 14)
+        .concat([...Array(4).keys()].map(i => i + 17)); // 5 PM to 8 PM (17, 18, 19, 20)
+    const baseDeliveries = 20; // Base deliveries for non-peak hours
+
+    for (let day = 1; day <= 7; day++) { // 1 = Monday, 7 = Sunday
+        for (let hour = 1; hour <= 24; hour++) { // 1 = 1 AM, 24 = 12 AM
+            let deliveries;
+
+            // Adjust peak hours to match the new hour format
+            const adjustedHour = hour === 24 ? 0 : hour; // Convert 24 to 0 for easier comparison
+            if (peakHours.includes(adjustedHour)) {
+                deliveries = Math.floor(Math.random() * 51) + 50; // 50 to 100 deliveries during peak hours
+            } else {
+                deliveries = Math.floor(Math.random() * (baseDeliveries + 1)); // 0 to 20 deliveries during non-peak hours
+            }
+
+            data.push({
+                hour: hour,
+                day_of_week: day,
+                deliveries: deliveries
+            });
+        }
+    }
+
+    return data;
+};
+
+// Generate delivery data
+const deliveriesData = generateProbabilisticDeliveries();
+
+// Insert the generated data into the database
+insertMultipleModelData(deliveriesData)
+    .then(() => {
+        console.log('All data inserted successfully.');
+    })
+    .catch((err) => {
+        console.error('Error inserting multiple model data:', err);
+    })
+    .finally(() => {
+        db.close(); // Close the database connection
+    });
+*/
+
+
+
 // Export the database connection for use in other modules
 module.exports ={ db,createTable,insertUser,loginUser, getUser,
                     createOrdersTable, insertOrder, getUsersOrders,
-                    createCommentsTable,insertComment, getComments
+                    createCommentsTable,insertComment, getComments,
+                    getDataForModelTraining,insertModelData,createModelDataTable
                 };
