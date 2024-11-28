@@ -5,7 +5,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
 
   const [cafeteria, setCafeteria] = useState("");
   const [priceRange, setPriceRange] = useState("");
-  const [preferences, setPreferences] = useState("");
+  const [preference, setPreference] = useState("");
   const [mealPlan, setMealPlan] = useState(null);
 
   const parsePriceRange = (priceRange) => {
@@ -30,7 +30,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
         const cafeteriaId = cafeteria.id;
         console.log("Processing cafeteria ID:", cafeteriaId);
         const filteredFood = foodItems[cafeteriaId].food.filter(
-          (food) => food.price >= minPrice && food.price <= maxPrice
+          (food) => food.price >= minPrice && food.price <= maxPrice && (preference === "" || food.type === preference)
         );
         const filteredDrinks = foodItems[cafeteriaId].drinks.filter(
           (drink) => drink.price >= minPrice && drink.price <= maxPrice
@@ -48,7 +48,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
       }
       console.log("Processing selected cafeteria ID:", cafeteriaId);
       const filteredFood = foodItems[cafeteriaId].food.filter(
-        (food) => food.price >= minPrice && food.price <= maxPrice
+        (food) => food.price >= minPrice && food.price <= maxPrice && (preference === "" || food.type === preference)
       );
       const filteredDrinks = foodItems[cafeteriaId].drinks.filter(
         (drink) => drink.price >= minPrice && drink.price <= maxPrice
@@ -105,14 +105,14 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
         </label>
 
         <label>
-          Dietary Preferences:
+          Dietary Preference:
           <select style={{marginLeft: "7px", cursor: "pointer"}}
-            value={preferences}
-            onChange={(e) => setPreferences(e.target.value)}
+            value={preference}
+            onChange={(e) => setPreference(e.target.value)}
           >
             <option value="">Any</option>
             <option value="Vege">Vegetarian</option>
-            <option value="Nonvege">Non-Vegetarian</option>
+            <option value="NonVege">Non-Vegetarian</option>
           </select>
         </label>
 
