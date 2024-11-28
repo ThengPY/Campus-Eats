@@ -6,7 +6,7 @@ require("tfjs-node-save");
 async function loadModel() {
     let model;
     try {
-        model = await tf.loadLayersModel('file:///C:/Users/keste/IdeaProjects/Campus-Eats/src/model.json'); // Load the saved model
+        model = await tf.loadLayersModel('file:///Users/keste/IdeaProjects/Campus-Eats/src/model.json'); // Load the saved model
     } catch (error) {
         console.log('No existing model found. Creating a new one.');
         model = createNewModel(); // If no model is found, create a new one

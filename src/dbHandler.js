@@ -310,7 +310,7 @@ const getDataForModelTraining = () => {
     });
 };
 
-//for generating numbers in model
+//generate numbers in model
 /*
 const insertMultipleModelData = (dataArray) => {
     return new Promise((resolve, reject) => {
