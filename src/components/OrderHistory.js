@@ -43,11 +43,6 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
             });
     };
 
-    // Function to format SQLite timestamp
-    const formatTimestamp = (timestamp) => {
-        var s = new Date(timestamp).toLocaleDateString("en-US")
-        return s;
-    };
 
     return (
       <div className="modal-overlay" onClick={onClose}>
@@ -67,10 +62,10 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
                             <p className="order-id"><strong>Order ID:</strong> {order.id}</p>
                             <p className="order-product"><strong>Product:</strong> {order.order_item}</p>
                             <p className="order-price"><strong>Price:</strong> RM{order.price}</p>
-                            <p className="order-date"><strong>Date:</strong> {formatTimestamp(order.date)}</p>
+                            <p className="order-date"><strong>Date:</strong> {order.formatted_order_date}</p>
                             <p className="pickup-info">
                                 <strong>Pickup:</strong>
-                                {order.pickup_date.toString()} {order.pickup_time.toString()}
+                                {order.formatted_pickup_date} at {order.formatted_pickup_time}
                             </p>
                             <hr/>
                         </div>
