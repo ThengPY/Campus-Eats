@@ -170,6 +170,18 @@ app.get('/comments', (req, res) => {
         });
 });
 
+//Route to payments
+app.post('/payment', (req, res) => {
+    const { username, price } = req.body;
+
+    if(!username || !price) {
+        return res.status(400).send('Log in is required.');
+    }
+
+    console.log(`Processing payment for user: ${username}, price: ${price}`);
+    res.status(200).json({ success: true, message: 'Payment successful' });
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
