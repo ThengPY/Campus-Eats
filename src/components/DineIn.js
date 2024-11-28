@@ -34,11 +34,11 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
     const reservationData = {
       order_item: order_item,
-      // bring_container: isOwnTableware,
+      own_tableware: isOwnTableware,
       price: updatedTotalPrice,
       pax: tableBooking.numPeople,
-      //table_number: tableBooking.tableNumber,
-      //location: cafeteriaName
+      table_number: tableBooking.tableNumber,
+      location: cafeteriaName
     };
 
     fetch(`http://localhost:5000/payment/${username}`, {
