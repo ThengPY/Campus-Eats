@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {toast} from "react-toastify";
 
 const OrderHistory = ({ isOpen, onClose, username}) => {
     if (!isOpen) return null;
@@ -42,53 +43,10 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
             });
     };
 
-    // Function to convert SQLite TIMESTAMP to ISO 8601 format
-    const convertTimestampToISO = (timestamp) => {
-        if (!timestamp) return null; // Handle undefined or null
-        return timestamp.replace(' ', 'T') + 'Z'; // Convert to ISO format
-    };
-
-    // Function to format the date
-    const formatDate = (dateString) => {
-        const isoDateString = convertTimestampToISO(dateString);
-        const date = new Date(isoDateString);
-
-        // Check if the date is valid
-        if (isNaN(date.getTime())) {
-            return 'Invalid date'; // Handle invalid date
-        }
-
-        const formattedDate = date.toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric',
-        });
-        const formattedTime = date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
-        return `${formattedDate} at ${formattedTime}`;
-    };
-
-    // Function to format pickup date and time
-    const formatPickupDateTime = (pickupDate, pickupTime) => {
-        if (!pickupDate || !pickupTime) return null; // Return null if either is missing
-
-        const formattedDate = formatDate(pickupDate);
-        const time = new Date(`1970-01-01T${pickupTime}`); // Create a date object for the time
-
-        // Check if the time is valid
-        if (isNaN(time.getTime())) {
-            return 'Invalid time'; // Handle invalid time
-        }
-
-        const formattedTime = time.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
-
-        return `${formattedDate} at ${formattedTime}`;
+    // Function to format SQLite timestamp
+    const formatTimestamp = (timestamp) => {
+        var s = new Date(timestamp).toLocaleDateString("en-US")
+        return s;
     };
 
     return (
@@ -109,12 +67,11 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
                             <p className="order-id"><strong>Order ID:</strong> {order.id}</p>
                             <p className="order-product"><strong>Product:</strong> {order.order_item}</p>
                             <p className="order-price"><strong>Price:</strong> RM{order.price}</p>
-                            <p className="order-date"><strong>Date:</strong> {formatDate(order.date)}</p>
-                            {order.pickup_date && order.pickup_time && (
-                                <p className="pickup-info">
-                                    <strong>Pickup:</strong> {formatPickupDateTime(order.pickup_date, order.pickup_time)}
-                                </p>
-                            )}
+                            <p className="order-date"><strong>Date:</strong> {formatTimestamp(order.date)}</p>
+                            <p className="pickup-info">
+                                <strong>Pickup:</strong>
+                                {order.pickup_date.toString()} {order.pickup_time.toString()}
+                            </p>
                             <hr/>
                         </div>
                     ))
@@ -125,6 +82,6 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
         </div>
       </div>
     );
-  };
+};
 
 export default OrderHistory;
