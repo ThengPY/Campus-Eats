@@ -11,9 +11,16 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
 
   const handleEcoFriendlyChange = () => {
+    if (isOwnContainer) {
+      setIsOwnContainer(false); // Uncheck the "Own Container" option if "Eco-Friendly" is selected
+    }
     setIsEcoFriendly(!isEcoFriendly);
   };
+
   const handleOwnContainerChange = () => {
+    if (isEcoFriendly) {
+      setIsEcoFriendly(false); // Uncheck the "Eco-Friendly" option if "Own Container" is selected
+    }
     setIsOwnContainer(!isOwnContainer);
   };
 
@@ -25,12 +32,11 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   // Function to calculate the total price based on eco-friendly and own container options
   const calculateTotalPrice = (totalPrice, isEcoFriendly, isOwnContainer) => {
     let updatedTotalPrice = totalPrice;
-
-    if (isEcoFriendly && isOwnContainer) {
-      updatedTotalPrice = (updatedTotalPrice + 1) * 0.9; // Add RM 1 and apply 10% discount
-    } else if (isEcoFriendly) {
+  
+    if (isEcoFriendly) {
       updatedTotalPrice = updatedTotalPrice + 1; // Add RM 1 for eco-friendly
-    } else if (isOwnContainer) {
+    } 
+    else if (isOwnContainer) {
       updatedTotalPrice = updatedTotalPrice * 0.9; // Apply 10% discount for own container
     }
 
@@ -87,7 +93,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                       onChange={handleEcoFriendlyChange}
                       className="reserve-checkbox"
                     />
-                    <span >Choose eco-friendly package (+RM 1.00)</span>
+                    <span >Choose eco-friendly packaging (+RM 1.00)</span>
                   </label>
           </div>
            {/*Bring own tableware option */}

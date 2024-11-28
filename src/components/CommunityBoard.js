@@ -43,7 +43,7 @@ const CommunityBoard = ({isOpen, onClose}) => {
     const handleAddComment = (e) => {
         e.preventDefault();
         if(localStorage.getItem('username')===''){
-            alert('Please log in before reserving');
+            alert('Please log in before posting a comment');
             return;
         }
         else if (newComment.trim() === "" || username.trim() === "") return;
