@@ -68,13 +68,23 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     console.log('Pick-Up Date:', pickupDate);
     console.log('Pick-Up Time:', pickupTime);
 
+    // Create an array of order names from cartItems
+    const order_itemArray = cartItems.map(item => item.name);
+
+    // Join the order names into a single string
+    const order_item = order_itemArray.join(', ');
+
     const paymentData = {
+      order_item: order_item,
+      eco_package: isEcoFriendly,
+      bring_container: isOwnContainer,
       price: updatedTotalPrice,
-      username: username,
-      card_number: cardNumber,
+      pickup_date: pickupDate,
+      pickup_time: pickupTime,
+      card_number: cardNumber
     }
 
-    fetch('http://localhost:5000/payment', {
+    fetch(`http://localhost:5000/payment/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

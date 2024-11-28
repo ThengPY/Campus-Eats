@@ -65,43 +65,6 @@ const loginUser  = (username, email, password, callback) => {
     });
 };
 
-// Function to create the reservations table if it doesn't exist
-const createReservationsTable = () => {
-    const sql = `
-        CREATE TABLE IF NOT EXISTS reservations (
-                                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                    username TEXT NOT NULL,
-                                                    table_number INTEGER NOT NULL,
-                                                    pax INTEGER NOT NULL,
-                                                    reservation_time DATETIME NOT NULL,
-                                                    location TEXT NOT NULL
-        )
-    `;
-
-    db.run(sql, (err) => {
-        if (err) {console.error('Error creating reservations table: ' + err.message);
-        } else {console.log('Reservations table created or already exists.');
-        }
-    });
-};
-
-// Function to insert a reservation
-const insertReservation = (username,table_number,pax,reservation_time, location) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO reservations(username,table_number,pax,reservation_time, location) VALUES (?,?,?,?,?)';
-
-        db.run(sql, [username,table_number,pax,reservation_time, location], function(err) {
-            if (err) {
-                console.error('Error inserting reservation: ' + err.message);
-                reject(err); // Reject the promise on error
-            } else {
-                console.log(`Reservation added with ID: ${this.lastID}`);
-                resolve(); // Resolve the promise on success
-            }
-        });
-    });
-};
-
 // Function to get a user by email
 const getUser = (email) => {
     return new Promise((resolve, reject) => {
@@ -120,11 +83,19 @@ const createOrdersTable = () => {
     const sql = `
         CREATE TABLE IF NOT EXISTS orders (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
+              option TEXT,
+              reservation_time TIME,
               username TEXT NOT NULL,
+              delivery_name TEXT,
               order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               order_item TEXT NOT NULL,
+              eco_package TEXT,
+              own_tableware TEXT,
+              bring_container TEXT,
               price REAL NOT NULL,
-              payment_method TEXT NOT NULL,
+              address TEXT,
+              phone_num INTEGER,
+              payment_method TEXT,
               card_number TEXT,
               pickup_date DATE,
               pickup_time TIME,
@@ -139,13 +110,49 @@ const createOrdersTable = () => {
 };
 
 // Function to insert an order
-const insertOrder = (username, order_item, price, payment_method, card_number = null, pickup_date = null, pickup_time = null) => {
+const insertOrder = (username, order_item, price, payment_method = null, option = null, reservation_time = null, delivery_name = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null, pickup_date = null, pickup_time = null, own_tableware = null) => {
     return new Promise((resolve, reject) => {
         // Construct the SQL query dynamically
-        let sql = 'INSERT INTO orders(username, order_item, price, payment_method';
-        const values = [username, order_item, price,payment_method];
+        let sql = 'INSERT INTO orders(username, order_item, price';
+        const values = [username, order_item, price];
 
         // Check for optional fields and add them to the SQL query and values array
+        if (payment_method !== null) {
+            sql += ', payment_method';
+            values.push(payment_method);
+        }
+        if (option !== null) {
+            sql += ', option';
+            values.push(option);
+        }
+        if (reservation_time !== null) {
+            sql += ', reservation_time';
+            values.push(reservation_time);
+        }
+        if (delivery_name !== null) {  // Check for delivery_name
+            sql += ', delivery_name';
+            values.push(delivery_name);
+        }
+        if (eco_package !== null) {
+            sql += ', eco_package';
+            values.push(eco_package);
+        }
+        if (bring_container !== null) {
+            sql += ', bring_container';
+            values.push(bring_container);
+        }
+        if (own_tableware !== null) {
+            sql += ', own_tableware'; // Assuming the column name is own_tableware
+            values.push(own_tableware);
+        }
+        if (address !== null) {
+            sql += ', address';
+            values.push(address);
+        }
+        if (phone_num !== null) {
+            sql += ', phone_num';
+            values.push(phone_num);
+        }
         if (card_number !== null) {
             sql += ', card_number';
             values.push(card_number);
@@ -166,8 +173,8 @@ const insertOrder = (username, order_item, price, payment_method, card_number = 
                 console.error('Error inserting order: ' + err.message);
                 reject(err);
             } else {
-                console.log(`Order added with ID: ${username}`);
-                resolve(username); // Resolve with the last inserted ID
+                console.log(`Order added with ID: ${this.lastID}`); // Use this.lastID to get the last inserted ID
+                resolve(this.lastID); // Resolve with the last inserted ID
             }
         });
     });
@@ -255,14 +262,9 @@ const getComments = () => {
     });
 };
 
-createTable()
-createReservationsTable()
-createOrdersTable()
-
-
 
 // Export the database connection for use in other modules
-module.exports ={ db,createTable,insertUser,loginUser,createReservationsTable,
-                    insertReservation,getUser, createOrdersTable, insertOrder,
-                    getUsersOrders,createCommentsTable,insertComment,getComments
+module.exports ={ db,createTable,insertUser,loginUser, getUser,
+                    createOrdersTable, insertOrder, getUsersOrders,
+                    createCommentsTable,insertComment, getComments
                 };
