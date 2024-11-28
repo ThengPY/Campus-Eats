@@ -85,48 +85,56 @@ const CommunityBoard = ({isOpen, onClose}) => {
     };
   
     return (
-      <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className = "close-btn">
-          <span class="material-symbols-rounded" onClick={onClose}>close</span>
-        </div>
-           <h2>Community Board</h2>
-            {/* Comment Form */}
-            <form onSubmit={handleAddComment} className="comment-form">
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
-                className="username-input"
-            />
-            <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Write a comment..."
-                className="comment-textarea"
-            ></textarea>
-            <button type="submit">Post Comment</button>
-            </form>
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className = "close-btn">
+                    <span class="material-symbols-rounded" onClick={onClose}>close</span>
+                </div>
+                <h2>Community Board</h2>
 
-            {/* Comments List */}
-            <div className="comments-list">
-                <h2>Comments</h2>
-                {comments.length > 0 ? (
-                 comments.map((comment) => (
-                  <div key={comment.id} className="comment-item">
-                    <p className="comment-user"><strong>{comment.user}</strong></p>
-                    <p className="comment-text">{comment.text}</p>
-                  </div>
-                 ))
-                ) : (
-                  <p>No comments yet. Be the first to post!</p>
-                )}
-            
-          </div>
+                {/* Comments List */}
+                <div className="comments-list">
+                    {comments.length > 0 ? (
+                        comments.map((comment) => (
+                        <div key={comment.id} className="comment-item">
+                            <p className="comment-user"><strong>{comment.user}</strong></p>
+                            <p className="comment-text">{comment.text}</p>
+                        </div>
+                        ))
+                    ) : (
+                        <p>No comments yet. Be the first to post!</p>
+                        )
+                    }
+                </div>
+
+                {/* Comment Form */}
+                <h3 style = {{marginBottom : "5px"}}>Add a comment!</h3>
+                <form onSubmit={handleAddComment} className="comment-form">
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Enter your username"
+                        className="comment-username"
+                    />
+                    <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Write a comment..."
+                        className="comment-textarea"
+                    />
+                    <div className = "friendly-reminder">
+                        <p style = {{marginTop : "0px", cursor : "default", fontSize : "12px"}}><span class="material-symbols-rounded" style = {{fontSize : "12px"}}>error</span> Please keep the conversation respectful and helpful!</p>
+                    </div>
+                    
+                    <button type="submit">POST</button>
+                </form>
+
+                
+                
+            </div>
         </div>
-      </div>
-      );
-  }
+    );
+}
   
-  export default CommunityBoard;
+export default CommunityBoard;
