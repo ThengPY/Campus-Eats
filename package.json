@@ -31,7 +31,8 @@
     "react-router-dom": "^7.0.1",
     "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.6",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "tfjs-node-save": "^0.0.2"
   },
   "devDependencies": {
     "concurrently": "^6.5.1"

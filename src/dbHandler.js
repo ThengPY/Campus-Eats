@@ -255,14 +255,122 @@ const getComments = () => {
     });
 };
 
+
+const createModelDataTable = () => {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS model_data (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hour INTEGER NOT NULL,
+            day_of_week INTEGER NOT NULL,
+            deliveries INTEGER NOT NULL
+        )
+    `;
+
+    db.run(sql, (err) => {
+        if (err) {
+            console.error('Error creating model_data table: ' + err.message);
+        } else {
+            console.log('Model data table created or already exists.');
+        }
+    });
+};
+
+const insertModelData = (hour, day_of_week, deliveries) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO model_data (hour, day_of_week, deliveries) VALUES (?, ?, ?)';
+        db.run(sql, [hour, day_of_week, deliveries], function(err) {
+            if (err) {
+                console.error('Error inserting model data: ' + err.message);
+                reject(err);
+            } else {
+                console.log(`Model data added with ID: ${this.lastID}`);
+                resolve(); // Resolve the promise on success
+            }
+        });
+    });
+};
+
+const getDataForModelTraining = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT hour, day_of_week, deliveries FROM model_data`; // Select relevant columns
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                console.error('Error retrieving data for model training: ' + err.message);
+                reject(err);
+            } else {
+                // Map the rows to the expected format
+                const formattedData = rows.map(row => ({
+                    hour: row.hour,
+                    day_of_week: row.day_of_week,
+                    deliveries: row.deliveries
+                }));
+                resolve(formattedData); // Resolve with the formatted data
+            }
+        });
+    });
+};
+
+//for generating numbers in model
+/*
+const insertMultipleModelData = (dataArray) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO model_data (hour, day_of_week, deliveries) VALUES (?, ?, ?)';
+
+        const stmt = db.prepare(sql); // Prepare the statement for efficiency
+
+        dataArray.forEach(({ hour, day_of_week, deliveries }) => {
+            stmt.run(hour, day_of_week, deliveries, (err) => {
+                if (err) {
+                    console.error('Error inserting model data: ' + err.message);
+                    reject(err);
+                }
+            });
+        });
+
+        stmt.finalize((err) => {
+            if (err) {
+                console.error('Error finalizing statement: ' + err.message);
+                reject(err);
+            } else {
+                console.log(`Inserted ${dataArray.length} rows of model data.`);
+                resolve(); // Resolve the promise on success
+            }
+        });
+    });
+};
+
+const generateDummyData = (numRows) => {
+    const data = [];
+    for (let i = 0; i < numRows; i++) {
+        const hour = Math.floor(Math.random() * 24); // Random hour between 0 and 23
+        const day_of_week = Math.floor(Math.random() * 7); // Random day of the week (0-6)
+        const deliveries = Math.floor(Math.random() * 100); // Random deliveries count
+        data.push({ hour, day_of_week, deliveries });
+    }
+    return data;
+};
+
+// Insert 150 rows of dummy data
+const dummyData = generateDummyData(150);
+insertMultipleModelData(dummyData)
+    .then(() => {
+        console.log('All data inserted successfully.');
+    })
+    .catch((err) => {
+        console.error('Error inserting multiple model data:', err);
+    });
+
+ */
+
+
 createTable()
 createReservationsTable()
 createOrdersTable()
 
 
-
 // Export the database connection for use in other modules
 module.exports ={ db,createTable,insertUser,loginUser,createReservationsTable,
                     insertReservation,getUser, createOrdersTable, insertOrder,
-                    getUsersOrders,createCommentsTable,insertComment,getComments
+                    getUsersOrders,createCommentsTable,insertComment,getComments,
+                    getDataForModelTraining,createModelDataTable,insertModelData
                 };
