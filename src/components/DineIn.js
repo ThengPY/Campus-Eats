@@ -33,7 +33,6 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
     const order_item = order_itemArray.join(', ');
 
     const reservationData = {
-      payment_method: "Credit Card",
       order_item: order_item,
       // bring_container: isOwnTableware,
       price: updatedTotalPrice,

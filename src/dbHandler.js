@@ -152,7 +152,7 @@ const insertOrder = (username, order_item, price, payment_method = null, option 
     return new Promise((resolve, reject) => {
         // Construct the SQL query dynamically
         let sql = 'INSERT INTO orders(username, order_item, price';
-        const values = [username, order_item, price, payment_method];
+        const values = [username, order_item, price];
 
         // Check for optional fields and add them to the SQL query and values array
         if (payment_method !== null) {
