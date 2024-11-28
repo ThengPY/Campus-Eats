@@ -1,7 +1,7 @@
 const express = require('express');
 const dbHandler = require('./dbHandler');
 const cors = require('cors');
-const { retrainModel } = require('./modelTraining');
+const { retrainModel } = require('./ModelTraining');
 const {getDataForModelTraining} = require("./dbHandler");
 
 const app = express();
