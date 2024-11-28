@@ -72,15 +72,15 @@ const App = () => {
   const foodItems = {
       1: {
         food: [
-          { id: 1, name: 'Nasi Lemak', price: 5 },
-          { id: 2, name: 'Nasi Goreng Ayam', price: 5 },
-          { id: 3, name: 'Tomyam Seafood', price: 5 },
-          { id: 4, name: 'Satay', price: 3.50 },
-          { id: 5, name: 'Nasi Kandar', price: 5.50 },
-          { id: 6, name: 'Char Kuey Teow', price: 6 },
-          { id: 7, name: 'Hokkien Mee', price: 4.50 },
-          { id: 8, name: 'Maggie Goreng', price: 3.50 },
-          { id: 9, name: 'Roti Tisu', price: 4 }
+          { id: 1, name: 'Nasi Lemak', price: 5, type: 'NonVege' },
+          { id: 2, name: 'Nasi Goreng Ayam', price: 5, type: 'NonVege' },
+          { id: 3, name: 'Tomyam Seafood', price: 5, type: 'NonVege' },
+          { id: 4, name: 'Satay', price: 3.50, type: 'NonVege' },
+          { id: 5, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+          { id: 6, name: 'Char Kuey Teow', price: 6, type: 'NonVege' },
+          { id: 7, name: 'Hokkien Mee', price: 4.50, type: 'NonVege' },
+          { id: 8, name: 'Maggie Goreng', price: 3.50, type: 'NonVege' }, 
+          { id: 9, name: 'Roti Tisu', price: 4, type: 'Vege' }
         ],
         drinks: [
           { id: 10, name: 'Teh Tarik', price: 2.50 },
@@ -94,15 +94,15 @@ const App = () => {
       },
       2: {
         food: [
-          { id: 17, name: 'Mee Goreng', price: 4 },
-          { id: 18, name: 'Roti Canai', price: 2.50 },
-          { id: 19, name: 'Murtabak', price: 5 },
-          { id: 20, name: 'Laksa', price: 5.50 },
-          { id: 21, name: 'Nasi Kandar', price: 5 },
-          { id: 22, name: 'Char Kuey Teow', price: 5.50 },
-          { id: 23, name: 'Hokkien Mee', price: 5 },
-          { id: 24, name: 'Maggie Goreng', price: 4.50 },
-          { id: 25, name: 'Roti Tisu', price: 4 }
+          { id: 17, name: 'Mee Goreng', price: 4, type: 'NonVege' },
+          { id: 18, name: 'Roti Canai', price: 2.50, type: 'Vege' },
+          { id: 19, name: 'Murtabak', price: 5, type: 'NonVege' },
+          { id: 20, name: 'Laksa', price: 5.50 , type: 'Non Vege'},
+          { id: 21, name: 'Nasi Kandar', price: 5, type: 'NonVege' },
+          { id: 22, name: 'Char Kuey Teow', price: 5.50, type: 'NonVege' },
+          { id: 23, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+          { id: 24, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+          { id: 25, name: 'Roti Tisu', price: 4,  type: 'Vege' }
         ],
         drinks: [
           { id: 26, name: 'Milo', price: 4 },
@@ -118,15 +118,15 @@ const App = () => {
       },
       3: {
         food: [
-          { id: 35, name: 'Nasi Lemak', price: 5 },
-          { id: 36, name: 'Nasi Goreng Ayam', price: 5 },
-          { id: 37, name: 'Nasi Dagang', price: 5.50 },
-          { id: 38, name: 'Ikan Bakar', price: 6 },
-          { id: 39, name: 'Nasi Kandar', price: 5.50 },
-          { id: 40, name: 'Char Kuey Teow', price: 4.50 },
-          { id: 41, name: 'Hokkien Mee', price: 5 },
-          { id: 42, name: 'Maggie Goreng', price: 4.50 },
-          { id: 43, name: 'Roti Tisu', price: 4 }
+          { id: 35, name: 'Nasi Lemak', price: 5, type: 'NonVege' },
+          { id: 36, name: 'Nasi Goreng Ayam', price: 5, type: 'NonVege' },
+          { id: 37, name: 'Nasi Dagang', price: 5.50, type: 'NonVege' },
+          { id: 38, name: 'Ikan Bakar', price: 6, type: 'NonVege' },
+          { id: 39, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+          { id: 40, name: 'Char Kuey Teow', price: 4.50, type: 'NonVege' },
+          { id: 41, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+          { id: 42, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+          { id: 43, name: 'Roti Tisu', price: 4, type: 'Vege' } 
         ],
         drinks: [
           { id: 44, name: 'Teh Tarik', price: 4 },
@@ -142,14 +142,14 @@ const App = () => {
       },
       4: {
         food: [
-          { id: 53, name: 'Mee Goreng', price: 3.50 },
-          { id: 54, name: 'Roti Canai', price: 2.50 },
-          { id: 55, name: 'Nasi Kerabu', price: 5.50 },
-          { id: 56, name: 'Nasi Kandar', price: 5.50 },
-          { id: 57, name: 'Char Kuey Teow', price: 5.50 },
-          { id: 58, name: 'Hokkien Mee', price: 5 },
-          { id: 59, name: 'Maggie Goreng', price: 4.50 },
-          { id: 60, name: 'Roti Tisu', price: 3.50 }
+          { id: 53, name: 'Mee Goreng', price: 3.50, type: 'NonVege' },
+          { id: 54, name: 'Roti Canai', price: 2.50, type: 'Vege' },
+          { id: 55, name: 'Nasi Kerabu', price: 5.50, type: 'NonVege' },
+          { id: 56, name: 'Nasi Kandar', price: 5.50, type: 'NonVege'},
+          { id: 57, name: 'Char Kuey Teow', price: 5.50, type: 'NonVege' },
+          { id: 58, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+          { id: 59, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+          { id: 60, name: 'Roti Tisu', price: 3.50, type: 'Vege' }
         ],
         drinks: [
           { id: 61, name: 'Milo', price: 4 },
@@ -163,13 +163,13 @@ const App = () => {
       },
       5: {
         food: [
-          { id: 68, name: 'Nasi Lemak', price: 5 },
-          { id: 69, name: 'Nasi Goreng Ayam', price: 5 },
-          { id: 70, name: 'Nasi Kandar', price: 5.50 },
-          { id: 71, name: 'Char Kuey Teow', price: 4.5 },
-          { id: 72, name: 'Hokkien Mee', price: 5 },
-          { id: 73, name: 'Maggie Goreng', price: 4.50 },
-          { id: 74, name: 'Roti Tisu', price: 4 }
+          { id: 68, name: 'Nasi Lemak', price: 5, type: 'NonVege' },
+          { id: 69, name: 'Nasi Goreng Ayam', price: 5, type: 'NonVege' },
+          { id: 70, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+          { id: 71, name: 'Char Kuey Teow', price: 4.5, type: 'NonVege' },
+          { id: 72, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+          { id: 73, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+          { id: 74, name: 'Roti Tisu', price: 4, type: 'Vege' }
         ],
         drinks: [
           { id: 75, name: 'Teh Tarik', price: 3.50 },
@@ -183,13 +183,13 @@ const App = () => {
       },
       6: {
         food: [
-          { id: 82, name: 'Mee Goreng', price: 5 },
-          { id: 83, name: 'Roti Canai', price: 5 },
-          { id: 84, name: 'Nasi Kandar', price: 5.50 },
-          { id: 85, name: 'Char Kuey Teow', price: 5.5 },
-          { id: 86, name: 'Hokkien Mee', price: 5 },
-          { id: 87, name: 'Maggie Goreng', price: 4.50 },
-          { id: 88, name: 'Roti Tisu', price: 4 }
+          { id: 82, name: 'Mee Goreng', price: 5, type: 'NonVege' },
+          { id: 83, name: 'Roti Canai', price: 5, type: 'Vege' },
+          { id: 84, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+          { id: 85, name: 'Char Kuey Teow', price: 5.5, type: 'NonVege' },
+          { id: 86, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+          { id: 87, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+          { id: 88, name: 'Roti Tisu', price: 4, type: 'Vege' }
         ],
         drinks: [
           { id: 89, name: 'Teh Tarik', price: 3 },
@@ -204,15 +204,15 @@ const App = () => {
     
     7: {
       food: [
-        { id: 96, name: 'Nasi Lemak', price: 5 },
-        { id: 97, name: 'Nasi Goreng Ayam', price: 5 },
-        { id: 98, name: 'Tomyam Seafood', price: 5 },
-        { id: 99, name: 'Satay', price: 3.5 },
-        { id: 100, name: 'Nasi Kandar', price: 5.50 },
-        { id: 101, name: 'Char Kuey Teow', price: 6 },
-        { id: 102, name: 'Hokkien Mee', price: 5 },
-        { id: 103, name: 'Maggie Goreng', price: 4.50 },
-        { id: 104, name: 'Roti Tisu', price: 3.50 }
+        { id: 96, name: 'Nasi Lemak', price: 5, type: 'NonVege' },
+        { id: 97, name: 'Nasi Goreng Ayam', price: 5, type: 'NonVege' },
+        { id: 98, name: 'Tomyam Seafood', price: 5, type: 'NonVege' },
+        { id: 99, name: 'Satay', price: 3.5, type: 'NonVege' },
+        { id: 100, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+        { id: 101, name: 'Char Kuey Teow', price: 6, type: 'NonVege' },
+        { id: 102, name: 'Hokkien Mee', price: 5 , type: 'NonVege'},
+        { id: 103, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+        { id: 104, name: 'Roti Tisu', price: 3.50, type: 'Vege' }
       ],
       drinks: [
         { id: 105, name: 'Teh Tarik', price: 2.50 },
@@ -226,15 +226,15 @@ const App = () => {
     },
     8: {
       food: [
-        { id: 112, name: 'Mee Goreng', price: 4 },
-        { id: 113, name: 'Roti Canai', price: 2.50 },
-        { id: 114, name: 'Murtabak', price: 6.50 },
-        { id: 115, name: 'Laksa', price: 5.50 },
-        { id: 116, name: 'Nasi Kandar', price: 5.50 },
-        { id: 117, name: 'Char Kuey Teow', price: 6 },
-        { id: 118, name: 'Hokkien Mee', price: 5 },
-        { id: 119, name: 'Maggie Goreng', price: 4.50 },
-        { id: 120, name: 'Roti Tisu', price: 4 }
+        { id: 112, name: 'Mee Goreng', price: 4, type: 'NonVege' },
+        { id: 113, name: 'Roti Canai', price: 2.50, type: 'Vege' },
+        { id: 114, name: 'Murtabak', price: 6.50, type: 'NonVege' },
+        { id: 115, name: 'Laksa', price: 5.50, type: 'NonVege' },
+        { id: 116, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+        { id: 117, name: 'Char Kuey Teow', price: 6, type: 'NonVege' },
+        { id: 118, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+        { id: 119, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+        { id: 120, name: 'Roti Tisu', price: 4, type: 'Vege' }
       ],
       drinks: [
         { id: 121, name: 'Milo', price: 4 },
@@ -250,15 +250,15 @@ const App = () => {
     },
     9: {
       food: [
-        { id: 130, name: 'Nasi Lemak', price: 5 },
-        { id: 131, name: 'Nasi Goreng Ayam', price: 5 },
-        { id: 132, name: 'Nasi Dagang', price: 7 },
-        { id: 133, name: 'Ikan Bakar', price: 9 },
-        { id: 134, name: 'Nasi Kandar', price: 5.50 },
-        { id: 135, name: 'Char Kuey Teow', price: 6 },
-        { id: 136, name: 'Hokkien Mee', price: 5 },
-        { id: 137, name: 'Maggie Goreng', price: 4.50 },
-        { id: 138, name: 'Roti Tisu', price: 4 }
+        { id: 130, name: 'Nasi Lemak', price: 5, type: 'NonVege' },
+        { id: 131, name: 'Nasi Goreng Ayam', price: 5, type: 'NonVege' },
+        { id: 132, name: 'Nasi Dagang', price: 7, type: 'NonVege' },
+        { id: 133, name: 'Ikan Bakar', price: 9 , type: 'NonVege'},
+        { id: 134, name: 'Nasi Kandar', price: 5.50,  type: 'NonVege'},
+        { id: 135, name: 'Char Kuey Teow', price: 6, type: 'NonVege' },
+        { id: 136, name: 'Hokkien Mee', price: 5  , type: 'NonVege'},
+        { id: 137, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+        { id: 138, name: 'Roti Tisu', price: 4, type: 'Vege' }
       ],
       drinks: [
         { id: 139, name: 'Teh Tarik', price: 3.5 },
@@ -274,14 +274,14 @@ const App = () => {
     },
     10: {
       food: [
-        { id: 148, name: 'Mee Goreng', price: 5 },
-        { id: 149, name: 'Roti Canai', price: 5 },
-        { id: 150, name: 'Nasi Kerabu', price: 8 },
-        { id: 151, name: 'Nasi Kandar', price: 5.50 },
-        { id: 152, name: 'Char Kuey Teow', price: 6 },
-        { id: 153, name: 'Hokkien Mee', price: 5 },
-        { id: 154, name: 'Maggie Goreng', price: 4.50 },
-        { id: 155, name: 'Roti Tisu', price: 4 }
+        { id: 148, name: 'Mee Goreng', price: 5, type: 'NonVege' },
+        { id: 149, name: 'Roti Canai', price: 5 , type: 'Vege'},
+        { id: 150, name: 'Nasi Kerabu', price: 8 , type: 'NonVege'},
+        { id: 151, name: 'Nasi Kandar', price: 5.50 , type: 'NonVege'},
+        { id: 152, name: 'Char Kuey Teow', price: 6 , type: 'NonVege'},
+        { id: 153, name: 'Hokkien Mee', price: 5 ,  type: 'NonVege'},
+        { id: 154, name: 'Maggie Goreng', price: 4.50 , type: 'NonVege'},
+        { id: 155, name: 'Roti Tisu', price: 4, type: 'Vege' }
       ],
       drinks: [
         { id: 156, name: 'Milo', price: 4 },
@@ -295,13 +295,13 @@ const App = () => {
     },
     11: {
       food: [
-        { id: 163, name: 'Nasi Lemak', price: 5 },
-        { id: 164, name: 'Nasi Goreng Ayam', price: 5 },
-        { id: 165, name: 'Nasi Kandar', price: 5.50 },
-        { id: 166, name: 'Char Kuey Teow', price: 6 },
-        { id: 167, name: 'Hokkien Mee', price: 5 },
-        { id: 168, name: 'Maggie Goreng', price: 4.50 },
-        { id: 169, name: 'Roti Tisu', price: 4 }
+        { id: 163, name: 'Nasi Lemak', price: 5, type: 'NonVege' },
+        { id: 164, name: 'Nasi Goreng Ayam', price: 5,  type: 'NonVege'},
+        { id: 165, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+        { id: 166, name: 'Char Kuey Teow', price: 6, type: 'NonVege' },
+        { id: 167, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+        { id: 168, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+        { id: 169, name: 'Roti Tisu', price: 4, type: 'Vege' }
       ],
       drinks: [
         { id: 170, name: 'Teh Tarik', price: 3 },
@@ -315,13 +315,13 @@ const App = () => {
     },
     12: {
       food: [
-        { id: 177, name: 'Mee Goreng', price: 5 },
-        { id: 178, name: 'Roti Canai', price: 5 },
-        { id: 179, name: 'Nasi Kandar', price: 5.50 },
-        { id: 180, name: 'Char Kuey Teow', price: 6 },
-        { id: 181, name: 'Hokkien Mee', price: 5 },
-        { id: 182, name: 'Maggie Goreng', price: 4.50 },
-        { id: 183, name: 'Roti Tisu', price: 4 }
+        { id: 177, name: 'Mee Goreng', price: 5, type: 'NonVege' },
+        { id: 178, name: 'Roti Canai', price: 5, type: 'Vege' },
+        { id: 179, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+        { id: 180, name: 'Char Kuey Teow', price: 6, type: 'NonVege' }, 
+        { id: 181, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+        { id: 182, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+        { id: 183, name: 'Roti Tisu', price: 4, type: 'Vege' }
       ],
       drinks: [
         { id: 184, name: 'Teh Tarik', price: 3 },
@@ -335,13 +335,13 @@ const App = () => {
         },
         13: {
           food: [
-            { id: 191, name: 'Nasi Lemak', price: 5 },
-            { id: 192, name: 'Nasi Goreng Ayam', price: 5 },
-            { id: 193, name: 'Nasi Kandar', price: 5.50 },
-            { id: 194, name: 'Char Kuey Teow', price: 6 },
-            { id: 195, name: 'Hokkien Mee', price: 5 },
-            { id: 196, name: 'Maggie Goreng', price: 4.50 },
-            { id: 197, name: 'Roti Tisu', price: 4 }
+            { id: 191, name: 'Nasi Lemak', price: 5,type: 'NonVege' },
+            { id: 192, name: 'Nasi Goreng Ayam', price: 5, type: 'NonVege' },
+            { id: 193, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+            { id: 194, name: 'Char Kuey Teow', price: 6, type: 'NonVege' },
+            { id: 195, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+            { id: 196, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+            { id: 197, name: 'Roti Tisu', price: 4, type: 'Vege' }
           ],
           drinks: [
             { id: 198, name: 'Teh Tarik', price: 4 },
@@ -355,14 +355,14 @@ const App = () => {
         },
         14: {
           food: [
-            { id: 205, name: 'Chicken Chop', price: 10 },
-            { id: 206, name: 'Spaghetti', price: 10 },
-            { id: 207, name: 'Fish N Chips', price: 10 },
-            { id: 208, name: 'Burger', price: 7 },
-            { id: 209, name: 'Beef Steak', price: 10 },
-            { id: 210, name: 'Mushroom Soup', price: 4.5 },
-            { id: 211, name: 'Pizza', price: 5.50 },
-            { id: 212, name: 'Salad', price: 3 }
+            { id: 205, name: 'Chicken Chop', price: 10, type: 'NonVege' },
+            { id: 206, name: 'Spaghetti', price: 10,type: 'NonVege' },
+            { id: 207, name: 'Fish N Chips', price: 10, type: 'NonVege' },
+            { id: 208, name: 'Burger', price: 7, type: 'NonVege' },
+            { id: 209, name: 'Beef Steak', price: 10, type: 'NonVege' },
+            { id: 210, name: 'Mushroom Soup', price: 4.5, type: 'Vege' },
+            { id: 211, name: 'Pizza', price: 5.50, type: 'NonVege' },
+            { id: 212, name: 'Salad', price: 3, type: 'Vege' }
           ],
           drinks: [
             { id: 213, name: 'Americano', price: 5 },
@@ -376,13 +376,13 @@ const App = () => {
         },
         15: {
           food: [
-            { id: 220, name: 'Nasi Lemak', price: 5 },
-            { id: 221, name: 'Nasi Goreng Ayam', price: 5 },
-            { id: 222, name: 'Nasi Kandar', price: 5.50 },
-            { id: 223, name: 'Char Kuey Teow', price: 6 },
-            { id: 224, name: 'Hokkien Mee', price: 5 },
-            { id: 225, name: 'Maggie Goreng', price: 4.50 },
-            { id: 226, name: 'Roti Tisu', price: 4 }
+            { id: 220, name: 'Nasi Lemak', price: 5, type: 'NonVege' },
+            { id: 221, name: 'Nasi Goreng Ayam', price: 5, type: 'NonVege' },
+            { id: 222, name: 'Nasi Kandar', price: 5.50, type: 'NonVege' },
+            { id: 223, name: 'Char Kuey Teow', price: 6, type: 'NonVege' },
+            { id: 224, name: 'Hokkien Mee', price: 5, type: 'NonVege' },
+            { id: 225, name: 'Maggie Goreng', price: 4.50, type: 'NonVege' },
+            { id: 226, name: 'Roti Tisu', price: 4, type: 'Vege' }
           ],
           drinks: [
             { id: 227, name: 'Teh Tarik', price: 4 },

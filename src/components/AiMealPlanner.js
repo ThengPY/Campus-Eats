@@ -5,6 +5,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
 
   const [cafeteria, setCafeteria] = useState("");
   const [priceRange, setPriceRange] = useState("");
+  const [preferences, setPreferences] = useState("");
   const [mealPlan, setMealPlan] = useState(null);
 
   const parsePriceRange = (priceRange) => {
@@ -100,6 +101,18 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
             <option value="3-5">RM 3 - RM 5</option>
             <option value="5-8">RM 5 - RM 8</option>
             <option value="8-10">RM 8 - RM 10</option>
+          </select>
+        </label>
+
+        <label>
+          Dietary Preferences:
+          <select style={{marginLeft: "7px", cursor: "pointer"}}
+            value={preferences}
+            onChange={(e) => setPreferences(e.target.value)}
+          >
+            <option value="">Any</option>
+            <option value="Vege">Vegetarian</option>
+            <option value="Nonvege">Non-Vegetarian</option>
           </select>
         </label>
 
