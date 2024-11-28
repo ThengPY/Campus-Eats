@@ -11,7 +11,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isOwnTableware, setIsOwnTableware] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
 
@@ -21,10 +20,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const handleEcoFriendlyChange = () => {
     setIsEcoFriendly(!isEcoFriendly);
   };
-  const handleOwnTablewareChange = () => {
-    setIsOwnTableware(!isEcoFriendly);
-  };
-  
+
   const handlePayment = (e) => {
     e.preventDefault();
     console.log('Payment Method:', paymentMethod);
@@ -73,7 +69,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .catch(error => {
       console.error('Payment error:', error);
       toast.error('An error occured while processing your payment.');
-      setIsPayment(false);
+      setIsPaymentOpen(false);
     });
   };
 
@@ -88,127 +84,125 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
         <div className = "close-btn">
           <span class="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
-        <h2>Delivery Checkout</h2>
+        <h2>Checkout (Delivery)</h2>
         
-        <div className = "subcontent">
-          {/* Order Summary */}
-          <div className="order-summary">
-            <h3>Order Summary</h3>
-            <ul>
-              {cartItems.map(item => (
-                <li key={item.id}>
-                  {`${item.name} (${item.cafeteria}) [ x${item.quantity} ]  - RM${(item.price * item.quantity).toFixed(2)} `}
-                </li>
-              ))}
-            </ul>
-            {/* Eco-friendly package option */}
-            <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                    <label >
-                      <input 
-                        type="checkbox"
-                        checked={isEcoFriendly}
-                        onChange={handleEcoFriendlyChange}
-                        className="reserve-checkbox"
-                      />
-                      <span> Choose eco-friendly packaging (+RM 1.00)</span>
-                    </label>
-                  </div>
-            <div className = "total-price"><b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b></div>
-          </div>    
+        {/* Order Summary */}
+        <div className="order-summary">
+          <h3>Order Summary</h3>
+          <ul>
+            {cartItems.map(item => (
+              <li key={item.id}>
+                {`${item.name} (${item.cafeteria}) [ x${item.quantity} ]  - RM${(item.price * item.quantity).toFixed(2)} `}
+              </li>
+            ))}
+          </ul>
+          {/* Eco-friendly package option */}
+          <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                  <label >
+                    <input 
+                      type="checkbox"
+                      checked={isEcoFriendly}
+                      onChange={handleEcoFriendlyChange}
+                      className="reserve-checkbox"
+                    />
+                    <span >Choose eco-friendly packaging (+RM 1.00)</span>
+                  </label>
+                </div>
+          <div>-------------------------------------------------------</div>
+          <b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b>
+          <div>-------------------------------------------------------</div>
+        </div>    
 
-          <form onSubmit={handlePayment}>
-            {/* Delivery Information */}
-            <h3>Delivery Information</h3>
-            
-            <div style = {{marginBottom: "15px"}}>
-              <label>Name:</label>
+        <form onSubmit={handlePayment}>
+          {/* Delivery Information */}
+          <h3>Delivery Information</h3>
+          
+          <div>
+            <label>Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Phone Number:</label>
+            <input 
+              type="text"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Deliver To:</label>
+            <select style={{marginBottom: "15px"}}
+              value={kkLocation}
+              onChange={(e) => setKkLocation(e.target.value)}
+              required
+            >
+              <option value="">Select KK Location</option>
+              <option value="kk1">KK1</option>
+              <option value="kk2">KK2</option>
+              <option value="kk3">KK3</option>
+              <option value="kk4">KK4</option>
+              <option value="kk5">KK5</option>
+              <option value="kk6">KK6</option>
+              <option value="kk7">KK7</option>
+              <option value="kk8">KK8</option>
+              <option value="kk9">KK9</option>
+              <option value="kk10">KK10</option>
+              <option value="kk11">KK11</option>
+              <option value="kk12">KK12</option>
+              <option value="kk13">KK13</option>
+            </select>
+          </div>
+          {/* Payment Method Section */}
+          <div>-------------------------------------------------------</div>
+
+          <h3>Choose Payment Methods</h3>
+          <div>
+            <label>
               <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
+                type="radio"
+                value="TouchNGo"
+                checked={paymentMethod === 'TouchNGo'}
+                onChange={handlePaymentMethodChange}
               />
-            </div>
-
-            <div style = {{marginBottom: "15px"}}>
-              <label>Phone Number:</label>
-              <input 
-                type="text"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder = "XXX-XXXXXXX"
-                required
+              TouchNGo
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="creditCard"
+                checked={paymentMethod === 'creditCard'}
+                onChange={handlePaymentMethodChange}
               />
-            </div>
+              Credit Card
+            </label>
+          </div>
 
-            <div>
-              <label>Deliver To:</label>
-              <select style={{marginBottom: "15px"}}
-                value={kkLocation}
-                onChange={(e) => setKkLocation(e.target.value)}
-                required
-              >
-                <option value="">Select KK Location</option>
-                <option value="kk1">KK1</option>
-                <option value="kk2">KK2</option>
-                <option value="kk3">KK3</option>
-                <option value="kk4">KK4</option>
-                <option value="kk5">KK5</option>
-                <option value="kk6">KK6</option>
-                <option value="kk7">KK7</option>
-                <option value="kk8">KK8</option>
-                <option value="kk9">KK9</option>
-                <option value="kk10">KK10</option>
-                <option value="kk11">KK11</option>
-                <option value="kk12">KK12</option>
-                <option value="kk13">KK13</option>
-              </select>
-            </div>
-            {/* Payment Method Section */}
-
-            <h3>Choose Payment Methods</h3>
-            <div>
-              <label style = {{marginBottom: "10px"}}>
+          {paymentMethod === 'creditCard' && (
+            <div className="credit-card-details">
+              <div>
+                <label>Card Number:</label>
                 <input
-                  type="radio"
-                  value="TouchNGo"
-                  checked={paymentMethod === 'TouchNGo'}
-                  onChange={handlePaymentMethodChange}
+                  type="text"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                  required
                 />
-                TouchNGo
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="creditCard"
-                  checked={paymentMethod === 'creditCard'}
-                  onChange={handlePaymentMethodChange}
-                  style = {{marginBottom: "15px"}}
-
-                />
-                Credit Card
-              </label>
+              </div>        
             </div>
+          )}
 
-            {paymentMethod === 'creditCard' && (
-              <div className="credit-card-details">
-                <div>
-                  <input
-                    type="text"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                    placeholder = "Enter Card Number"
-                    required
-                  />
-                </div>        
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <button type="submit" className="pay-btn">CHECKOUT</button>
-          </form>
-        </div>  
-        {isPayment && (
+          {/* Submit Button */}
+          <button type="submit" className="pay-btn">Checkout</button>
+        </form>
+        {isPaymentOpen && (
           <Payment
             paymentMethod={paymentMethod}
             onClose={() => setIsPaymentOpen(false)}
