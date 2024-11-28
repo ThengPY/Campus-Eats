@@ -85,12 +85,12 @@ const CommunityBoard = ({isOpen, onClose}) => {
     };
   
     return (
-        <div className="modal-overlay" onClick={onClose}>
-          <div className="modal-content">
-          <div className = "close-btn">
-                <span class="material-symbols-rounded" onClick={onClose}>close</span>
-            </div>
-            <h2>Community Board</h2>
+      <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className = "close-btn">
+          <span class="material-symbols-rounded" onClick={onClose}>close</span>
+        </div>
+           <h2>Community Board</h2>
             {/* Comment Form */}
             <form onSubmit={handleAddComment} className="comment-form">
             <input
