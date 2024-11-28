@@ -120,10 +120,16 @@ const createOrdersTable = () => {
     const sql = `
         CREATE TABLE IF NOT EXISTS orders (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
+              option TEXT,
+              reservation_time TIME,
               username TEXT NOT NULL,
               order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               order_item TEXT NOT NULL,
+              eco_package TEXT,
+              bring_container TEXT,
               price REAL NOT NULL,
+              address TEXT,
+              phone_num INTEGER,
               payment_method TEXT NOT NULL,
               card_number TEXT,
               pickup_date DATE,
@@ -139,13 +145,37 @@ const createOrdersTable = () => {
 };
 
 // Function to insert an order
-const insertOrder = (username, order_item, price, payment_method, card_number = null, pickup_date = null, pickup_time = null) => {
+const insertOrder = (username, order_item, price, payment_method, option = null, reservation_time = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null, pickup_date = null, pickup_time = null) => {
     return new Promise((resolve, reject) => {
         // Construct the SQL query dynamically
         let sql = 'INSERT INTO orders(username, order_item, price, payment_method';
-        const values = [username, order_item, price,payment_method];
+        const values = [username, order_item, price, payment_method];
 
         // Check for optional fields and add them to the SQL query and values array
+        if (option !== null) {
+            sql += ', option';
+            values.push(option);
+        }
+        if (reservation_time !== null) {
+            sql += ', reservation_time';
+            values.push(reservation_time);
+        }
+        if (eco_package !== null) {
+            sql += ', eco_package';
+            values.push(eco_package);
+        }
+        if (bring_container !== null) {
+            sql += ', bring_container';
+            values.push(bring_container);
+        }
+        if (address !== null) {
+            sql += ', address';
+            values.push(address);
+        }
+        if (phone_num !== null) {
+            sql += ', phone_num';
+            values.push(phone_num);
+        }
         if (card_number !== null) {
             sql += ', card_number';
             values.push(card_number);
@@ -166,8 +196,8 @@ const insertOrder = (username, order_item, price, payment_method, card_number = 
                 console.error('Error inserting order: ' + err.message);
                 reject(err);
             } else {
-                console.log(`Order added with ID: ${username}`);
-                resolve(username); // Resolve with the last inserted ID
+                console.log(`Order added with ID: ${this.lastID}`); // Use this.lastID to get the last inserted ID
+                resolve(this.lastID); // Resolve with the last inserted ID
             }
         });
     });
