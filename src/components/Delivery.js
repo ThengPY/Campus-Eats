@@ -11,21 +11,27 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isOwnTableware, setIsOwnTableware] = useState(false);
-  const [isPayment, setIsPayment] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
   const handleEcoFriendlyChange = () => {
+
     setIsEcoFriendly(!isEcoFriendly);
   };
-  const handleOwnTablewareChange = () => {
-    setIsOwnTableware(!isEcoFriendly);
-  };
-  
-  const handleSubmit = (e) => {
+
+  const handlePayment = (e) => {
+    e.preventDefault();
+    console.log('Payment Method:', paymentMethod);
+    console.log('Name:', name);
+    console.log('Phone Number:', phoneNumber);
+    console.log('KK Location:', kkLocation);
+    setIsPaymentOpen(true);
+  }
+
+  const handlePaymentSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
     const username = localStorage.getItem('username');
@@ -38,13 +44,22 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     console.log('Name:', name);
     console.log('Phone Number:', phoneNumber);
     console.log('KK Location:', kkLocation);
+    // Create an array of order names from cartItems
+    const order_itemArray = cartItems.map(item => item.name);
+
+    // Join the order names into a single string
+    const order_item = order_itemArray.join(', ');
 
     const paymentData = {
+      order_item: order_item,
+      eco_package: isEcoFriendly,
       price: updatedTotalPrice,
-      username: username,
+      delivery_name: name,
+      phone_num: phoneNumber,
+      card_number: cardNumber
     }
 
-    fetch('http://localhost:5000/payment', {
+    fetch(`http://localhost:5000/payment/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +78,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .catch(error => {
       console.error('Payment error:', error);
       toast.error('An error occured while processing your payment.');
-      setIsPayment(false);
+      setIsPaymentOpen(false);
     });
   };
 
@@ -107,7 +122,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
           <div>-------------------------------------------------------</div>
         </div>    
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handlePayment}>
           {/* Delivery Information */}
           <h3>Delivery Information</h3>
           
@@ -196,11 +211,13 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
           {/* Submit Button */}
           <button type="submit" className="pay-btn">Checkout</button>
         </form>
-        {isPayment && (
+        {isPaymentOpen && (
           <Payment
             paymentMethod={paymentMethod}
-            onClose={() => setIsPayment(false)}
-            onSubmit={handleSubmit}
+            onClose={() => setIsPaymentOpen(false)}
+            onSubmit={handlePaymentSubmit}
+            cardNumber={setCardNumber}
+            setCardNumber={setCardNumber}
           />
         )}
       </div>

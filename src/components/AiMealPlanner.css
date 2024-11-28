@@ -1,0 +1,22 @@
+.meals-generated {
+    display: flex;
+    justify-content: space-between; /* Push content and icon to opposite sides */
+    align-items: center; /* Vertically center the elements */
+    margin: 10px 0; /* Add some spacing between rows */
+  }
+  
+  .add-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #000; /* Optional: Customize color */
+  }
+  
+  .add-icon:hover {
+    color: #007bff; /* Optional: Add hover effect */
+  }
+
+.generate-btn:hover {
+    background-color: #8f8f8f;
+    transition: 0.3s ease-in-out;
+}
+  

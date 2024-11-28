@@ -11,7 +11,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isPayment, setIsPayment] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   const handleEcoFriendlyChange = () => {
     if (isOwnContainer) {
@@ -46,7 +46,15 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   return updatedTotalPrice;
 };
 
-  const handleSubmit = (e) => {
+  const handlePayment = (e) => {
+    e.preventDefault();
+    console.log('Payment Method:', paymentMethod);
+    console.log('Pick-Up Date:', pickupDate);
+    console.log('Pick-Up Time:', pickupTime);
+    setIsPaymentOpen(true);
+  }
+
+  const handlePaymentSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
     const username = localStorage.getItem('username');
@@ -60,12 +68,23 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     console.log('Pick-Up Date:', pickupDate);
     console.log('Pick-Up Time:', pickupTime);
 
+    // Create an array of order names from cartItems
+    const order_itemArray = cartItems.map(item => item.name);
+
+    // Join the order names into a single string
+    const order_item = order_itemArray.join(', ');
+
     const paymentData = {
+      order_item: order_item,
+      eco_package: isEcoFriendly,
+      bring_container: isOwnContainer,
       price: updatedTotalPrice,
-      username: username
+      pickup_date: pickupDate,
+      pickup_time: pickupTime,
+      card_number: cardNumber
     }
 
-    fetch('http://localhost:5000/payment', {
+    fetch(`http://localhost:5000/payment/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +103,10 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .catch(error => {
       console.error('Payment error:', error);
       toast.error('An error occured while processing your payment.');
-      setIsPayment(false);
+      setIsPaymentOpen(false);
+    })
+    .finally(() => {
+      setIsPaymentOpen(false);
     });
   };
 
@@ -105,7 +127,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
           <span class="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
         <h2>Checkout (Pick-Up)</h2>
-
+        
         {/* Order Summary */}
         <div className="order-summary">
           <h3>Order Summary</h3>
@@ -149,7 +171,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
 
         {/* Form Section */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handlePayment}>
           {/* Pick-Up Time Section */}
           <h3 className="pick-up-time">Select Pick-Up Date and Time</h3>
           <div className="pickup-time-selector">
@@ -226,11 +248,13 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             Checkout
           </button>
         </form>
-        {isPayment && (
+        {isPaymentOpen && (
           <Payment
             paymentMethod={paymentMethod}
-            onClose={() => setIsPayment(false)}
-            onSubmit={handleSubmit}
+            onClose={() => setIsPaymentOpen(false)}
+            onSubmit={handlePaymentSubmit}
+            cardNumber={cardNumber}
+            setCardNumber={setCardNumber}
           />
         )}
       </div>
