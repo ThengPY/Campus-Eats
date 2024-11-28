@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
+import Payment from './Payment';
 
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -9,6 +11,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+  const [isPayment, setIsPayment] = useState(false);
 
   const handleEcoFriendlyChange = () => {
     if (isOwnContainer) {
@@ -46,11 +49,43 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
+    const username = localStorage.getItem('username');
+    const updatedTotalPrice = calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer);
+
+    if (!username) {
+      toast.error('Invalid user. Please log in again.');
+    }
+
     console.log('Payment Method:', paymentMethod);
-    console.log('Card Number:', cardNumber);
     console.log('Pick-Up Date:', pickupDate);
     console.log('Pick-Up Time:', pickupTime);
-    onClose(); // Close the modal after payment
+
+    const paymentData = {
+      price: updatedTotalPrice,
+      username: username
+    }
+
+    fetch('http://localhost:5000/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(paymentData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Payment response:', data);
+      if (data.success) {
+        toast.success(`Payment successful. ${data.message}`);
+      } else {
+        toast.error('Payment failed.')
+      }
+    })
+    .catch(error => {
+      console.error('Payment error:', error);
+      toast.error('An error occured while processing your payment.');
+      setIsPayment(false);
+    });
   };
 
   const handleDateChange = (e) => {
@@ -186,26 +221,18 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             </label>
           </div>
 
-          {/* Credit Card Details */}
-          {paymentMethod === 'creditCard' && (
-            <div className="credit-card-details">
-              <div>
-                <label>Card Number:</label>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-          )}
-
           {/* Submit Button */}
           <button type="submit" className="pay-btn">
             Checkout
           </button>
         </form>
+        {isPayment && (
+          <Payment
+            paymentMethod={paymentMethod}
+            onClose={() => setIsPayment(false)}
+            onSubmit={handleSubmit}
+          />
+        )}
       </div>
     </div>
   );
