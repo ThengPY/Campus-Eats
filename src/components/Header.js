@@ -5,7 +5,6 @@ import logo from '../img/logo.png';
 import ad1 from '../img/ad1.jpg'; // Ensure this is the correct path
 
 function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlannerClick, onCommunityBoardClick }) {
-function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlannerClick, onCommunityBoardClick }) {
     return (
         <>
             <header> 
