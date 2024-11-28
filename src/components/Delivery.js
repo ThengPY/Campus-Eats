@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
-import '../styles.css';
-import Payment from './Payment';
 
 const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -11,7 +8,8 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isPayment, setIsPayment] = useState(false);
+  const [isOwnTableware, setIsOwnTableware] = useState(false);
+
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -19,66 +17,30 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const handleEcoFriendlyChange = () => {
     setIsEcoFriendly(!isEcoFriendly);
   };
- 
-  const handlePaymentSubmit = (e) => {
+  const handleOwnTablewareChange = () => {
+    setIsOwnTableware(!isEcoFriendly);
+  };
+  
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
-    const username = localStorage.getItem('username');
-    console.log('Username from localStorage', username);
-
-    if (!username) {
-      toast.error('Invalid user. Please log in again.');
-      return;
-    }
-
     console.log('Payment Method:', paymentMethod);
+    console.log('Card Number:', cardNumber);
     console.log('Name:', name);
     console.log('Phone Number:', phoneNumber);
     console.log('KK Location:', kkLocation);
-    
-    const paymentData = {
-      amount: updatedTotalPrice,
-      currency: 'RM',
-      username: username,
-    };
-    console.log('Payment Data:', paymentData);
-    
-    fetch('http://localhost:5000/user/payment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(paymentData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Payment response:', data);
-      if (data.success) {
-        toast.success(`Payment successful. ${data.message}`);
-      } else {
-        toast.error('Payment failed.')
-      }
-    })
-    .catch(error => {
-      console.error('Payment error:', error);
-      toast.error('An error occured while processing your payment.');
-      setIsPayment(false);
-    });
+    onClose(); // Close the modal after payment
   };
 
-
-  // Calculate the total price including both eco-friendly package and bring own container
-  const updatedTotalPrice = isEcoFriendly ? totalPrice + 1: totalPrice;
-
+  // Calculate the total price including the eco-friendly package
+  const updatedTotalPrice = isEcoFriendly ? totalPrice + 1 : totalPrice;
 
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-      <div className = "close-btn">
-            <span class="material-symbols-rounded" onClick={onClose}>close</span>
-          </div>
+        <button className="close-btn" onClick={onClose}>X</button>
         <h2>Checkout (Delivery)</h2>
         
         {/* Order Summary */}
@@ -108,7 +70,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
           <div>-------------------------------------------------------</div>
         </div>    
 
-        <form onSubmit={handlePaymentSubmit}>
+        <form onSubmit={handleSubmit}>
           {/* Delivery Information */}
           <h3>Delivery Information</h3>
           
@@ -180,16 +142,23 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
             </label>
           </div>
 
+          {paymentMethod === 'creditCard' && (
+            <div className="credit-card-details">
+              <div>
+                <label>Card Number:</label>
+                <input
+                  type="text"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                  required
+                />
+              </div>        
+            </div>
+          )}
+
           {/* Submit Button */}
           <button type="submit" className="pay-btn">Checkout</button>
         </form>
-        {isPayment && (
-          <Payment
-            paymentMethod={paymentMethod}
-            onClose={() => setIsPayment(false)}
-            onSubmit={handlePaymentSubmit}
-          />
-        )}
       </div>
     </div>
   );

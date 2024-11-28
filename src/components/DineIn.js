@@ -65,9 +65,7 @@ const handleCheckboxChange = (item) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className = "close-btn">
-            <span class="material-symbols-rounded" onClick={onClose}>close</span>
-        </div>
+     
         <h2>Dine-In Reservations</h2>
 
         {/* Order Summary */}
@@ -102,6 +100,7 @@ const handleCheckboxChange = (item) => {
           <div style={{marginTop: "10px", marginBottom: "0px"}}>--------------------------------------------------------</div>
 
           <h3 >Reserve A Seat:</h3>
+          <p>  (Bring your own tableware for 10% discount!)</p>
           <form>
             <div>
               <label>

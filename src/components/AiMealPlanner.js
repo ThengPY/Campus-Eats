@@ -4,11 +4,9 @@ const AiMealPlanner = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className = "close-btn">
-          <span class="material-symbols-rounded" onClick={onClose}>close</span>
-        </div>
+    <div className="modal">
+      <div className="modal-content">
+        <span className="close" onClick={onClose}>&times;</span>
         <h2>AI Meal Planner</h2>
         <h3>Don't know what to eat? </h3>
         <p>Let our AI Meal Planner decide for you... </p>

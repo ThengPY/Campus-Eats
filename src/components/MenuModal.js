@@ -82,7 +82,6 @@ const MenuModal = ({ isOpen, onClose, foodItems, onAddToCart ,cafeteria}) => {
             </ul>
           </div>
         )}
-        <div>-------------------------------------------------------</div>
 
         {/* Drinks Section */}
         {drinks.length > 0 && (

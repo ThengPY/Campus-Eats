@@ -112,6 +112,26 @@ app.post('/order/create/:username', (req, res) => {
         });
 });
 
+// Route to get user's order history
+app.get('/orders/:username', (req, res) => {
+    const username = req.params.username;
+
+    // Query the database to get user's orders
+    dbHandler.getUsersOrders(username, (err, orders) => {
+        if (err) {
+            console.error('Error fetching orders:', err);
+            return res.status(500).json({ success: false, message: 'An error occurred while processing your request.' });
+        }
+
+        if (!orders) {
+            return res.status(404).json({ success: false, message: 'No orders found for this user.' });
+        }
+
+        // Respond back to the client with the orders
+        res.json({ success: true, orders });
+    });
+});
+
 // Route to create a comment
 app.post('/comment/create/:username', (req, res) => {
     const username = req.params.username;

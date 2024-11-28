@@ -1,90 +1,25 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
-import Payment from './Payment';
 
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
-  const [isOwnContainer, setIsOwnContainer] = useState(false);
-  const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isPayment, setIsPayment] = useState(false);
-
-  const handleEcoFriendlyChange = () => {
-    setIsEcoFriendly(!isEcoFriendly);
-  };
-  const handleOwnContainerChange = () => {
-    setIsOwnContainer(!isOwnContainer);
-  };
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
-  
-  // Calculate the total price including both eco-friendly package and bring own container
-  // Function to calculate the total price based on eco-friendly and own container options
-  const calculateTotalPrice = (totalPrice, isEcoFriendly, isOwnContainer) => {
-    let updatedTotalPrice = totalPrice;
 
-    if (isEcoFriendly && isOwnContainer) {
-      updatedTotalPrice = (updatedTotalPrice + 1) * 0.9; // Add RM 1 and apply 10% discount
-    } else if (isEcoFriendly) {
-      updatedTotalPrice = updatedTotalPrice + 1; // Add RM 1 for eco-friendly
-    } else if (isOwnContainer) {
-      updatedTotalPrice = updatedTotalPrice * 0.9; // Apply 10% discount for own container
-    }
-
-  return updatedTotalPrice;
-};
-
-  const handlePaymentSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
-    const username = localStorage.getItem('username');
-    console.log('Username from localStorage', username);
-    const updatedTotalPrice = calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer);
-
-    if (!username) {
-      toast.error('Invalid user. Please log in again.');
-      return;
-    }
-
     console.log('Payment Method:', paymentMethod);
+    console.log('Card Number:', cardNumber);
     console.log('Pick-Up Date:', pickupDate);
     console.log('Pick-Up Time:', pickupTime);
-    console.log('Updated Total Price:', updatedTotalPrice);
-
-    const paymentData = {
-      amount: updatedTotalPrice,
-      currency: 'RM',
-      username: username,
-    };
-    console.log('Payment Data:', paymentData);
-    
-    fetch('http://localhost:5000/user/payment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(paymentData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Payment response:', data);
-      if (data.success) {
-        toast.success(`Payment successful. ${data.message}`);
-      } else {
-        toast.error('Payment failed.')
-      }
-    })
-    .catch(error => {
-      console.error('Payment error:', error);
-      toast.error('An error occured while processing your payment.');
-      setIsPayment(false);
-    });
+    onClose(); // Close the modal after payment
   };
 
   const handleDateChange = (e) => {
@@ -100,9 +35,9 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <div className = "close-btn">
-            <span class="material-symbols-rounded" onClick={onClose}>close</span>
-          </div>
+        <button className="close-btn" onClick={onClose}>
+          X
+        </button>
         <h2>Checkout (Pick-Up)</h2>
 
         {/* Order Summary */}
@@ -118,37 +53,13 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             ))}
           </ul>
         </div>
-        {/* Eco-friendly package option */}
-        <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                  <label >
-                    <input 
-                      type="checkbox"
-                      checked={isEcoFriendly}
-                      onChange={handleEcoFriendlyChange}
-                      className="reserve-checkbox"
-                    />
-                    <span >Choose eco-friendly package (+RM 1.00)</span>
-                  </label>
-          </div>
-           {/*Bring own tableware option */}
-         <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                  <label style={{paddingBottom: "5px"}}>
-                    <input 
-                      type="checkbox"
-                      checked={isOwnContainer}
-                      onChange={handleOwnContainerChange}
-                      className="reserve-checkbox"
-                    />
-                    <span  >Bring your own container (get 10% discount)</span>
-                  </label>
-                </div>
         <div>-------------------------------------------------------</div>
-        <b>Total Price: RM{calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer).toFixed(2)} </b>
+        <b>Total Price: RM{totalPrice.toFixed(2)} </b>
         <div>-------------------------------------------------------</div>
 
 
         {/* Form Section */}
-        <form onSubmit={handlePaymentSubmit}>
+        <form onSubmit={handleSubmit}>
           {/* Pick-Up Time Section */}
           <h3 className="pick-up-time">Select Pick-Up Date and Time</h3>
           <div className="pickup-time-selector">
@@ -220,19 +131,26 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             </label>
           </div>
 
+          {/* Credit Card Details */}
+          {paymentMethod === 'creditCard' && (
+            <div className="credit-card-details">
+              <div>
+                <label>Card Number:</label>
+                <input
+                  type="text"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <button type="submit" className="pay-btn">
             Checkout
           </button>
         </form>
-        {isPayment && (
-          <Payment
-            paymentMethod={paymentMethod}
-            onClose={() => setIsPayment(false)}
-            onSubmit={handlePaymentSubmit}
-          />
-        )}
       </div>
     </div>
   );
