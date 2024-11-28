@@ -48,8 +48,8 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
                           disabled={!isDineInAllowed()}
                         >Dine In</button>
                  {/* <button className='DineInBtn' onClick={onDineInClick}>Dine In</button> */}
-                <button className='DeliveryBtn' onClick={onDeliveryClick}>Delivery</button> 
-                <button className='PickupBtn' onClick={onPickupClick}>Pickup</button>
+                 <button className='PickupBtn' onClick={onPickupClick}>Pickup</button>
+                 <button className='DeliveryBtn' onClick={onDeliveryClick}>Delivery</button> 
               </div>
             </ul>
           )}

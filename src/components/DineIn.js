@@ -65,7 +65,9 @@ const handleCheckboxChange = (item) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-     
+      <div className = "close-btn">
+          <span class="material-symbols-rounded" onClick={onClose}>close</span>
+        </div>
         <h2>Dine-In Reservations</h2>
 
         {/* Order Summary */}
