@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import './AiMealPlanner.css';
 
-const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
+const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) => {
   if (!isOpen) return null;
 
   const [cafeteria, setCafeteria] = useState("");
   const [priceRange, setPriceRange] = useState("");
-  const [preference, setPreference] = useState("");
+  const [preferences, setPreferences] = useState("");
   const [mealPlan, setMealPlan] = useState(null);
 
   const parsePriceRange = (priceRange) => {
@@ -15,53 +18,90 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
   };
 
   const generateMealPlan = () => {
-    console.log("Button clicked, generating meal plan...");
     const plan = {};
-    const cafeteriaId = cafeteria === "" ? null : parseInt(cafeteria, 10); // Ensure cafeteriaId is an integer or null
-
-    console.log("Selected cafeteria ID:", cafeteriaId);
-
+    const cafeteriaId = cafeteria === "" ? null : parseInt(cafeteria, 10);
+  
     const [minPrice, maxPrice] = parsePriceRange(priceRange);
-    console.log("Price range:", minPrice, maxPrice);
-
+  
+    const matchesPreference = (item) => {
+      if (preferences === "Vege") {
+        return item.type === "Vege";
+      } else if (preferences === "Nonvege" || preferences === "NonVege") {
+        return item.type === "NonVege";
+      }
+      return true; // Return all if no preference selected
+    };
+  
     if (cafeteriaId === null) {
-      // If no specific cafeteria is selected, generate a meal plan for all cafeterias
       cafeterias.forEach((cafeteria) => {
         const cafeteriaId = cafeteria.id;
-        console.log("Processing cafeteria ID:", cafeteriaId);
         const filteredFood = foodItems[cafeteriaId].food.filter(
-          (food) => food.price >= minPrice && food.price <= maxPrice && (preference === "" || food.type === preference)
+          (food) =>
+            food.price >= minPrice &&
+            food.price <= maxPrice &&
+            matchesPreference(food)
         );
         const filteredDrinks = foodItems[cafeteriaId].drinks.filter(
           (drink) => drink.price >= minPrice && drink.price <= maxPrice
         );
-
-        const selectedFood = filteredFood.length > 0 ? filteredFood[Math.floor(Math.random() * filteredFood.length)] : { name: "No available food" };
-        const selectedDrink = filteredDrinks.length > 0 ? filteredDrinks[Math.floor(Math.random() * filteredDrinks.length)] : { name: "No available drink" };
-        plan[cafeteriaId] = { name: cafeteria.name, food: selectedFood, drink: selectedDrink };
+  
+        const selectedFood =
+          filteredFood.length > 0
+            ? filteredFood[Math.floor(Math.random() * filteredFood.length)]
+            : { name: "No available food" };
+        const selectedDrink =
+          filteredDrinks.length > 0
+            ? filteredDrinks[Math.floor(Math.random() * filteredDrinks.length)]
+            : { name: "No available drink" };
+        plan[cafeteriaId] = {
+          name: cafeteria.name,
+          food: selectedFood,
+          drink: selectedDrink,
+        };
       });
     } else {
-      // If a specific cafeteria is selected, generate a meal plan for that cafeteria
-      if (!foodItems[cafeteriaId]) {
-        console.error(`Cafeteria ID ${cafeteriaId} does not exist in foodItems`);
-        return;
-      }
-      console.log("Processing selected cafeteria ID:", cafeteriaId);
+      if (!foodItems[cafeteriaId]) return;
+  
       const filteredFood = foodItems[cafeteriaId].food.filter(
-        (food) => food.price >= minPrice && food.price <= maxPrice && (preference === "" || food.type === preference)
+        (food) =>
+          food.price >= minPrice &&
+          food.price <= maxPrice &&
+          matchesPreference(food)
       );
       const filteredDrinks = foodItems[cafeteriaId].drinks.filter(
         (drink) => drink.price >= minPrice && drink.price <= maxPrice
       );
-
-      const selectedFood = filteredFood.length > 0 ? filteredFood[Math.floor(Math.random() * filteredFood.length)] : { name: "No available food" };
-      const selectedDrink = filteredDrinks.length > 0 ? filteredDrinks[Math.floor(Math.random() * filteredDrinks.length)] : { name: "No available drink" };
-      plan[cafeteriaId] = { name: cafeterias.find(c => c.id === cafeteriaId).name, food: selectedFood, drink: selectedDrink };
+  
+      const selectedFood =
+        filteredFood.length > 0
+          ? filteredFood[Math.floor(Math.random() * filteredFood.length)]
+          : { name: "No available food" };
+      const selectedDrink =
+        filteredDrinks.length > 0
+          ? filteredDrinks[Math.floor(Math.random() * filteredDrinks.length)]
+          : { name: "No available drink" };
+      plan[cafeteriaId] = {
+        name: cafeterias.find((c) => c.id === cafeteriaId).name,
+        food: selectedFood,
+        drink: selectedDrink,
+      };
     }
+  
+    setMealPlan(plan);
+  };
+  
 
-    console.log("Generated meal plan:", plan);
+  const handleAddToCart = (item, cafeteriaId) => {
+    const cafeteria = cafeterias.find((c) => c.id === cafeteriaId);
+    if (!cafeteria) return;
 
-    setMealPlan(plan); // This should trigger a re-render
+    const cartItem = { ...item, cafeteria: cafeteria.name, quantity: 1 };
+    onAddToCart(cartItem);
+
+    toast.success(`${item.name} (${cafeteria.name}) added successfully!`, {
+      position: "top-left",
+      autoClose: 1500,
+    });
   };
 
   return (
@@ -77,7 +117,8 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
         <p>Let our AI Meal Planner decide for you...</p>
         <label>
           Select Cafeteria:
-          <select style={{marginLeft: "7px", cursor: "pointer"}}
+          <select
+            style={{ marginLeft: "7px", cursor: "pointer" }}
             value={cafeteria}
             onChange={(e) => setCafeteria(e.target.value)}
           >
@@ -90,9 +131,10 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
           </select>
         </label>
 
-        <label>
-          Price Range:
-          <select style={{marginLeft: "7px", cursor: "pointer"}}
+        <label style={{marginTop: "10px"}}>
+          Food & Drinks Price Range:
+          <select
+            style={{ marginLeft: "7px", cursor: "pointer" }}
             value={priceRange}
             onChange={(e) => setPriceRange(e.target.value)}
           >
@@ -104,29 +146,54 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
           </select>
         </label>
 
-        <label>
-          Dietary Preference:
-          <select style={{marginLeft: "7px", cursor: "pointer"}}
-            value={preference}
-            onChange={(e) => setPreference(e.target.value)}
+        <label style={{marginTop: "10px"}}>
+          Dietary Preferences:
+          <select
+            style={{ marginLeft: "7px", cursor: "pointer" }}
+            value={preferences}
+            onChange={(e) => setPreferences(e.target.value)}
           >
             <option value="">Any</option>
             <option value="Vege">Vegetarian</option>
-            <option value="NonVege">Non-Vegetarian</option>
+            <option value="Nonvege">Non-Vegetarian</option>
           </select>
         </label>
 
-        <button style={{ marginBottom: "20px", marginTop: "20px" }} onClick={generateMealPlan}>Generate Meal Plan</button>
+        <button
+          style={{ marginBottom: "20px", marginTop: "20px" }}
+          onClick={generateMealPlan}
+          className="generate-btn"
+        >
+          Generate Meal Plan
+        </button>
 
         {mealPlan && (
           <div className="meal-plan">
             <h2 style={{ paddingTop: "15px", borderTop: "1px solid #e0e0e0" }}>Recommended Meals</h2>
             {Object.keys(mealPlan).map((cafeteriaId) => (
               <div key={cafeteriaId}>
-                <h4>{mealPlan[cafeteriaId].name}</h4>
-                <h5>Food: {mealPlan[cafeteriaId].food.name}</h5>
-                <h5>Drink: {mealPlan[cafeteriaId].drink.name}</h5>
-              </div>
+              <h4>{mealPlan[cafeteriaId].name}</h4>
+              <h5 className="meals-generated">
+                Food: {mealPlan[cafeteriaId].food.name}
+                <span 
+                  className="material-symbols-rounded"
+                  onClick={() => handleAddToCart(mealPlan[cafeteriaId].food, cafeteriaId)}
+                  style={{ fontSize: "30px", cursor: "pointer"}}
+                >
+                  add
+                </span>
+              </h5>
+              <h5 className="meals-generated" style={{display: "flex"}}>
+                Drink: {mealPlan[cafeteriaId].drink.name}
+                <span
+                  className="material-symbols-rounded"
+                  onClick={() => handleAddToCart(mealPlan[cafeteriaId].drink, cafeteriaId)}
+                  style={{ fontSize: "30px", cursor: "pointer" }}
+                >
+                  add
+                </span>
+              </h5>
+            </div>
             ))}
           </div>
         )}
