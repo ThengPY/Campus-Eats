@@ -102,7 +102,6 @@ const handleCheckboxChange = (item) => {
           <div style={{marginTop: "10px", marginBottom: "0px"}}>--------------------------------------------------------</div>
 
           <h3 >Reserve A Seat:</h3>
-          <p>  (Bring your own tableware for 10% discount!)</p>
           <form>
             <div>
               <label>
