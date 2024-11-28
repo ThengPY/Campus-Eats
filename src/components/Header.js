@@ -3,12 +3,18 @@ import '../styles.css';
 import ad1 from '../img/ad1.jpg';
 import HamburgerMenu from "./HamburgerMenu.js"; 
 
-function Header() {
+function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlannerClick, onCommunityBoardClick }) {
     return (
         <>
             <header> 
                 <div className="logo"></div>
-                <HamburgerMenu />
+                <HamburgerMenu 
+                    onCartClick={onCartClick}
+                    onOrderHistoryClick={onOrderHistoryClick}
+                    onProfileClick={onProfileClick}
+                    onMealPlannerClick={onMealPlannerClick}
+                    onCommunityBoardClick={onCommunityBoardClick}
+                />
             </header>
 
             <main>
@@ -19,7 +25,7 @@ function Header() {
                     <img src={ad1} alt="Ad 2" />
                     <img src={ad1} alt="Ad 3" />
                 </div>
-                <h3 style={{marginBottom: "0px", paddingTop: "15px"}}>Start ordering now!</h3>
+                <h3 className = "header-h3">Start ordering now!</h3>
             </main>
         </>
     );

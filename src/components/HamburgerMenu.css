@@ -3,46 +3,34 @@
     position: relative;
   }
 
-.menu-dropdown {
-display: none;
-position: absolute;
-top: 40px;
-right: 0;
-background-color: #FFCB59;
-border: 1px solid #ddd;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-width: 150px;
-z-index: 1000;
+.content {
+    padding: 10px 20px;
 }
 
-.menu-dropdown.open {
-display: block;
+.content h2 {
+    padding-left: 20px;
 }
-
 .menu-dropdown ul {
-list-style: none;
-margin: 0;
-padding: 10px 0;
+    list-style: none;
 }
 
 .menu-dropdown li {
-padding: 10px 20px;
-color: white;
+    display: flex;
+    padding: 10px 20px;
+    font-size: large;
+    color: white;
+    border-radius: 10px;
+    vertical-align: middle;
+    justify-content: left;
 }
 
-.menu-dropdown li {
-padding: 10px 20px;
-color: white;
+.menu-dropdown li:hover {
+    padding: 10px 20px;
+    background-color: #ffb618;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.menu-dropdown li a {
-text-decoration: none;
-color: #333;
-}
-
-.menu-dropdown li a:hover {
-color: #007bff;
-}
 
 .right-icons {
 display: flex;
@@ -50,16 +38,28 @@ gap: 15px;
 }
 
 /* Responsive Styles */
-@media screen and (max-width: 768px) {
-    .hamburger-icon {
+@media screen and (max-width: 600px) {
+    .material-symbols-rounded .hamburger-icon {
         display: block;
     }
-    
+
     .menu-dropdown {
-        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #FFCB59;
+        color: white;
+        z-index: 1000;
+        overflow-y: auto;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+        padding-top: 50px;
     }
     
     .menu-dropdown.open {
         display: block;
+        transform: translateY(0);
     }
 }

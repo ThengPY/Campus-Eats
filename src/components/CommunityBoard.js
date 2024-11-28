@@ -85,9 +85,11 @@ const CommunityBoard = ({isOpen, onClose}) => {
     };
   
     return (
-        <div className="modal">
+        <div className="modal-overlay" onClick={onClose}>
           <div className="modal-content">
-            <span className="close" onClick={onClose}>&times;</span>
+          <div className = "close-btn">
+                <span class="material-symbols-rounded" onClick={onClose}>close</span>
+            </div>
             <h2>Community Board</h2>
             {/* Comment Form */}
             <form onSubmit={handleAddComment} className="comment-form">

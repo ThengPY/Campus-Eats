@@ -12,6 +12,12 @@ h2 {
   margin-bottom: 0px;
 }
 
+.header-h3 {
+  margin-bottom: 0px;
+  padding-top: 15px;
+  border-top: 1px solid #959595;
+}
+
 .App {
   margin: 0 auto;
   align-items: center;
@@ -22,14 +28,9 @@ h2 {
 .logo {
   background-image: url("./img/logo.png");
   background-size: cover;
-  width: 25rem;
-  height: 4.1rem;
+  width: 200px;
+  height: 35px;
   background-repeat: no-repeat;
-}
-
-.right-icons {
-  display: flex;
-  gap: 15px;
 }
 
 header {
@@ -74,7 +75,6 @@ header {
 
 .cafeteria-list {
   padding-top: 10px;
-  cursor: pointer;
 }
 
 .cafeteria-list h3 {
@@ -114,7 +114,6 @@ header {
   background-color: #ffffff;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
   margin-top: 15px;
-  margin-right: 15px;
 }
 
 .cafeteria-item:hover {

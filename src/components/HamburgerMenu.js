@@ -6,7 +6,7 @@ const HamburgerMenu = ({ onCartClick, onOrderHistoryClick, onProfileClick, onMea
     const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {
         const handleResize = () => {
-          setIsMobile(window.innerWidth <= 768); // Mobile breakpoint (adjust as needed)
+          setIsMobile(window.innerWidth <= 600); // Mobile breakpoint (adjust as needed)
         };
         handleResize(); // Initial check
         window.addEventListener("resize", handleResize);
@@ -35,23 +35,24 @@ const HamburgerMenu = ({ onCartClick, onOrderHistoryClick, onProfileClick, onMea
         {/* Hamburger Icon */}
         {isMobile && (
             <>
-                <span className="material-symbols-rounded hamburger-icon" onClick = {toggleMenu} aria-label = "Toggle menu">menu</span>
+                <span className="material-symbols-rounded" onClick = {toggleMenu}>menu</span>
                 <div className={`menu-dropdown ${isOpen ? "open" : ""}`}>
-                    <ul>
-                        <li onClick={onOrderHistoryClick}>Order History</li>
-                        <li>AI Meal Planner</li>
-                        <li>Forum</li>
-                        <li>Cart</li>
-                        <li>Account</li>
-                    </ul>
+                    <div className = "content">
+                        <h2>Menu</h2>
+                        <ul>
+                            <li onClick={onOrderHistoryClick}><span className="material-symbols-rounded" style = {{color : "white", marginRight : "20px"}}>history</span>Order History</li>
+                            <li onClick={onMealPlannerClick}><span className="material-symbols-rounded" style = {{color : "white", marginRight : "20px"}}>smart_toy</span>AI Meal Planner</li>
+                            <li onClick={onCommunityBoardClick}><span className="material-symbols-rounded" style = {{color : "white", marginRight : "20px"}}>forum</span>Forum</li>
+                            <li onClick={onCartClick}><span className="material-symbols-rounded" style = {{color : "white", marginRight : "20px"}}>shopping_bag</span>Cart</li>
+                            <li onClick={onProfileClick}><span className="material-symbols-rounded" style = {{color : "white", marginRight : "20px"}}>person</span>Account</li>
+                        </ul>
+                    </div>
+                    <div className = "close-btn">
+                        <span className="material-symbols-rounded" style = {{color : "white", margin : "10px"}} onClick = {toggleMenu}>close</span>
+                    </div>
                 </div>
             </>
-        )}
-        
-
-
-        {/* Dropdown Menu */}
-        
+        )}        
     </div>
   );
 };
