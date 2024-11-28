@@ -121,7 +121,7 @@ const App = () => {
           { id: 35, name: 'Nasi Lemak', price: 5 },
           { id: 36, name: 'Nasi Goreng Ayam', price: 5 },
           { id: 37, name: 'Nasi Dagang', price: 5.50 },
-          { id: 38, name: 'Ikan Bakar', price: 9 },
+          { id: 38, name: 'Ikan Bakar', price: 6 },
           { id: 39, name: 'Nasi Kandar', price: 5.50 },
           { id: 40, name: 'Char Kuey Teow', price: 4.50 },
           { id: 41, name: 'Hokkien Mee', price: 5 },
