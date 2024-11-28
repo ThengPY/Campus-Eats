@@ -14,7 +14,7 @@ node_modules/
 .idea
 
 # database changes
-.db
+
 
 # Build directories
 build/
