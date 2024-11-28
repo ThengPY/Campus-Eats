@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
+import '../styles.css';
+import Payment from './Payment';
 
 const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -9,6 +12,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
   const [isOwnTableware, setIsOwnTableware] = useState(false);
+  const [isPayment, setIsPayment] = useState(false);
 
 
   const handlePaymentMethodChange = (e) => {
@@ -24,12 +28,43 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
+    const username = localStorage.getItem('username');
+
+    if (!username) {
+      toast.error('Invalid user. Please log in again.');
+    }
+
     console.log('Payment Method:', paymentMethod);
-    console.log('Card Number:', cardNumber);
     console.log('Name:', name);
     console.log('Phone Number:', phoneNumber);
     console.log('KK Location:', kkLocation);
-    onClose(); // Close the modal after payment
+
+    const paymentData = {
+      price: updatedTotalPrice,
+      username: username,
+    }
+
+    fetch('http://localhost:5000/user/order/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(paymentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Payment response:', data);
+      if (data.success) {
+        toast.success(`Payment successful. ${data.message}`);
+      } else {
+        toast.error('Payment failed.')
+      }
+    })
+    .catch(error => {
+      console.error('Payment error:', error);
+      toast.error('An error occured while processing your payment.');
+      setIsPayment(false);
+    });
   };
 
   // Calculate the total price including the eco-friendly package
@@ -161,6 +196,13 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
           {/* Submit Button */}
           <button type="submit" className="pay-btn">Checkout</button>
         </form>
+        {isPayment && (
+          <Payment
+            paymentMethod={paymentMethod}
+            onClose={() => setIsPayment(false)}
+            onSubmit={handleSubmit}
+          />
+        )}
       </div>
     </div>
   );
