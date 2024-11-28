@@ -99,7 +99,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
                       onChange={handleEcoFriendlyChange}
                       className="reserve-checkbox"
                     />
-                    <span >Choose eco-friendly package (+RM 1.00)</span>
+                    <span >Choose eco-friendly packaging (+RM 1.00)</span>
                   </label>
                 </div>
           <div>-------------------------------------------------------</div>

@@ -30,15 +30,10 @@
   width: 100%; /* Ensure the form takes up full width */
 }
 
-.sign-up-form label {
-  display: block;
-  margin-bottom: 5px;
-}
-
 .sign-up-form input {
   box-sizing: border-box;
   height: 100%;
-  width: 100%; /* Make the inputs take up full width */
+  width: 100%; 
   outline: none;
   font-size: 1.06rem;
   border-radius: 30px;
@@ -47,7 +42,7 @@
   transition: 0.2s;
 }
 
-input:focus {
+.sign-up-form input:focus {
   border: 2px solid #FFCB59;
 }
 
