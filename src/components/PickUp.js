@@ -100,9 +100,9 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={onClose}>
-          X
-        </button>
+          <div className = "close-btn">
+            <span class="material-symbols-rounded" onClick={onClose}>close</span>
+          </div>
         <h2>Checkout (Pick-Up)</h2>
 
         {/* Order Summary */}
