@@ -1,6 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const payment = require("./components/Payment");
 
 // Specify the path to the database file
 const dbPath = path.join(__dirname, 'database.db');
