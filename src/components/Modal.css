@@ -10,7 +10,7 @@
 }
 
   /* Modal Overlay */
-  .modal-overlay {
+    .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -34,7 +34,9 @@
   height: fit-content;
   max-height: 650px;
   animation: fadeIn 0.2s ease-in-out;
+  overflow-y: auto;
 }
+
 
 .modal-content h2 {
   margin-top: 0;

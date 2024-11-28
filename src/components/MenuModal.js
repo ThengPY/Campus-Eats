@@ -85,7 +85,7 @@ const MenuModal = ({ isOpen, onClose, foodItems, onAddToCart ,cafeteria}) => {
 
         {/* Drinks Section */}
         {drinks.length > 0 && (
-          <div className="menu-section">
+          <div className="menu-section" style={{borderTop: "1px solid #e0e0e0"}}>
             <h4>Drinks</h4>
             <ul>
               {drinks.map((item) => (
