@@ -2,62 +2,57 @@ import React, { useState } from 'react';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 
 const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
+  const [tableBooking, setTableBooking] = useState({ numPeople: '', tableNumber: '', location: '' }); // State for table booking
+  const [isOwnTableware, setIsOwnTableware] = useState(false);
 
-const [tableBooking, setTableBooking] = useState({ numPeople: '', tableNumber: '',location: ''}); // State for table booking
-const [isOwnTableware, setIsOwnTableware] = useState(false);
-const handleOwnTablewareChange = () => {
-  setIsOwnTableware(!isOwnTableware);
-};
-
-// Calculate the total price including the eco-friendly package
-const updatedTotalPrice = isOwnTableware ? totalPrice * 90 / 100 : totalPrice;
-const handleCheckboxChange = (item) => {
-    setSelectedReservations((prev) => {
-      if (prev.includes(item)) {
-        return prev.filter((i) => i !== item); // Remove if already selected
-      }
-      return [...prev, item]; // Add if not already selected
-    });
+  const handleOwnTablewareChange = () => {
+    setIsOwnTableware(!isOwnTableware);
   };
 
+  // Calculate the total price including the eco-friendly package
+  const updatedTotalPrice = isOwnTableware ? totalPrice * 90 / 100 : totalPrice;
+
   const handleReserveTable = () => {
-    if(localStorage.getItem('username')===''){
+    if (localStorage.getItem('username') === '') {
       alert('Please log in before reserving');
       return;
-    }
-    else if (!tableBooking.numPeople || !tableBooking.tableNumber) {
+    } else if (!tableBooking.numPeople || !tableBooking.tableNumber) {
       alert('Please fill in table booking details.');
       return;
     }
+
+    // Get the cafeteria name from cartItems (assuming all items have the same cafeteria)
+    const cafeteriaName = cartItems[0].cafeteria; // Get cafeteria name from the first item
+
     const reservationData = {
       pax: tableBooking.numPeople,
       table_number: tableBooking.tableNumber,
       reservation_time: new Date().toISOString(), // Example: current time
-      location: cafeteria.name, // You can replace this with the actual location if needed
+      location: cafeteriaName, // Use cafeteria name here
     };
 
-    fetch(`http://localhost:5000/reservation/create/${localStorage.getItem('username')}`, {
+    fetch(`http://localhost:5001/reservation/create/${localStorage.getItem('username')}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(reservationData),
     })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.text(); // Assuming your server responds with JSON
-        })
-        .then(data => {
-          toast.success(`Reservation successful: ${localStorage.getItem('username')}`);
-          setTableBooking({ numPeople: '', tableNumber: '',location: ''}); // Reset table booking details
-          onClose(); // Close the modal after successful reservation
-        })
-        .catch(error => {
-          console.error('There was a problem with the fetch operation:', error);
-          toast.success('Reservation failed. Please try again.');
-        });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text(); // Assuming your server responds with text (or you can change it to JSON)
+      })
+      .then(data => {
+        alert(`Reservation successful: ${localStorage.getItem('username')}`);
+        setTableBooking({ numPeople: '', tableNumber: '', location: '' }); // Reset table booking details
+        onClose(); // Close the modal after successful reservation
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        alert('Reservation failed. Please try again.');
+      });
   };
 
   if (!isOpen) return null; // If the modal isn't open, don't render anything
@@ -65,8 +60,8 @@ const handleCheckboxChange = (item) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-      <div className = "close-btn">
-          <span class="material-symbols-rounded" onClick={onClose}>close</span>
+        <div className="close-btn">
+          <span className="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
         <h2>Dine-In Reservations</h2>
 
@@ -76,32 +71,31 @@ const handleCheckboxChange = (item) => {
           <ul>
             {cartItems.map((item) => (
               <li key={item.id}>
-                {`${item.name} [ x${item.quantity} ]  - RM${(
-                  item.price * item.quantity
-                ).toFixed(2)} `}
+                {`${item.name} [ x${item.quantity} ]  - RM${(item.price * item.quantity).toFixed(2)} `}
               </li>
             ))}
           </ul>
         </div>
-         {/*Bring own tableware option */}
-         <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                  <label style={{paddingBottom: "5px"}}>
-                    <input 
-                      type="checkbox"
-                      checked={isOwnTableware}
-                      onChange={handleOwnTablewareChange}
-                      className="reserve-checkbox"
-                    />
-                    <span  >Bring your own tableware (get 10% discount)</span>
-                  </label>
-                </div>
+
+        {/* Bring own tableware option */}
+        <div style={{ marginTop: '15px', fontSize: '14px' }}>
+          <label style={{ paddingBottom: "5px" }}>
+            <input 
+              type="checkbox"
+              checked={isOwnTableware}
+              onChange={handleOwnTablewareChange}
+              className="reserve-checkbox"
+            />
+            <span>Bring your own tableware (get 10% discount)</span>
+          </label>
+        </div>
         <b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b>
 
-         {/* Dine-In Reservations Section */}
-         <div className="reservation-section">
-          <div style={{marginTop: "10px", marginBottom: "0px"}}>--------------------------------------------------------</div>
+        {/* Dine-In Reservations Section */}
+        <div className="reservation-section">
+          <div style={{ marginTop: "10px", marginBottom: "0px" }}>--------------------------------------------------------</div>
 
-          <h3 >Reserve A Seat:</h3>
+          <h3>Reserve A Seat:</h3>
           <form>
             <div>
               <label>
