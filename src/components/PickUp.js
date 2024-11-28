@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
+import Payment from './Payment';
 
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -9,6 +11,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   const handleEcoFriendlyChange = () => {
     if (isOwnContainer) {
@@ -43,14 +46,58 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   return updatedTotalPrice;
 };
 
-  const handleSubmit = (e) => {
+  const handlePayment = (e) => {
     e.preventDefault();
-    // Handle payment submission logic here
     console.log('Payment Method:', paymentMethod);
-    console.log('Card Number:', cardNumber);
     console.log('Pick-Up Date:', pickupDate);
     console.log('Pick-Up Time:', pickupTime);
-    onClose(); // Close the modal after payment
+    setIsPaymentOpen(true);
+  }
+
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+    // Handle payment submission logic here
+    const username = localStorage.getItem('username');
+    const updatedTotalPrice = calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer);
+
+    if (!username) {
+      toast.error('Invalid user. Please log in again.');
+    }
+
+    console.log('Payment Method:', paymentMethod);
+    console.log('Pick-Up Date:', pickupDate);
+    console.log('Pick-Up Time:', pickupTime);
+
+    const paymentData = {
+      price: updatedTotalPrice,
+      username: username,
+      card_number: cardNumber,
+    }
+
+    fetch('http://localhost:5000/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(paymentData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Payment response:', data);
+      if (data.success) {
+        toast.success(`Payment successful. ${data.message}`);
+      } else {
+        toast.error('Payment failed.')
+      }
+    })
+    .catch(error => {
+      console.error('Payment error:', error);
+      toast.error('An error occured while processing your payment.');
+      setIsPaymentOpen(false);
+    })
+    .finally(() => {
+      setIsPaymentOpen(false);
+    });
   };
 
   const handleDateChange = (e) => {
@@ -114,7 +161,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
 
         {/* Form Section */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handlePayment}>
           {/* Pick-Up Time Section */}
           <h3 className="pick-up-time">Select Pick-Up Date and Time</h3>
           <div className="pickup-time-selector">
@@ -186,26 +233,20 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             </label>
           </div>
 
-          {/* Credit Card Details */}
-          {paymentMethod === 'creditCard' && (
-            <div className="credit-card-details">
-              <div>
-                <label>Card Number:</label>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-          )}
-
           {/* Submit Button */}
           <button type="submit" className="pay-btn">
             Checkout
           </button>
         </form>
+        {isPaymentOpen && (
+          <Payment
+            paymentMethod={paymentMethod}
+            onClose={() => setIsPaymentOpen(false)}
+            onSubmit={handlePaymentSubmit}
+            cardNumber={cardNumber}
+            setCardNumber={setCardNumber}
+          />
+        )}
       </div>
     </div>
   );

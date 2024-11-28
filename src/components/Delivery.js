@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
+import '../styles.css';
+import Payment from './Payment';
 
 const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -9,6 +12,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
   const [isOwnTableware, setIsOwnTableware] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
 
   const handlePaymentMethodChange = (e) => {
@@ -21,15 +25,56 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     setIsOwnTableware(!isEcoFriendly);
   };
   
-  const handleSubmit = (e) => {
+  const handlePayment = (e) => {
     e.preventDefault();
-    // Handle payment submission logic here
     console.log('Payment Method:', paymentMethod);
-    console.log('Card Number:', cardNumber);
     console.log('Name:', name);
     console.log('Phone Number:', phoneNumber);
     console.log('KK Location:', kkLocation);
-    onClose(); // Close the modal after payment
+    setIsPaymentOpen(true);
+  }
+
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+    // Handle payment submission logic here
+    const username = localStorage.getItem('username');
+
+    if (!username) {
+      toast.error('Invalid user. Please log in again.');
+    }
+
+    console.log('Payment Method:', paymentMethod);
+    console.log('Name:', name);
+    console.log('Phone Number:', phoneNumber);
+    console.log('KK Location:', kkLocation);
+
+    const paymentData = {
+      price: updatedTotalPrice,
+      username: username,
+      card_number: card_number
+    }
+
+    fetch('http://localhost:5000/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(paymentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Payment response:', data);
+      if (data.success) {
+        toast.success(`Payment successful. ${data.message}`);
+      } else {
+        toast.error('Payment failed.')
+      }
+    })
+    .catch(error => {
+      console.error('Payment error:', error);
+      toast.error('An error occured while processing your payment.');
+      setIsPayment(false);
+    });
   };
 
   // Calculate the total price including the eco-friendly package
@@ -71,7 +116,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
             <div className = "total-price"><b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b></div>
           </div>    
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handlePayment}>
             {/* Delivery Information */}
             <h3>Delivery Information</h3>
             
@@ -163,6 +208,15 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
             <button type="submit" className="pay-btn">CHECKOUT</button>
           </form>
         </div>  
+        {isPayment && (
+          <Payment
+            paymentMethod={paymentMethod}
+            onClose={() => setIsPaymentOpen(false)}
+            onSubmit={handlePaymentSubmit}
+            cardNumber={setCardNumber}
+            setCardNumber={setCardNumber}
+          />
+        )}
       </div>
     </div>
   );
