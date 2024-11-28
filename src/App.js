@@ -480,12 +480,13 @@ const App = () => {
     setIsDeliveryModalOpen(false); // Close the modal
   };
 
+  // Meal Planner Modal
   const handleMealPlannerClick = () => {
-    setIsMealPlannerOpen(true); // Open the AiMealPlanner modal
+    setIsMealPlannerOpen(true); 
   };
 
   const handleCloseMealPlanner = () => {
-    setIsMealPlannerOpen(false); // Close the AiMealPlanner modal
+    setIsMealPlannerOpen(false); 
   };
 
 
@@ -567,7 +568,9 @@ const App = () => {
 
     <AiMealPlanner
       isOpen={isMealPlannerOpen} 
-      onClose={handleCloseMealPlanner} // Pass the handler
+      onClose={handleCloseMealPlanner} 
+      cafeterias={cafeterias}
+      foodItems={foodItems} 
     />
     <DineIn
      isOpen={isDineInModalOpen} 
