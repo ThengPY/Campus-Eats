@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
+import Payment from './Payment';
 
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -9,6 +11,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+  const [isPayment, setIsPayment] = useState(false);
 
   const handleEcoFriendlyChange = () => {
     setIsEcoFriendly(!isEcoFriendly);
@@ -37,14 +40,51 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   return updatedTotalPrice;
 };
 
-  const handleSubmit = (e) => {
+  const handlePaymentSubmit = (e) => {
     e.preventDefault();
     // Handle payment submission logic here
+    const username = localStorage.getItem('username');
+    console.log('Username from localStorage', username);
+    const updatedTotalPrice = calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer);
+
+    if (!username) {
+      toast.error('Invalid user. Please log in again.');
+      return;
+    }
+
     console.log('Payment Method:', paymentMethod);
-    console.log('Card Number:', cardNumber);
     console.log('Pick-Up Date:', pickupDate);
     console.log('Pick-Up Time:', pickupTime);
-    onClose(); // Close the modal after payment
+    console.log('Updated Total Price:', updatedTotalPrice);
+
+    const paymentData = {
+      amount: updatedTotalPrice,
+      currency: 'RM',
+      username: username,
+    };
+    console.log('Payment Data:', paymentData);
+    
+    fetch('http://localhost:5000/user/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(paymentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Payment response:', data);
+      if (data.success) {
+        toast.success(`Payment successful. ${data.message}`);
+      } else {
+        toast.error('Payment failed.')
+      }
+    })
+    .catch(error => {
+      console.error('Payment error:', error);
+      toast.error('An error occured while processing your payment.');
+      setIsPayment(false);
+    });
   };
 
   const handleDateChange = (e) => {
@@ -108,7 +148,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
 
         {/* Form Section */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handlePaymentSubmit}>
           {/* Pick-Up Time Section */}
           <h3 className="pick-up-time">Select Pick-Up Date and Time</h3>
           <div className="pickup-time-selector">
@@ -180,26 +220,19 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             </label>
           </div>
 
-          {/* Credit Card Details */}
-          {paymentMethod === 'creditCard' && (
-            <div className="credit-card-details">
-              <div>
-                <label>Card Number:</label>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-          )}
 
           {/* Submit Button */}
           <button type="submit" className="pay-btn">
             Checkout
           </button>
         </form>
+        {isPayment && (
+          <Payment
+            paymentMethod={paymentMethod}
+            onClose={() => setIsPayment(false)}
+            onSubmit={handlePaymentSubmit}
+          />
+        )}
       </div>
     </div>
   );

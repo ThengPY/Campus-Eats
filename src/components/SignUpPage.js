@@ -39,6 +39,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
       });
       return;
     }
+    localStorage.setItem('username', username);
     toast.success('Signing up with:'+ username, {
       position: "top-left", 
       autoClose: 1500,
@@ -73,6 +74,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
       });
       return;
     }
+    localStorage.setItem('username', username);
     toast.success('Logging in with:'+ username, {
       position: "top-left", 
       autoClose: 1500,
