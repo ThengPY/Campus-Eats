@@ -7,6 +7,8 @@ import qrcode from '../img/qrcode.jpg';
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
+  const [expiration_date, setExpiration_date] = useState('');
+  const [csv, setCsv] = useState('');
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
@@ -66,13 +68,16 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     const order_item = order_itemArray.join(', ');
 
     const paymentData = {
+      option: 'Pick-Up',
       order_item: order_item,
       eco_package: isEcoFriendly,
       bring_container: isOwnContainer,
       price: updatedTotalPrice,
       pickup_date: pickupDate,
       pickup_time: pickupTime,
-      card_number: cardNumber
+      card_number: cardNumber,
+      expiration_date: expiration_date,
+      csv: csv
     }
 
     fetch(`http://localhost:5000/payment/${username}`, {
@@ -244,10 +249,20 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                     required
                   />
                   <label>Expiration Date:</label>
-                  <input type="text" placeholder='MM/YY' required/>
+                  <input
+                      type="text"
+                      value={expiration_date}
+                      onChange={(e) => setExpiration_date(e.target.value)}
+                      placeholder='MM/YY' required
+                  />
                   <label>CVV:</label>
-                  <input type="text" placeholder='XXX' required/>
-                </div>        
+                  <input
+                      type="text"
+                      value={csv}
+                      onChange={(e) => setCsv(e.target.value)}
+                      placeholder='XXX' required
+                  />
+                </div>
               </div>
             )}
 
