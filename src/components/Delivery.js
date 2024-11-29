@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
-import Payment from './Payment';
 import qrcode from '../img/qrcode.jpg';
 
 const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
@@ -15,6 +14,13 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
+  useEffect(() => {
+    if (paymentMethod === 'TouchNGo') {
+      setCardNumber(null);
+      setExpiration_date(null);
+      setCsv(null);
+    }
+  }, [paymentMethod]);
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -202,7 +208,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                 <label style = {{borderTop : "1px solid #e0e0e0", paddingTop : "10px"}}>Card Number:</label>
                 <input
                   type="text"
-                  value={cardNumber}
+                  value={cardNumber || ''}
                   onChange={(e) => setCardNumber(e.target.value)}
                   placeholder='XXXX XXXX XXXX'
                   required
@@ -212,7 +218,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                 <label>Expiration Date:</label>
                 <input
                     type="text"
-                    value={expiration_date}
+                    value={expiration_date || ''}
                     onChange={(e) => setExpiration_date(e.target.value)}
                     placeholder='MM/YY'
                     required
@@ -222,7 +228,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                 <label>CVV:</label>
                 <input
                     type="text"
-                    value={csv}
+                    value={csv || ''}
                     onChange={(e) => setCsv(e.target.value)}
                     placeholder='XXX'
                     required

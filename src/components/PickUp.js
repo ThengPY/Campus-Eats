@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import qrcode from '../img/qrcode.jpg';
@@ -12,6 +12,14 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+
+  useEffect(() => {
+    if (paymentMethod === 'TouchNGo') {
+      setCardNumber(null);
+      setExpiration_date(null);
+      setCsv(null);
+    }
+  }, [paymentMethod]);
 
   const handleEcoFriendlyChange = () => {
     if (isOwnContainer) {
@@ -242,7 +250,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                   <label>Card Number:</label>
                   <input
                     type="text"
-                    value={cardNumber}
+                    value={cardNumber || ''}
                     onChange={(e) => setCardNumber(e.target.value)}
                     placeholder='XXXX XXXX XXXX'
                     required
@@ -250,14 +258,14 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                   <label>Expiration Date:</label>
                   <input
                       type="text"
-                      value={expiration_date}
+                      value={expiration_date || ''}
                       onChange={(e) => setExpiration_date(e.target.value)}
                       placeholder='MM/YY' required
                   />
                   <label>CVV:</label>
                   <input
                       type="text"
-                      value={csv}
+                      value={csv || ''}
                       onChange={(e) => setCsv(e.target.value)}
                       placeholder='XXX' required
                   />
