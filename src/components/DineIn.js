@@ -33,6 +33,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
     const order_item = order_itemArray.join(', ');
 
     const reservationData = {
+      option: 'Dine-In',
       order_item: order_item,
       own_tableware: isOwnTableware,
       price: updatedTotalPrice,

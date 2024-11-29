@@ -63,11 +63,13 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
                             <p className="order-product"><strong>Product:</strong> {order.order_item}</p>
                             <p className="order-price"><strong>Price:</strong> RM{order.price}</p>
                             <p className="order-date"><strong>Date:</strong> {order.formatted_order_date}</p>
-                            <p className="pickup-info">
-                                <strong>Pickup:</strong>
-                                {order.formatted_pickup_date} at {order.formatted_pickup_time}
-                            </p>
-                            <hr/>
+                            {/* Conditional rendering for pickup info */}
+                            {order.formatted_pickup_date!=null && order.formatted_pickup_time!=null && (
+                                <p className="pickup-info">
+                                    <strong>Pickup:</strong>
+                                    {order.formatted_pickup_date}, {order.formatted_pickup_time}
+                                </p>
+                            )}
                         </div>
                     ))
                 ) : (

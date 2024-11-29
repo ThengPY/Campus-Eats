@@ -45,6 +45,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
     const order_item = order_itemArray.join(', ');
 
     const paymentData = {
+      option: 'Delivery',
       order_item: order_item,
       eco_package: isEcoFriendly,
       price: updatedTotalPrice,
