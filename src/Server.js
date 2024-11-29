@@ -173,6 +173,26 @@ app.post('/payment/:username', (req, res) => {
             res.status(500).json({ success: false, message: 'Payment failed. Please try again.' });
         });
 });
+
+app.get('/getDeliveryTime/:username', (req, res) => {
+    const username = req.params.username;
+
+    dbHandler.getSchedules()
+        .then(schedule => {
+            if (!schedule || schedule.length === 0) { // Check if schedule is empty
+                return res.status(404).json({ success: false, message: 'No delivery schedule found for the current time.' });
+            }
+
+            const deliveryTime = `${schedule[0].hour}:00`; // Access the first schedule
+            res.json({ success: true, deliveryTime });
+        })
+        .catch(err => {
+            console.error('Error fetching closest schedule:', err);
+            res.status(500).json({ success: false, message: 'An error occurred while fetching the delivery time.' });
+        });
+});
+
+
 //pending delete
 // New endpoint to trigger model training
 app.get('/model/train', (req, res) => {
@@ -188,8 +208,6 @@ app.get('/model/train', (req, res) => {
             res.status(500).send('Error during model training.');
         });
 });
-
-
 
 //create table before importing functions
 dbHandler.createModelDataTable()

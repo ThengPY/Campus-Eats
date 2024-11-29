@@ -429,8 +429,20 @@ const insertSchedule = (hour, minute, batch) => {
 // Function to get all schedules from the 'schedules' table
 const getSchedules = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM schedules';
-        db.all(sql, [], (err, rows) => {
+        const currentHour = new Date().getHours();
+        const currentDayOfWeek = new Date().getDay();
+
+        // Query to find the closest schedule for the current time
+        const sql = `
+            SELECT *,
+            ABS(hour - ?) AS hour_difference
+            FROM model_data
+            WHERE day_of_week = ?
+              AND hour > ?  -- Only consider hours greater than the current hour
+            ORDER BY hour ASC, deliveries ASC
+            LIMIT 1
+        `;
+        db.all(sql, [currentHour, currentDayOfWeek, currentHour], (err, rows) => {
             if (err) {
                 console.error('Error retrieving schedules: ' + err.message);
                 reject(err); // Reject the promise on error

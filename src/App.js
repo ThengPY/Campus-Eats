@@ -44,6 +44,8 @@ const App = () => {
   const [isCommunityBoardOpen, setIsCommunityBoardOpen] = useState(false);
   const [showDeliveryPopUp, setShowDeliveryPopUp] = useState(false);
   const [DeliveryPopUpMessage, setDeliveryPopUpMessage] = useState('');
+  const [deliveryTimeLoading, setDeliveryTimeLoading] = useState(false);
+  const [deliveryTimeError, setDeliveryTimeError] = useState(null);
 
 
   //set default username
@@ -526,14 +528,40 @@ const App = () => {
     setIsCommunityBoardOpen(false);
   }
 
-  const handleDeliveryNotification = (message) => {
-    setDeliveryPopUpMessage(message);
-    setShowDeliveryPopUp(true);
+  const handleDeliveryNotification = () => {
+    setDeliveryTimeLoading(true); // Set loading state for delivery time
+    setDeliveryTimeError(null); // Reset any previous errors
 
-    //Closes after 5 seconds
-    setTimeout(() => {
-      setShowDeliveryPopUp(false);
-    }, 5000);
+    fetch(`http://localhost:5000/getDeliveryTime/anything`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch delivery time');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            // Set the delivery popup message with the delivery time
+            setDeliveryPopUpMessage(`Delivery available at ${data.deliveryTime}`);
+            setShowDeliveryPopUp(true); // Show the delivery popup
+            // Set a timeout to hide the popup after 5 seconds
+            setTimeout(() => {
+              setShowDeliveryPopUp(false); // Hide the delivery popup
+            }, 5000);
+          } else {
+            console.error(data.message);
+            setDeliveryPopUpMessage(data.message); // Set error message
+            setShowDeliveryPopUp(true); // Show the delivery popup with error message
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching delivery time:', error);
+          setDeliveryPopUpMessage('An error occurred while fetching delivery time.');
+          setShowDeliveryPopUp(true); // Show the delivery popup with error message
+        })
+        .finally(() => {
+          setDeliveryTimeLoading(false); // Reset loading state
+        });
   };
 
   return (
@@ -613,7 +641,7 @@ const App = () => {
 
     {/* Delivery Message Components */}
 
-    <div className="delivery-button-container" onClick={() => handleDeliveryNotification('Your delivery is on the way!')}>
+    <div className="delivery-button-container" onClick={() => handleDeliveryNotification()}>
       <span class="material-symbols-rounded" style = {{color : "white", transition : "none", transform: "none"}}>local_shipping</span>
     </div>
 
