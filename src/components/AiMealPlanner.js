@@ -127,7 +127,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         <div className = "mealplanner-div">
           <label>
             Select Cafeteria:
-            <select
+            <select 
               value={cafeteria}
               onChange={(e) => setCafeteria(Number(e.target.value))} // Convert to number here
               className = "select"

@@ -427,9 +427,15 @@ const App = () => {
     });
   
     toast.success(`${item.name} (${cafeteria.name}) added successfully!`, {
-      position: "top-left", 
-      autoClose: 1500,
-    });
+      position: "top-left",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      className: "react-toastify-container Toastify__toast--success", // Apply encapsulated styles
+  });
   };
   
   
