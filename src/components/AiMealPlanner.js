@@ -148,9 +148,9 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
           >
             <option value="">Any</option>
             <option value="0-3">RM 0 - RM 3</option>
-            <option value="3-5">RM 3 - RM 5</option>
-            <option value="5-8">RM 5 - RM 8</option>
-            <option value="8-10">RM 8 - RM 10</option>
+            <option value="0-5">RM 0 - RM 5</option>
+            <option value="0-8">RM 0 - RM 8</option>
+            <option value="0-10">RM 0 - RM 10</option>
           </select>
         </label>
 
