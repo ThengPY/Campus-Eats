@@ -404,12 +404,13 @@ const App = () => {
   };
 
   const handleAddToCart = (item, cafeteriaId) => {
-    const cafeteria = cafeterias.find(cafeteria => cafeteria.id === cafeteriaId);
+    console.log("Item received in handleAddToCart:", item, cafeteriaId);
+    const cafeteria = cafeterias.find((cafeteria) => cafeteria.id === cafeteriaId);
   
-    setCartItems(prevCartItems => {
+    setCartItems((prevCartItems) => {
       // Check if the item already exists in the cart
       const existingItemIndex = prevCartItems.findIndex(
-        cartItem => cartItem.id === item.id && cartItem.cafeteria === cafeteria.name
+        (cartItem) => cartItem.id === item.id && cartItem.cafeteria === cafeteria.name
       );
   
       if (existingItemIndex >= 0) {
@@ -584,8 +585,9 @@ const App = () => {
       onClose={handleCloseMealPlanner} 
       cafeterias={cafeterias}
       foodItems={foodItems} 
-      onAddToCart={(item) => handleAddToCart(item, selectedCafeteria)}
+      onAddToCart={handleAddToCart} // Ensure this is passed correctly
     />
+
     <DineIn
      isOpen={isDineInModalOpen} 
      onClose={handleCloseDineInModal}

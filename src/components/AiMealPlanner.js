@@ -20,9 +20,10 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
   const generateMealPlan = () => {
     const plan = {};
     const cafeteriaId = cafeteria === "" ? null : parseInt(cafeteria, 10);
-  
+
     const [minPrice, maxPrice] = parsePriceRange(priceRange);
-  
+    console.log("Selected Price Range:", minPrice, maxPrice);
+
     const matchesPreference = (item) => {
       if (preferences === "Vege") {
         return item.type === "Vege";
@@ -31,7 +32,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
       }
       return true; // Return all if no preference selected
     };
-  
+
     if (cafeteriaId === null) {
       cafeterias.forEach((cafeteria) => {
         const cafeteriaId = cafeteria.id;
@@ -44,7 +45,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         const filteredDrinks = foodItems[cafeteriaId].drinks.filter(
           (drink) => drink.price >= minPrice && drink.price <= maxPrice
         );
-  
+
         const selectedFood =
           filteredFood.length > 0
             ? filteredFood[Math.floor(Math.random() * filteredFood.length)]
@@ -61,7 +62,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
       });
     } else {
       if (!foodItems[cafeteriaId]) return;
-  
+
       const filteredFood = foodItems[cafeteriaId].food.filter(
         (food) =>
           food.price >= minPrice &&
@@ -71,7 +72,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
       const filteredDrinks = foodItems[cafeteriaId].drinks.filter(
         (drink) => drink.price >= minPrice && drink.price <= maxPrice
       );
-  
+
       const selectedFood =
         filteredFood.length > 0
           ? filteredFood[Math.floor(Math.random() * filteredFood.length)]
@@ -86,22 +87,29 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         drink: selectedDrink,
       };
     }
-  
+
     setMealPlan(plan);
   };
+
+  const handleAddToCartLocal = (item, cafeteriaId) => {
+    const numericCafeteriaId = parseInt(cafeteriaId, 10); // Convert to number
+    const cafeteria = cafeterias.find(c => c.id === numericCafeteriaId);
   
+    if (!cafeteria) {
+      console.log("Cafeteria not found for ID:", cafeteriaId);
+      return;
+    }
 
-  const handleAddToCart = (item, cafeteriaId) => {
-    const cafeteria = cafeterias.find((c) => c.id === cafeteriaId);
-    if (!cafeteria) return;
-
-    const cartItem = { ...item, cafeteria: cafeteria.name, quantity: 1 };
-    onAddToCart(cartItem);
-
-    toast.success(`${item.name} (${cafeteria.name}) added successfully!`, {
-      position: "top-left",
-      autoClose: 1500,
-    });
+    // Check if the item is available
+    if (item.name === "No available food" || item.name === "No available drink") {
+      toast.error(`${item.name}`, {
+        position: "top-left",
+        autoClose: 1500,
+      });
+      return;
+    }
+  
+    onAddToCart(item, numericCafeteriaId);
   };
 
   return (
@@ -120,7 +128,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
           <select
             style={{ marginLeft: "7px", cursor: "pointer" }}
             value={cafeteria}
-            onChange={(e) => setCafeteria(e.target.value)}
+            onChange={(e) => setCafeteria(Number(e.target.value))} // Convert to number here
           >
             <option value="">Any</option>
             {cafeterias.map((cafeteria) => (
@@ -172,28 +180,40 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
             <h2 style={{ paddingTop: "15px", borderTop: "1px solid #e0e0e0" }}>Recommended Meals</h2>
             {Object.keys(mealPlan).map((cafeteriaId) => (
               <div key={cafeteriaId}>
-              <h4>{mealPlan[cafeteriaId].name}</h4>
-              <h5 className="meals-generated">
-                Food: {mealPlan[cafeteriaId].food.name}
-                <span 
-                  className="material-symbols-rounded"
-                  onClick={() => handleAddToCart(mealPlan[cafeteriaId].food, cafeteriaId)}
-                  style={{ fontSize: "30px", cursor: "pointer"}}
-                >
-                  add
-                </span>
-              </h5>
-              <h5 className="meals-generated" style={{display: "flex"}}>
-                Drink: {mealPlan[cafeteriaId].drink.name}
-                <span
-                  className="material-symbols-rounded"
-                  onClick={() => handleAddToCart(mealPlan[cafeteriaId].drink, cafeteriaId)}
-                  style={{ fontSize: "30px", cursor: "pointer" }}
-                >
-                  add
-                </span>
-              </h5>
-            </div>
+                <h4>{mealPlan[cafeteriaId].name}</h4>
+                <h5 className="meals-generated">
+                  <span>
+                    Food: {mealPlan[cafeteriaId].food.name}{" "}
+                    {mealPlan[cafeteriaId].food.price && (
+                      <span style={{ fontWeight: "bold", marginLeft: "5px" }}>
+                        (RM {mealPlan[cafeteriaId].food.price.toFixed(2)})
+                      </span>
+                    )}
+                  </span>
+                  <span 
+                    className="material-symbols-rounded add-icon"
+                    onClick={() => handleAddToCartLocal(mealPlan[cafeteriaId].food, cafeteriaId)}
+                  >
+                    add
+                  </span>
+                </h5>
+                <h5 className="meals-generated">
+                  <span>
+                    Drink: {mealPlan[cafeteriaId].drink.name}{" "}
+                    {mealPlan[cafeteriaId].drink.price && (
+                      <span style={{ fontWeight: "bold", marginLeft: "5px" }}>
+                        (RM {mealPlan[cafeteriaId].drink.price.toFixed(2)})
+                      </span>
+                    )}
+                  </span>
+                  <span
+                    className="material-symbols-rounded add-icon"
+                    onClick={() => handleAddToCartLocal(mealPlan[cafeteriaId].drink, cafeteriaId)}
+                  >
+                    add
+                  </span>
+                </h5>
+              </div>
             ))}
           </div>
         )}
