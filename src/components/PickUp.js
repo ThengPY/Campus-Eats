@@ -98,7 +98,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .then(data => {
       console.log('Payment response:', data);
       if (data.success) {
-        alerts.success(`Payment successful. ${data.message}`);
+        alert(`Payment successful.`);
       } else {
         alert('Payment failed.');
       }
