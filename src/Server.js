@@ -1,7 +1,7 @@
 const express = require('express');
 const dbHandler = require('./dbHandler');
 const cors = require('cors');
-const { retrainModel } = require('./ModelTraining');
+const {retrainModel} = require('./ModelTraining');
 const {getDataForModelTraining} = require("./dbHandler");
 
 const app = express();
@@ -191,6 +191,34 @@ app.get('/model/train', (req, res) => {
         });
 });
 
+// Function to periodically retrain the model
+const startModelRetrainingInterval = (interval) => {
+    setInterval(async () => {
+        console.log('Triggering model retraining...');
+        try {
+            const data = await getDataForModelTraining();
+            await retrainModel(data);
+            console.log('Model retraining completed successfully.');
+        } catch (err) {
+            console.error('Error during model retraining:', err);
+        }
+    }, interval);
+};
+
+const startDeliveryProcessingInterval = (interval) => {
+    setInterval(async () => {
+        console.log('Triggering delivery processing...');
+        try {
+            await dbHandler.processDeliveriesForToday();
+            console.log('Delivery processing completed successfully.');
+        } catch (err) {
+            console.error('Error during delivery processing:', err);
+        }
+    }, interval);
+};
+
+startDeliveryProcessingInterval(86400000);
+startModelRetrainingInterval(86400000);
 
 // Start the server
 app.listen(PORT, () => {

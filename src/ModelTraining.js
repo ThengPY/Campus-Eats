@@ -1,16 +1,31 @@
-// modelTraining.js
+
+const fs = require('fs');
 const tf = require('@tensorflow/tfjs');
 require('tfjs-node-save')
 
-// Load the existing model
 async function loadModel() {
-    let model;
+    const modelPath = 'file:///Users/keste/IdeaProjects/Campus-Eats/src/model/model.json';
+
+    // Check if the model file exists
     try {
-        model = await tf.loadLayersModel('file:///Users/keste/IdeaProjects/Campus-Eats/src/model/model.json'); // Load the saved model
+        // Use fs.promises to check for file existence
+        await fs.promises.access(modelPath, fs.constants.F_OK);
+        console.log('Model file exists. Deleting the existing model...');
+
+        // Delete the model file
+        await fs.promises.unlink(modelPath);
+        console.log('Existing model deleted.');
     } catch (error) {
+        // If the file does not exist, we can ignore the error
+        if (error.code !== 'ENOENT') {
+            console.error('Error checking for model file:', error);
+            return null; // Return null or handle the error as needed
+        }
         console.log('No existing model found. Creating a new one.');
-        model = createNewModel(); // If no model is found, create a new one
     }
+
+    // Create a new model if no existing model was found or after deletion
+    const model = createNewModel(); // Replace with your model creation logic
     return model;
 }
 
