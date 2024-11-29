@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import './SignUpPage.css'; 
 import ForgetPasswordOverlay from './ForgetPasswordOverlay';
 import eating from '../img/eating.png';
@@ -33,16 +32,10 @@ const SignUpPage = ({ isOpen, onClose }) => {
       return;
     }
     if (!username || !email || !password){
-      toast.error('Please fill in all required fields.', {
-        position: "top-left",
-        autoClose: 1500,
-      });
+      alert('Please fill in all required fields.');
       return;
     }
-    toast.success('Signing up with:'+ username, {
-      position: "top-left", 
-      autoClose: 1500,
-    });
+    alert('Signed up with:' + username);
 
     const signUpData = {username, email, password,};
 
@@ -66,16 +59,10 @@ const SignUpPage = ({ isOpen, onClose }) => {
   
   const handleLogin = () => {
     if (!username || !email || !password){
-      toast.error('Please fill in all required fields.', {
-        position: "top-left",
-        autoClose: 1500,
-      });
+      alert('Please fill in all required fields.');
       return;
     }
-    toast.success('Logging in with:'+ username, {
-      position: "top-left", 
-      autoClose: 1500,
-    });
+    alert('Logged in with:' + username);
     const loginData = {username, email, password,};
 
     fetch('http://localhost:5000/user/login', {
@@ -99,15 +86,19 @@ const SignUpPage = ({ isOpen, onClose }) => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    if (passwordMatchError && e.target.value === confirmPassword) {
+    if (e.target.value === confirmPassword) {
       setPasswordMatchError(false);
+    } else {
+      setPasswordMatchError(true);
     }
   };
   
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-    if (passwordMatchError && password === e.target.value) {
+    if (password === e.target.value) {
       setPasswordMatchError(false);
+    } else {
+      setPasswordMatchError(true);
     }
   };
   
@@ -129,59 +120,57 @@ const SignUpPage = ({ isOpen, onClose }) => {
         .then(data => {
           console.log('Forget password response:', data);
           if (data.success) {
-            toast.success(`${data.message}`);
+            alert(data.message);
           } else {
-            toast.error('Failed to send password reset email.')
+            alert('Failed to send password reset email.');
           }
         })
         .catch(error => {
           console.error('Forget password error:', error);
-          toast.error('An error occured while processing your request.');
+          alert('An error occurred while processing your request.');
           setIsForgetPasswordOverlayOpen(false);
         });
   };
-
-
 
   if (!isOpen) return null; // Only render modal when it's open
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className = "close-btn">
-          <span class="material-symbols-rounded" onClick={onClose}>close</span>
+        <div className="close-btn">
+          <span className="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
         <h2>Account</h2>
-        <div className = "img-wrapper"><img className = "signup-img" src = {eating} /></div>
+        <div className="img-wrapper"><img className="signup-img" src={eating} /></div>
         <form onSubmit={handleSubmit} className="sign-up-form">
-          <div className = "input-container">
-            <div className = "input-wrapper">
+          <div className="input-container">
+            <div className="input-wrapper">
               <i className="material-symbols-rounded">account_circle</i>
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder = "Enter Username" required />
+              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter Username" required />
             </div>
           </div>
-          <div className = "input-container">
-            <div className = "input-wrapper">
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder = "Enter Email" required />
+          <div className="input-container">
+            <div className="input-wrapper">
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" required />
               <i className="material-symbols-rounded">email</i>
             </div>
           </div>
-          <div className = "input-container">
-            <div className = "input-wrapper">
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder = "Enter Password" required />
+          <div className="input-container">
+            <div className="input-wrapper">
+              <input type="password" value={password} onChange={handlePasswordChange} placeholder="Enter Password" required />
               <i className="material-symbols-rounded">lock</i>
             </div>
           </div>
-          <div className = "input-container">
-            <div className = "input-wrapper">
-              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder = "Confirm Password (SIGNUP)" required />
+          <div className="input-container">
+            <div className="input-wrapper">
+              <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} placeholder="Confirm Password (SIGNUP)" required />
               <i className="material-symbols-rounded">enhanced_encryption</i>
             </div>
           </div>
           {passwordMatchError && (
             <p style={{ color: 'red', marginTop: '-10px' }}>Passwords do not match</p>
           )}
-          <div className = "account-btns">
+          <div className="account-btns">
             <button type="button" className="submit-btn" onClick={handleSignUp}><b>SIGN UP</b></button>
             <button type="button" className="submit-btn" onClick={handleLogin}><b>LOG IN</b></button>
           </div>
