@@ -14,6 +14,7 @@ import SignUpPage from './components/SignUpPage.js';
 import AiMealPlanner from './components/AiMealPlanner.js';
 import OrderHistory from './components/OrderHistory.js';
 import CommunityBoard from './components/CommunityBoard.js'; 
+import DeliveryPopUp from './components/DeliveryPopUp.js';
 import kk12 from './img/kk12.JPG';
 import kk1 from './img/kk1.png';
 import kk2 from './img/kk2.png';
@@ -42,6 +43,8 @@ const App = () => {
   const [isDineInModalOpen, setIsDineInModalOpen] = useState(false);
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
   const [isCommunityBoardOpen, setIsCommunityBoardOpen] = useState(false);
+  const [showDeliveryPopUp, setShowDeliveryPopUp] = useState(false);
+  const [DeliveryPopUpMessage, setDeliveryPopUpMessage] = useState('');
 
 
   //set default username
@@ -517,6 +520,16 @@ const App = () => {
     setIsCommunityBoardOpen(false);
   }
 
+  const handleDeliveryNotification = (message) => {
+    setDeliveryPopUpMessage(message);
+    setShowDeliveryPopUp(true);
+
+    //Closes after 5 seconds
+    setTimeout(() => {
+      setShowDeliveryPopUp(false);
+    }, 5000);
+  };
+
   return (
     <div className="App">
       <ToastContainer />
@@ -590,6 +603,19 @@ const App = () => {
       isOpen={isCommunityBoardOpen}
       onClose={handleCommunityBoardClose}
     />
+
+    {/* Delivery Message Components */}
+
+    <div className="delivery-button-container">
+    <button classname="delivery-button" style={{backgroundColor:'#FFCB59'}} onClick={() => handleDeliveryNotification('Your delivery is on the way!')}>Delivery Tracker</button>
+    </div>
+
+    {showDeliveryPopUp && (
+      <DeliveryPopUp 
+        message={DeliveryPopUpMessage} 
+        onClose={() => setShowDeliveryPopUp(false)}
+      />
+    )}
 
     </div>
   );
