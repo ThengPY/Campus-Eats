@@ -141,37 +141,24 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
             </select>
           </label>
 
-          <label>
-            Price Range:
-            <select style={{marginLeft: "7px", cursor: "pointer"}}
-              value={priceRange}
-              onChange={(e) => setPriceRange(e.target.value)}
-            >
-              <option value="">Any</option>
-              <option value="0-3">Below RM 3</option>
-              <option value="0-5">Below RM 5</option>
-              <option value="0-8">Below RM 8</option>
-              <option value="0-10">Below RM 10</option>
-            </select>
-          </label>
-        <label style={{marginTop: "10px"}}>
+        <label style={{ marginTop: "10px" }}>
           Food & Drinks Price Range:
-          <select
+          <select className="select" 
             style={{ marginLeft: "7px", cursor: "pointer" }}
             value={priceRange}
             onChange={(e) => setPriceRange(e.target.value)}
           >
             <option value="">Any</option>
-            <option value="0-3">RM 0 - RM 3</option>
-            <option value="0-5">RM 0 - RM 5</option>
-            <option value="0-8">RM 0 - RM 8</option>
-            <option value="0-10">RM 0 - RM 10</option>
+            <option value="0-3">Affordable (RM 0 - RM 3)</option>
+            <option value="0-5">Budget (RM 0 - RM 5)</option>
+            <option value="0-8">Mid-range (RM 0 - RM 8)</option>
+            <option value="0-10">Premium (RM 0 - RM 10)</option>
           </select>
         </label>
 
         <label style={{marginTop: "10px"}}>
           Dietary Preferences:
-          <select
+          <select className="select" 
             style={{ marginLeft: "7px", cursor: "pointer" }}
             value={preferences}
             onChange={(e) => setPreferences(e.target.value)}
