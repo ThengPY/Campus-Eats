@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
-import Payment from './Payment';
+import qrcode from '../img/qrcode.jpg';
 
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -11,7 +11,6 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   const handleEcoFriendlyChange = () => {
     if (isOwnContainer) {
@@ -45,14 +44,6 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
   return updatedTotalPrice;
 };
-
-  const handlePayment = (e) => {
-    e.preventDefault();
-    console.log('Payment Method:', paymentMethod);
-    console.log('Pick-Up Date:', pickupDate);
-    console.log('Pick-Up Time:', pickupTime);
-    setIsPaymentOpen(true);
-  }
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
@@ -103,11 +94,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .catch(error => {
       console.error('Payment error:', error);
       toast.error('An error occured while processing your payment.');
-      setIsPaymentOpen(false);
     })
-    .finally(() => {
-      setIsPaymentOpen(false);
-    });
   };
 
   const handleDateChange = (e) => {
@@ -163,7 +150,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
 
           {/* Form Section */}
-          <form onSubmit={handlePayment}>
+          <form onSubmit={handlePaymentSubmit}>
             {/* Pick-Up Time Section */}
             <h3 className="pick-up-time">Select Pick-Up Date and Time</h3>
             <div className="pickup-time-selector">
@@ -236,20 +223,36 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
               </label>
             </div>
 
+            {/* Payment details */}
+            {paymentMethod === 'TouchNGo' && (
+              <div className="qr-code-container">
+              <div>
+                <img src={qrcode} alt="Touch N Go QR Code"/>
+              </div>        
+            </div>
+            )}
+
+            {paymentMethod === 'creditCard' && (
+              <div className="credit-card-details">
+                <div>
+                  <label>Card Number:</label>
+                  <input
+                    type="text"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    required
+                  />
+                  <label>Expiration Date:</label>
+                  <input type="text" required/>
+                  <label>CVV:</label>
+                  <input type="text" required/>
+                </div>        
+              </div>
+            )}
+
             {/* Submit Button */}
-            <button type="submit" className="pay-btn">
-              Checkout
-            </button>
+            <button type="submit" className="pay-btn">Checkout</button>
           </form>
-          {isPaymentOpen && (
-            <Payment
-              paymentMethod={paymentMethod}
-              onClose={() => setIsPaymentOpen(false)}
-              onSubmit={handlePaymentSubmit}
-              cardNumber={cardNumber}
-              setCardNumber={setCardNumber}
-            />
-          )}
         </div>
       </div>
     </div>
