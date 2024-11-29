@@ -1,6 +1,6 @@
 .pop-up-notification {
     position: fixed;
-    bottom: 20px;
+    bottom: 110px;
     right: 20px;
     width: 300px;
     background-color: white;
@@ -10,6 +10,19 @@
     z-index: 1000;
     animation: fadeIn 0.5s;
 }
+
+.pop-up-notification::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; /* Position it at the bottom */
+    right: 30px; /* Adjust this to position the tail */
+    width: 0; 
+    height: 0;
+    border-width: 10px; /* Size of the tail */
+    border-style: solid;
+    background-color: transparent;
+    border-color: white transparent transparent transparent; /* Match bubble color */
+  }
 
 .pop-up-content {
     padding: 15px;
@@ -30,10 +43,18 @@
 }
 
 .delivery-button-container {
+    width: 70px; /* Set the width of the container */
+    height: 70px; /* Set the height of the container */
+    background-color: #FFC94D; /* Set the yellow color */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    border-radius: 50%; /* Make it round */
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 1000;
+    
 }
 
 .delivery-button {

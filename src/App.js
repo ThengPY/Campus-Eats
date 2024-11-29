@@ -608,8 +608,8 @@ const App = () => {
 
     {/* Delivery Message Components */}
 
-    <div className="delivery-button-container">
-    <button classname="delivery-button" style={{backgroundColor:'#FFCB59'}} onClick={() => handleDeliveryNotification('Your delivery is on the way!')}>Delivery Tracker</button>
+    <div className="delivery-button-container" onClick={() => handleDeliveryNotification('Your delivery is on the way!')}>
+      <span class="material-symbols-rounded" style = {{color : "white"}}>local_shipping</span>
     </div>
 
     {showDeliveryPopUp && (
