@@ -32,7 +32,7 @@ function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlanne
                         <h1 className = "welcome" style = {{color : "#568d33", marginBottom : "0px", fontSize : "3rem"}}>Welcome!</h1>
                         <p classnName = "welcome-caption" style = {{color : "#cf5f17", fontSize : "1rem", width : "60%"}}>Delicious food made easy: <br />Dine-in, Pickup or Instant Delivery right to your dorm!</p>
                         <div className = "get-started" onClick={() => scrollToSection("start")}>
-                            <span><b>GET STARTED </b></span>
+                            <span  style={{cursor: "pointer"}}><b>GET STARTED </b></span>
                             <span class="material-symbols-rounded" style = {{color: "white", fontSize :"20px"}}>arrow_forward</span>
                         </div>
                     </div>
