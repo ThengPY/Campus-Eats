@@ -245,9 +245,9 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             )}
 
             {paymentMethod === 'creditCard' && (
-              <div className="credit-card-details">
-                <div>
-                  <label>Card Number:</label>
+              <div className="credit-card-details" style = {{marginTop : "10px"}}>
+                <div style = {{marginBottom : "15px"}}>
+                  <label style = {{borderTop : "1px solid #e0e0e0", paddingTop : "10px"}}>Card Number:</label>
                   <input
                     type="text"
                     value={cardNumber || ''}
@@ -255,6 +255,8 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                     placeholder='XXXX XXXX XXXX'
                     required
                   />
+                </div>
+                <div  style = {{marginBottom : "15px"}}>
                   <label>Expiration Date:</label>
                   <input
                       type="text"
@@ -262,6 +264,8 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                       onChange={(e) => setExpiration_date(e.target.value)}
                       placeholder='MM/YY' required
                   />
+                </div>
+                <div  style = {{marginBottom : "15px"}}>
                   <label>CVV:</label>
                   <input
                       type="text"

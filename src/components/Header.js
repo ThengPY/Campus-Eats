@@ -30,14 +30,16 @@ function Header({ onCartClick, onOrderHistoryClick, onProfileClick, onMealPlanne
                 <div className = "LandingPageBanner">
                     <div className = "textbox">
                         <h1 className = "welcome" style = {{color : "#568d33", marginBottom : "0px", fontSize : "3rem"}}>Welcome!</h1>
-                        <p classnName = "welcome-caption" style = {{color : "#cf5f17", fontSize : "1rem", width : "60%"}}>Delicious food made easy: <br />Dine-in, Pickup or Instant Delivery right to your dorm!</p>
+                        <p classnName = "welcome-caption" style = {{color : "#cf5f17", fontSize : "1rem", width : "80%"}}>Delicious food made easy: <br />Dine-in, Pickup or Instant Delivery right to your dorm!</p>
                         <div className = "get-started" onClick={() => scrollToSection("start")}>
                             <span><b>GET STARTED </b></span>
                             <span class="material-symbols-rounded" style = {{color: "white", fontSize :"20px"}}>arrow_forward</span>
                         </div>
                     </div>
                 </div>
-                <h3 style={{padding : "20px", marginBottom: "0px"}} id = "start">Start ordering now!</h3>
+                <div className = "LandingPageContent" id = "start">
+                    <h2 className = "cafeteria-title" style={{paddingTop : "20px", marginBottom: "0px", color : "#568d33"}} >Start ordering now!</h2>
+                </div>
             </main>
         </>
     );
