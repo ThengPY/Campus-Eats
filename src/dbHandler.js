@@ -338,7 +338,7 @@ const processDeliveriesForToday = () => {
         const todayString = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
 
         // Step 1: Select orders where option is 'delivery' and order_date is today
-        const selectQuery = `SELECT order_date FROM orders WHERE option = 'delivery' AND DATE(order_date) = ?`;
+        const selectQuery = `SELECT order_date FROM orders WHERE option = 'Delivery' AND DATE(order_date) = ?`;
 
         db.all(selectQuery, [todayString], (err, rows) => {
             if (err) {

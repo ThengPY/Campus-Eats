@@ -1,8 +1,6 @@
 const express = require('express');
 const dbHandler = require('./dbHandler');
 const cors = require('cors');
-const {retrainModel} = require('./ModelTraining');
-const {getDataForModelTraining} = require("./dbHandler");
 
 const app = express();
 const PORT =  5000;
@@ -15,7 +13,6 @@ app.use(cors());
 dbHandler.createTable();
 dbHandler.createOrdersTable();
 dbHandler.createCommentsTable()
-dbHandler.createModelDataTable()
 
 // Route to register a new user
 app.post('/user/register', (req, res) => {
@@ -190,6 +187,10 @@ app.get('/model/train', (req, res) => {
             res.status(500).send('Error during model training.');
         });
 });
+
+dbHandler.createModelDataTable()
+const {retrainModel} = require('./ModelTraining');
+const {getDataForModelTraining} = require("./dbHandler");
 
 // Function to periodically retrain the model
 const startModelRetrainingInterval = (interval) => {
