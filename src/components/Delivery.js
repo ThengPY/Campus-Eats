@@ -204,6 +204,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                   type="text"
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
+                  placeholder='XXXX XXXX XXXX'
                   required
                 />
               </div>
@@ -213,6 +214,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                     type="text"
                     value={expiration_date}
                     onChange={(e) => setExpiration_date(e.target.value)}
+                    placeholder='MM/YY'
                     required
                 />
               </div>
@@ -222,6 +224,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                     type="text"
                     value={csv}
                     onChange={(e) => setCsv(e.target.value)}
+                    placeholder='XXX'
                     required
                 />
               </div>

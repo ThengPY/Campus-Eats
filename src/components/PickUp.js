@@ -240,12 +240,13 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                     type="text"
                     value={cardNumber}
                     onChange={(e) => setCardNumber(e.target.value)}
+                    placeholder='XXXX XXXX XXXX'
                     required
                   />
                   <label>Expiration Date:</label>
-                  <input type="text" required/>
+                  <input type="text" placeholder='MM/YY' required/>
                   <label>CVV:</label>
-                  <input type="text" required/>
+                  <input type="text" placeholder='XXX' required/>
                 </div>        
               </div>
             )}

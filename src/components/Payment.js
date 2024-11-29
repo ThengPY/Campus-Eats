@@ -21,15 +21,15 @@ const Payment = ({ paymentMethod, onClose, onSubmit, cardNumber, setCardNumber }
                             <form onSubmit={onSubmit}>
                                 <div>
                                     <label>Card Number:</label>
-                                    <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} required/>
+                                    <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} placeholder = "XXXX XXXX XXXX" required/>
                                 </div>
                                 <div>
                                     <label>Expiration Date:</label>
-                                    <input type="text" placeholdert="MM/YY" required/>
+                                    <input type="text" placeholder="MM/YY" required/>
                                 </div>
                                 <div>
                                     <label>CVV:</label>
-                                    <input type="text" required/>
+                                    <input type="text" placeholder = "XXX" required/>
                                 </div>
                                 <button type="submit" className="pay-btn" onClick={onClose}>Pay</button>
                             </form>

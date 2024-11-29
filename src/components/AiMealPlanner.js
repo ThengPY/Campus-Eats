@@ -170,8 +170,8 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         <button className = "generate-meal-plan-btn"
           style={{ marginBottom: "20px", marginTop: "20px", backgroundColor : "#FFCB59", width : "100%" }}
           onClick={generateMealPlan}
-        >
-          GENERATE MEAL PLAN
+        ><b>GENERATE MEAL PLAN</b>
+          
         </button>
         <div className = "subcontent" style = {{maxHeight : "300px"}}>
           {mealPlan && (

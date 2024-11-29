@@ -609,7 +609,7 @@ const App = () => {
     {/* Delivery Message Components */}
 
     <div className="delivery-button-container" onClick={() => handleDeliveryNotification('Your delivery is on the way!')}>
-      <span class="material-symbols-rounded" style = {{color : "white"}}>local_shipping</span>
+      <span class="material-symbols-rounded" style = {{color : "white", transition : "none", transform: "none"}}>local_shipping</span>
     </div>
 
     {showDeliveryPopUp && (
