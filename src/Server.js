@@ -191,35 +191,30 @@ app.get('/model/train', (req, res) => {
 dbHandler.createModelDataTable()
 const {retrainModel} = require('./ModelTraining');
 const {getDataForModelTraining} = require("./dbHandler");
+const schedule = require('node-schedule');
 
-// Function to periodically retrain the model
-const startModelRetrainingInterval = (interval) => {
-    setInterval(async () => {
-        console.log('Triggering model retraining...');
-        try {
-            const data = await getDataForModelTraining();
-            await retrainModel(data);
-            console.log('Model retraining completed successfully.');
-        } catch (err) {
-            console.error('Error during model retraining:', err);
-        }
-    }, interval);
-};
-
-const startDeliveryProcessingInterval = (interval) => {
-    setInterval(async () => {
-        console.log('Triggering delivery processing...');
-        try {
-            await dbHandler.processDeliveriesForToday();
-            console.log('Delivery processing completed successfully.');
-        } catch (err) {
-            console.error('Error during delivery processing:', err);
-        }
-    }, interval);
-};
-
-startDeliveryProcessingInterval(86400000);
-startModelRetrainingInterval(86400000);
+//time parameter(minute, hour, day of month, month, day of week)
+// Schedule delivery processing at a specific time (e.g., every day at 11:58 PM)
+const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
+    console.log('Triggering delivery processing...');
+    try {
+        await dbHandler.processDeliveriesForToday();
+        console.log('Delivery processing completed successfully.');
+    } catch (err) {
+        console.error('Error during delivery processing:', err);
+    }
+});
+// Schedule model retraining at a specific time (e.g., every day at 11:59 AM)
+const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
+    console.log('Triggering model retraining...');
+    try {
+        const data = await getDataForModelTraining();
+        await retrainModel(data);
+        console.log('Model retraining completed successfully.');
+    } catch (err) {
+        console.error('Error during model retraining:', err);
+    }
+});
 
 // Start the server
 app.listen(PORT, () => {
