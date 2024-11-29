@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import Payment from './Payment';
@@ -31,7 +30,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
     const username = localStorage.getItem('username');
 
     if (!username) {
-      toast.error('Invalid user. Please log in again.');
+      alert('Invalid user. Please log in again.');
     }
 
     console.log('Payment Method:', paymentMethod);
@@ -67,14 +66,14 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
     .then(data => {
       console.log('Payment response:', data);
       if (data.success) {
-        toast.success(`${data.message}`);
+        alert(`${data.message}`);
       } else {
-        toast.error('Payment failed.')
+        alert('Payment failed.')
       }
     })
     .catch(error => {
       console.error('Payment error:', error);
-      toast.error('An error occured while processing your payment.');
+      alert('An error occured while processing your payment.');
       setIsPaymentOpen(false);
     });
   };
