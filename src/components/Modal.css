@@ -60,7 +60,7 @@
   max-width: 100%;
   overflow-y: auto;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scrollbar-color: #e0e0e0;
 }
 

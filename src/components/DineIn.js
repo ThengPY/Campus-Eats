@@ -143,7 +143,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
               </label>
             </div>
           </form>
-          <button className="reserve-btn" onClick={handleReserveTable}>RESERVE</button>
+          <button className="reserve-btn" onClick={handleReserveTable}><b>RESERVE</b></button>
         </div>
 
         <hr />

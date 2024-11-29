@@ -251,7 +251,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
             )}
 
             {/* Submit Button */}
-            <button type="submit" className="pay-btn">Checkout</button>
+            <button type="submit" className="pay-btn">CHECKOUT</button>
           </form>
         </div>
       </div>

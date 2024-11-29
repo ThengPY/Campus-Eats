@@ -5,7 +5,7 @@ import '../styles.css';
 import Payment from './Payment';
 import qrcode from '../img/qrcode.jpg';
 
-const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
+const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
   const [expiration_date, setExpiration_date] = useState('');
@@ -14,6 +14,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
 
   const handlePaymentMethodChange = (e) => {
@@ -73,6 +74,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .catch(error => {
       console.error('Payment error:', error);
       toast.error('An error occured while processing your payment.');
+      setIsPaymentOpen(false);
     });
   };
 
@@ -196,14 +198,16 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
 
           {paymentMethod === 'creditCard' && (
             <div className="credit-card-details" style = {{marginTop : "10px"}}>
-              <div>
+              <div style = {{marginBottom : "15px"}}>
+                <label style = {{borderTop : "1px solid #e0e0e0", paddingTop : "10px"}}>Card Number:</label>
                 <input
                   type="text"
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
-                  placeholder="Enter Card Number"
                   required
                 />
+              </div>
+              <div style = {{marginBottom : "15px"}}>
                 <label>Expiration Date:</label>
                 <input
                     type="text"
@@ -211,6 +215,8 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
                     onChange={(e) => setExpiration_date(e.target.value)}
                     required
                 />
+              </div>
+              <div style = {{marginBottom : "15px"}}>
                 <label>CVV:</label>
                 <input
                     type="text"
@@ -223,8 +229,15 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
           )}
 
           {/* Submit Button */}
-          <button type="submit" className="pay-btn">Checkout</button>
+          <button type="submit" className="pay-btn">CHECKOUT</button>
         </form>
+          {isPaymentOpen && (
+              <Payment
+            paymentMethod={paymentMethod}
+            onClose={() => setIsPaymentOpen(false)}
+            onSubmit={handlePaymentSubmit}
+          />
+        )}
       </div>
     </div>
     </div>

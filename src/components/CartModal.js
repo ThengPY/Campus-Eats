@@ -24,7 +24,7 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
           <h2>My Cart</h2>
           
           {cartItems.length === 0 ? (
-            <p style={{fontSize: "20px"}}>Your cart is empty!</p>
+            <p style={{fontSize: "18px"}}>Your cart is empty!</p>
           ) : (
             <ul>
               <div className = "subcontent" style = {{maxHeight : "250px"}}>
@@ -44,9 +44,9 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
               <div>
                 <h3 style={{ marginBottom: '5px' }}>Preferred Dining Method: </h3>
                 <div className = "btn-group">
-                  <button className={`DineInBtn ${isDineInAllowed() ? "yes" : "no"}`} onClick={onDineInClick} disabled={!isDineInAllowed()}>DINE IN</button>
-                  <button className='PickupBtn' onClick={onPickupClick}>PICKUP</button>
-                  <button className='DeliveryBtn' onClick={onDeliveryClick}>DELIVERY</button> 
+                  <button className={`DineInBtn ${isDineInAllowed() ? "yes" : "no"}`} onClick={onDineInClick} disabled={!isDineInAllowed()}><b>DINE IN</b></button>
+                  <button className='PickupBtn' onClick={onPickupClick}><b>PICKUP</b></button>
+                  <button className='DeliveryBtn' onClick={onDeliveryClick}><b>DELIVERY</b></button> 
                 </div>
                 {!isDineInAllowed() && (
                   <p style={{ color : "#FF906B", fontSize: '12px'}}><span class="material-symbols-rounded" style = {{fontSize : "12px", color : "#FF906B"}}>error</span> Dine-in is only available when all orders are from the same cafeteria!</p>
