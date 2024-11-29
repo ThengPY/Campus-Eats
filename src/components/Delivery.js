@@ -5,7 +5,7 @@ import '../styles.css';
 import Payment from './Payment';
 import qrcode from '../img/qrcode.jpg';
 
-const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
+const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
   const [expiration_date, setExpiration_date] = useState('');
@@ -14,7 +14,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
-  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
 
   const handlePaymentMethodChange = (e) => {
@@ -74,7 +73,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
     .catch(error => {
       console.error('Payment error:', error);
       toast.error('An error occured while processing your payment.');
-      setIsPaymentOpen(false);
     });
   };
 
@@ -227,13 +225,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
           {/* Submit Button */}
           <button type="submit" className="pay-btn">Checkout</button>
         </form>
-          {isPaymentOpen && (
-              <Payment
-            paymentMethod={paymentMethod}
-            onClose={() => setIsPaymentOpen(false)}
-            onSubmit={handlePaymentSubmit}
-          />
-        )}
       </div>
     </div>
     </div>
