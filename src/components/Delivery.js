@@ -3,10 +3,13 @@ import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import Payment from './Payment';
+import qrcode from '../img/qrcode.jpg';
 
 const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
+  const [expiration_date, setExpiration_date] = useState('');
+  const [csv, setCsv] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
@@ -21,15 +24,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
 
     setIsEcoFriendly(!isEcoFriendly);
   };
-
-  const handlePayment = (e) => {
-    e.preventDefault();
-    console.log('Payment Method:', paymentMethod);
-    console.log('Name:', name);
-    console.log('Phone Number:', phoneNumber);
-    console.log('KK Location:', kkLocation);
-    setIsPaymentOpen(true);
-  }
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
@@ -56,7 +50,9 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
       price: updatedTotalPrice,
       delivery_name: name,
       phone_num: phoneNumber,
-      card_number: cardNumber
+      card_number: cardNumber,
+      expiration_date: expiration_date,
+      csv: csv
     }
 
     fetch(`http://localhost:5000/payment/${username}`, {
@@ -70,7 +66,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
     .then(data => {
       console.log('Payment response:', data);
       if (data.success) {
-        toast.success(`Payment successful. ${data.message}`);
+        toast.success(`${data.message}`);
       } else {
         toast.error('Payment failed.')
       }
@@ -122,7 +118,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
             <div className = "total-price"><b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b></div>
           </div>    
 
-        <form onSubmit={handlePayment}>
+        <form onSubmit={handlePaymentSubmit}>
           {/* Delivery Information */}
           <h3>Delivery Information</h3>
           
@@ -192,6 +188,14 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
             </label>
           </div>
 
+          {paymentMethod === 'TouchNGo' && (
+            <div className="qr-code-container">
+            <div>
+              <img src={qrcode} alt="Touch N Go QR Code"/>
+            </div>        
+          </div>
+          )}
+
           {paymentMethod === 'creditCard' && (
             <div className="credit-card-details" style = {{marginTop : "10px"}}>
               <div>
@@ -202,20 +206,32 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                   placeholder="Enter Card Number"
                   required
                 />
-              </div>        
+                <label>Expiration Date:</label>
+                <input
+                    type="text"
+                    value={expiration_date}
+                    onChange={(e) => setExpiration_date(e.target.value)}
+                    required
+                />
+                <label>CVV:</label>
+                <input
+                    type="text"
+                    value={csv}
+                    onChange={(e) => setCsv(e.target.value)}
+                    required
+                />
+              </div>
             </div>
           )}
 
           {/* Submit Button */}
           <button type="submit" className="pay-btn">Checkout</button>
         </form>
-        {isPaymentOpen && (
-          <Payment
+          {isPaymentOpen && (
+              <Payment
             paymentMethod={paymentMethod}
             onClose={() => setIsPaymentOpen(false)}
             onSubmit={handlePaymentSubmit}
-            cardNumber={setCardNumber}
-            setCardNumber={setCardNumber}
           />
         )}
       </div>

@@ -65,43 +65,6 @@ const loginUser  = (username, email, password, callback) => {
     });
 };
 
-// Function to create the reservations table if it doesn't exist
-const createReservationsTable = () => {
-    const sql = `
-        CREATE TABLE IF NOT EXISTS reservations (
-                                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                    username TEXT NOT NULL,
-                                                    table_number INTEGER NOT NULL,
-                                                    pax INTEGER NOT NULL,
-                                                    reservation_time DATETIME NOT NULL,
-                                                    location TEXT NOT NULL
-        )
-    `;
-
-    db.run(sql, (err) => {
-        if (err) {console.error('Error creating reservations table: ' + err.message);
-        } else {console.log('Reservations table created or already exists.');
-        }
-    });
-};
-
-// Function to insert a reservation
-const insertReservation = (username,table_number,pax,reservation_time, location) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO reservations(username,table_number,pax,reservation_time, location) VALUES (?,?,?,?,?)';
-
-        db.run(sql, [username,table_number,pax,reservation_time, location], function(err) {
-            if (err) {
-                console.error('Error inserting reservation: ' + err.message);
-                reject(err); // Reject the promise on error
-            } else {
-                console.log(`Reservation added with ID: ${this.lastID}`);
-                resolve(); // Resolve the promise on success
-            }
-        });
-    });
-};
-
 // Function to get a user by email
 const getUser = (email) => {
     return new Promise((resolve, reject) => {
@@ -134,6 +97,8 @@ const createOrdersTable = () => {
               phone_num INTEGER,
               payment_method TEXT,
               card_number TEXT,
+              expiration_date TEXT,
+              csv TEXT,
               pickup_date DATE,
               pickup_time TIME,
               FOREIGN KEY (username) REFERENCES users(Username)
@@ -147,7 +112,7 @@ const createOrdersTable = () => {
 };
 
 // Function to insert an order
-const insertOrder = (username, order_item, price, payment_method = null, option = null, reservation_time = null, delivery_name = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null, pickup_date = null, pickup_time = null, own_tableware = null) => {
+const insertOrder = (username, order_item, price, payment_method = null, option = null, reservation_time = null, delivery_name = null, eco_package = null, bring_container = null, address = null, phone_num = null, card_number = null,expiration_date = null,csv = null, pickup_date = null, pickup_time = null, own_tableware = null) => {
     return new Promise((resolve, reject) => {
         // Construct the SQL query dynamically
         let sql = 'INSERT INTO orders(username, order_item, price';
@@ -193,6 +158,14 @@ const insertOrder = (username, order_item, price, payment_method = null, option 
         if (card_number !== null) {
             sql += ', card_number';
             values.push(card_number);
+        }
+        if (expiration_date !== null) {
+            sql += ', expiration_date';
+            values.push(expiration_date);
+        }
+        if (csv !== null) {
+            sql += ', csv';
+            values.push(csv);
         }
         if (pickup_date !== null) {
             sql += ', pickup_date';
