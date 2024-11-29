@@ -128,7 +128,7 @@ app.get('/comments', (req, res) => {
         });
 });
 
-// Route to create an order(dont delete first)
+// Route to create an order(pending delete)
 // used as alternative test
 app.post('/order/create/:username', (req, res) => {
     const username = req.params.username;
@@ -172,10 +172,10 @@ app.post('/payment/:username', (req, res) => {
             res.status(500).json({ success: false, message: 'Payment failed. Please try again.' });
         });
 });
-
+//pending delete
 // New endpoint to trigger model training
 app.get('/model/train', (req, res) => {
-    getDataForModelTraining()
+    dbHandler.getDataForModelTraining()
         .then(data => {
             return retrainModel(data); // Pass the retrieved data to retrain the model
         })
@@ -188,13 +188,16 @@ app.get('/model/train', (req, res) => {
         });
 });
 
+
+
+//create table before importing functions
 dbHandler.createModelDataTable()
 const {retrainModel} = require('./ModelTraining');
-const {getDataForModelTraining} = require("./dbHandler");
 const schedule = require('node-schedule');
 
-//time parameter(minute, hour, day of month, month, day of week)
-// Schedule delivery processing at a specific time (e.g., every day at 11:58 PM)
+//time parameter(minute, hour, day of month, month of year, day of week)
+// Schedule order processing at 11:58 PM
+// take order from order table to model table
 const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
     console.log('Triggering delivery processing...');
     try {
@@ -204,16 +207,23 @@ const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
         console.error('Error during delivery processing:', err);
     }
 });
-// Schedule model retraining at a specific time (e.g., every day at 11:59 AM)
+// Schedule model retraining at 11:59 PM
 const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
     console.log('Triggering model retraining...');
     try {
-        const data = await getDataForModelTraining();
+        const data = await dbHandler.getDataForModelTraining();
         await retrainModel(data);
         console.log('Model retraining completed successfully.');
     } catch (err) {
         console.error('Error during model retraining:', err);
     }
+});
+
+//schedule delivery at 00:01 PM
+const {scheduleDeliveriesForTheDay} = require('./DeliverySchedule');
+schedule.scheduleJob('1 0 * * *', () => {
+    console.log('Resetting delivery schedule for the new day');
+    scheduleDeliveriesForTheDay(); // Call the function to schedule deliveries for the day
 });
 
 // Start the server
