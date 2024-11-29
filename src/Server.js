@@ -12,7 +12,8 @@ app.use(cors());
 // Create the users table
 dbHandler.createTable();
 dbHandler.createOrdersTable();
-dbHandler.createCommentsTable()
+dbHandler.createCommentsTable();
+dbHandler.createModelDataTable();
 
 // Route to register a new user
 app.post('/user/register', (req, res) => {

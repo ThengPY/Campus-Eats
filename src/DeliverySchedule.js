@@ -1,6 +1,5 @@
 const tf = require('@tensorflow/tfjs-node');
 const dbHandler = require('./dbHandler');
-const schedule = require('node-schedule');
 
 // Function to use the model and make predictions
 async function deliveryPredictionModel(inputData) {
@@ -47,12 +46,6 @@ async function scheduleDeliveriesForTheDay() {
 
                 // Store the scheduled delivery in the database
                 await dbHandler.insertSchedule(hour, minute, batch + 1, batchTime);
-
-                // Use node-schedule to schedule the delivery batch
-                schedule.scheduleJob(batchTime, () => {
-                    console.log(`Batch delivery scheduled for ${batchTime.toLocaleString()}: Delivering batch #${batch + 1}`);
-                    // Here you can add the logic to trigger the delivery process
-                });
             }
         } catch (err) {
             console.error("Error predicting deliveries:", err);
