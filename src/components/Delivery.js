@@ -93,7 +93,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
         <div className = "close-btn">
           <span class="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
-        <h2>Checkout (Delivery)</h2>
+        <h2>Delivery Checkout</h2>
         
         <div className = "subcontent">
           {/* Order Summary */}
@@ -126,7 +126,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
           {/* Delivery Information */}
           <h3>Delivery Information</h3>
           
-          <div>
+          <div style = {{marginBottom : "15px"}}>
             <label>Name:</label>
             <input
               type="text"
@@ -136,7 +136,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
             />
           </div>
 
-          <div>
+          <div style = {{marginBottom : "15px"}}>
             <label>Phone Number:</label>
             <input 
               type="text"
@@ -169,8 +169,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
               <option value="kk13">KK13</option>
             </select>
           </div>
-          {/* Payment Method Section */}
-          <div>-------------------------------------------------------</div>
 
           <h3>Choose Payment Methods</h3>
           <div>
@@ -195,13 +193,13 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
           </div>
 
           {paymentMethod === 'creditCard' && (
-            <div className="credit-card-details">
+            <div className="credit-card-details" style = {{marginTop : "10px"}}>
               <div>
-                <label>Card Number:</label>
                 <input
                   type="text"
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
+                  placeholder="Enter Card Number"
                   required
                 />
               </div>        

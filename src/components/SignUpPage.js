@@ -182,10 +182,10 @@ const SignUpPage = ({ isOpen, onClose }) => {
             <p style={{ color: 'red', marginTop: '-10px' }}>Passwords do not match</p>
           )}
           <div className = "account-btns">
-            <button type="button" className="submit-btn" onClick={handleSignUp}>Sign Up</button>
-            <button type="button" className="submit-btn" onClick={handleLogin}>Log In</button>
+            <button type="button" className="submit-btn" onClick={handleSignUp}><b>SIGN UP</b></button>
+            <button type="button" className="submit-btn" onClick={handleLogin}><b>LOG IN</b></button>
           </div>
-          <button type="button" className="forget-btn" onClick={handleForgetPassword}>Forget Password</button>
+          <button type="button" className="forget-btn" onClick={handleForgetPassword}><b>FORGET PASSWORD</b></button>
         </form>
       </div>
       {isForgetPasswordOverlayOpen && (

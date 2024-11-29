@@ -18,7 +18,7 @@ const ForgetPasswordOverlay = ({ onClose, onSubmit, email, setEmail }) => {
                             <i className="material-symbols-rounded">email</i>
                         </div>
                     </div>
-                    <button type="submit" className="submit-btn">Submit</button>
+                    <button type="submit" className="submit-btn">SUBMIT</button>
                 </form>
             </div>
         </div>

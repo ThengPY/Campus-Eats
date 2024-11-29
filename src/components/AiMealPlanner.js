@@ -122,15 +122,15 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
           </span>
         </div>
         <h2>AI Meal Planner</h2>
-        <p style = {{fontSize : "15px", color : "black"}}>Don't know what to eat? <br /> Let our AI Meal Planner decide for you...</p>
+        <p style = {{fontSize : "15px", color : "black"}}>Don't know what to eat? <br /> Let our AI Meal Planner decide for you!</p>
         
         <div className = "mealplanner-div">
           <label>
             Select Cafeteria:
             <select
-            style={{ marginLeft: "7px", cursor: "pointer" }}
               value={cafeteria}
               onChange={(e) => setCafeteria(Number(e.target.value))} // Convert to number here
+              className = "select"
             >
               <option value="">Any</option>
               {cafeterias.map((cafeteria) => (
@@ -144,7 +144,6 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         <label style={{ marginTop: "10px" }}>
           Food & Drinks Price Range:
           <select className="select" 
-            style={{ marginLeft: "7px", cursor: "pointer" }}
             value={priceRange}
             onChange={(e) => setPriceRange(e.target.value)}
           >
@@ -159,7 +158,6 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         <label style={{marginTop: "10px"}}>
           Dietary Preferences:
           <select className="select" 
-            style={{ marginLeft: "7px", cursor: "pointer" }}
             value={preferences}
             onChange={(e) => setPreferences(e.target.value)}
           >
@@ -175,38 +173,39 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         >
           GENERATE MEAL PLAN
         </button>
-
-        {mealPlan && (
-          <div className="meal-plan">
-            {Object.keys(mealPlan).map((cafeteriaId) => (
-              <div key={cafeteriaId}>
-                <h2 style={{ paddingTop: "15px", borderTop: "1px solid #e0e0e0" }}>{mealPlan[cafeteriaId].name} Recommended Meal</h2>
-                <ul>
-                  <li>
-                    <span className="meals-generated">
-                      <span> Food: {mealPlan[cafeteriaId].food.name}</span>
-                    </span>
-                    {mealPlan[cafeteriaId].food.price && (
-                      <div className="right-icons" style={{gap : "3px"}}>
-                        <span>RM {(mealPlan[cafeteriaId].food.price).toFixed(2)}</span>
-                        <span class="material-symbols-rounded" onClick={() => handleAddToCartLocal(mealPlan[cafeteriaId].food, cafeteriaId)} style={{ fontSize: "25px" }}>add</span>
-                      </div>
-                    )}
-                  </li>
-                  <li>
-                    <span className="meals-generated"><span> Drink: {mealPlan[cafeteriaId].drink.name}</span></span>
-                    {mealPlan[cafeteriaId].drink.price && (
-                      <div className="right-icons" style={{gap : "3px"}}>
-                        <span> RM {mealPlan[cafeteriaId].drink.price.toFixed(2)}</span>
-                        <span className="material-symbols-rounded" onClick={() => handleAddToCartLocal(mealPlan[cafeteriaId].drink, cafeteriaId)} style={{ fontSize: "25px" }}>add</span>
-                      </div>
-                    )}
-                  </li>
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className = "subcontent" style = {{maxHeight : "300px"}}>
+          {mealPlan && (
+            <div className="meal-plan">
+              {Object.keys(mealPlan).map((cafeteriaId) => (
+                <div key={cafeteriaId}>
+                  <h2 style={{ paddingTop: "15px", borderTop: "1px solid #e0e0e0" }}>{mealPlan[cafeteriaId].name} Recommended Meal</h2>
+                  <ul>
+                    <li>
+                      <span className="meals-generated">
+                        <span> Food: {mealPlan[cafeteriaId].food.name}</span>
+                      </span>
+                      {mealPlan[cafeteriaId].food.price && (
+                        <div className="right-icons" style={{gap : "3px"}}>
+                          <span>RM {(mealPlan[cafeteriaId].food.price).toFixed(2)}</span>
+                          <span class="material-symbols-rounded" onClick={() => handleAddToCartLocal(mealPlan[cafeteriaId].food, cafeteriaId)} style={{ fontSize: "25px" }}>add</span>
+                        </div>
+                      )}
+                    </li>
+                    <li>
+                      <span className="meals-generated"><span> Drink: {mealPlan[cafeteriaId].drink.name}</span></span>
+                      {mealPlan[cafeteriaId].drink.price && (
+                        <div className="right-icons" style={{gap : "3px"}}>
+                          <span> RM {mealPlan[cafeteriaId].drink.price.toFixed(2)}</span>
+                          <span className="material-symbols-rounded" onClick={() => handleAddToCartLocal(mealPlan[cafeteriaId].drink, cafeteriaId)} style={{ fontSize: "25px" }}>add</span>
+                        </div>
+                      )}
+                    </li>
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
     </div>

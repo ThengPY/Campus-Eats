@@ -129,10 +129,10 @@ const CommunityBoard = ({isOpen, onClose}) => {
                         className="comment-textarea"
                     />
                     <div className = "friendly-reminder">
-                        <p style = {{marginTop : "0px", cursor : "default", fontSize : "12px"}}><span class="material-symbols-rounded" style = {{fontSize : "12px"}}>error</span> Please keep the conversation respectful and helpful!</p>
+                        <p style = {{marginTop : "0px", cursor : "default", fontSize : "12px", color : "#FF906B"}}><span class="material-symbols-rounded" style = {{fontSize : "12px", color : "#FF906B"}}>error</span> Please keep the conversation respectful and helpful!</p>
                     </div>
                     
-                    <button type="submit">POST</button>
+                    <button type="submit" style = {{backgroundColor : "#FFCB59"}}>POST</button>
                 </form>
 
                 

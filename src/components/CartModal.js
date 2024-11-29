@@ -27,7 +27,7 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
             <p style={{fontSize: "20px"}}>Your cart is empty!</p>
           ) : (
             <ul>
-              <div className = "subcontent" style = {{height : "250px"}}>
+              <div className = "subcontent" style = {{maxHeight : "250px"}}>
               {cartItems.map(item => (
                 <li key={item.id} style = {{alignItems : "center"}}>
                   <span>
@@ -49,7 +49,7 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
                   <button className='DeliveryBtn' onClick={onDeliveryClick}>DELIVERY</button> 
                 </div>
                 {!isDineInAllowed() && (
-                  <p style={{ color: 'red', fontSize: '12px'}}><span class="material-symbols-rounded" style = {{fontSize : "12px", color : "red"}}>error</span> Dine-in is only available when all orders are from the same cafeteria!</p>
+                  <p style={{ color : "#FF906B", fontSize: '12px'}}><span class="material-symbols-rounded" style = {{fontSize : "12px", color : "#FF906B"}}>error</span> Dine-in is only available when all orders are from the same cafeteria!</p>
                 )}
               </div>
             </ul>
