@@ -56,7 +56,6 @@ const SignUpPage = ({ isOpen, onClose }) => {
         .then(response => response.text())
         .then(data => {
           console.log('Sign up response:', data);
-          localStorage.setItem('username',username);
           onClose();
         })
         .catch(error => {

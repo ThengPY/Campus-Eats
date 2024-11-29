@@ -1,0 +1,54 @@
+.pop-up-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: white;
+    color: #ffcb59;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: fadeIn 0.5s;
+}
+
+.pop-up-content {
+    padding: 15px;
+    text-align: center;
+}
+
+.pop-up-content p {
+    margin: 0;
+    font-size: 16px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity:0;
+    } else {
+        opacity:1;
+    }
+}
+
+.delivery-button-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.delivery-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #FFCB59;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.delivery-button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+    transform: scale(1.05);
+}

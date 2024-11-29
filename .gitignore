@@ -16,6 +16,9 @@ node_modules/
 #prevent database changes
 .db
 
+#machine learning model
+#/model/
+
 # Build directories
 build/
 dist/

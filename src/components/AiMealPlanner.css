@@ -1,0 +1,18 @@
+.meals-generated {
+  display: flex;
+  justify-content: space-between; /* Push the items to opposite sides */
+  align-items: center; /* Vertically center the text and icon */
+  margin: 10px 0; /* Add spacing between rows */
+}
+
+.add-icon {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  transition: transform 0.3s ease-in-out; /* Smooth hover animation */
+  cursor: pointer;
+  color: #FFCB59;
+  font-size: 30px;
+}
+
+.add-icon:hover {
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
