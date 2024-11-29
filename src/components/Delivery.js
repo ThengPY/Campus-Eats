@@ -56,12 +56,13 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
       price: updatedTotalPrice,
       delivery_name: name,
       phone_num: phoneNumber,
+      payment_method: paymentMethod,
       card_number: cardNumber,
       expiration_date: expiration_date,
       csv: csv
     }
 
-    fetch(`http://localhost:5000/payment/${username}`, {
+    fetch(`http://localhost:5000/order/create/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
     .then(data => {
       console.log('Payment response:', data);
       if (data.success) {
-        alert(`${data.message}`);
+        alert(`${data.message}\nOrder received`);
       } else {
         alert('Payment failed.')
       }

@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 // Create the users table
-dbHandler.createTable();
+dbHandler.createUserTable();
 dbHandler.createOrdersTable();
 dbHandler.createCommentsTable();
 dbHandler.createSchedulesTable()
@@ -129,30 +129,8 @@ app.get('/comments', (req, res) => {
         });
 });
 
-// Route to create an order(pending delete)
-// used as alternative test
-app.post('/order/create/:username', (req, res) => {
-    const username = req.params.username;
-    const { order_item, price, payment_method, card_number, pickup_date, pickup_time } = req.body;
-
-    // Input validation
-    if (!username || !order_item || !price) {
-        return res.status(400).send('Username, order item, and price are required');
-    }
-
-    // Insert order into the database
-    dbHandler.insertOrder(username, order_item, price, payment_method, card_number, pickup_date, pickup_time)
-        .then((orderId) => {
-            res.status(201).send(`Order created successfully with ID: ${orderId}`);
-        })
-        .catch((err) => {
-            console.error('Error creating order:', err);
-            res.status(500).send('Internal server error');
-        });
-});
-
 // Route to create order
-app.post('/payment/:username', (req, res) => {
+app.post('/order/create/:username', (req, res) => {
     const username = req.params.username;
     const { order_item, price, payment_method, option, reservation_time, delivery_name, eco_package, bring_container, address, phone_num, card_number, expiration_date, csv, pickup_date, pickup_time, own_tableware} = req.body;
 
@@ -174,7 +152,8 @@ app.post('/payment/:username', (req, res) => {
         });
 });
 
-app.get('/getDeliveryTime/:username', (req, res) => {
+//access schedules table to find available delivery time
+app.get('/getDeliveryTime', (req, res) => {
     const username = req.params.username;
 
     dbHandler.getSchedules()
@@ -193,8 +172,9 @@ app.get('/getDeliveryTime/:username', (req, res) => {
 });
 
 
-//pending delete
-// New endpoint to trigger model training
+//only uncomment if tensorflow is configured
+/*
+// Alternate endpoint to trigger model training
 app.get('/model/train', (req, res) => {
     dbHandler.getDataForModelTraining()
         .then(data => {
@@ -245,6 +225,7 @@ schedule.scheduleJob('1 0 * * *', () => {
     console.log('Resetting delivery schedule for the new day');
     scheduleDeliveriesForTheDay(); // Call the function to schedule deliveries for the day
 });
+ */
 
 // Start the server
 app.listen(PORT, () => {

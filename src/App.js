@@ -44,8 +44,6 @@ const App = () => {
   const [isCommunityBoardOpen, setIsCommunityBoardOpen] = useState(false);
   const [showDeliveryPopUp, setShowDeliveryPopUp] = useState(false);
   const [DeliveryPopUpMessage, setDeliveryPopUpMessage] = useState('');
-  const [deliveryTimeLoading, setDeliveryTimeLoading] = useState(false);
-  const [deliveryTimeError, setDeliveryTimeError] = useState(null);
 
 
   //set default username
@@ -529,10 +527,7 @@ const App = () => {
   }
 
   const handleDeliveryNotification = () => {
-    setDeliveryTimeLoading(true); // Set loading state for delivery time
-    setDeliveryTimeError(null); // Reset any previous errors
-
-    fetch(`http://localhost:5000/getDeliveryTime/anything`)
+    fetch(`http://localhost:5000/getDeliveryTime`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Failed to fetch delivery time');
@@ -559,9 +554,6 @@ const App = () => {
           setDeliveryPopUpMessage('An error occurred while fetching delivery time.');
           setShowDeliveryPopUp(true); // Show the delivery popup with error message
         })
-        .finally(() => {
-          setDeliveryTimeLoading(false); // Reset loading state
-        });
   };
 
   return (

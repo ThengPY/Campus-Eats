@@ -42,7 +42,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
       location: cafeteriaName
     };
 
-    fetch(`http://localhost:5000/payment/${username}`, {
+    fetch(`http://localhost:5000/order/create/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

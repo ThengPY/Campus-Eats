@@ -11,7 +11,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 });
 
 // Function to create a table if it doesn't exist
-const createTable = () => {
+const createUserTable = () => {
     const sql = `
         CREATE TABLE IF NOT EXISTS users (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -100,7 +100,7 @@ const createOrdersTable = () => {
               expiration_date TEXT,
               csv TEXT,
               pickup_date DATE,
-              pickup_time TIME,
+              pickup_time TEXT,
               FOREIGN KEY (username) REFERENCES users(Username)
         )
     `;
@@ -200,7 +200,7 @@ const getUsersOrders = (username, callback) => {
         price, 
         payment_method,  
         STRFTIME('%d/%m/%Y', pickup_date) AS formatted_pickup_date, 
-        STRFTIME('%H:%M', pickup_time) AS formatted_pickup_time 
+        pickup_time
     FROM 
         orders 
     WHERE 
@@ -528,7 +528,7 @@ insertMultipleModelData(deliveriesData)
 
 
 // Export the database connection for use in other modules
-module.exports ={ db,createTable,insertUser,loginUser, getUser,
+module.exports ={ db,createUserTable,insertUser,loginUser, getUser,
                     createOrdersTable, insertOrder, getUsersOrders,
                     createCommentsTable,insertComment, getComments,
                     getDataForModelTraining,createModelDataTable,
