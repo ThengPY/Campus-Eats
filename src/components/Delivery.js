@@ -4,7 +4,7 @@ import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import Payment from './Payment';
 
-const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
+const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
   const [name, setName] = useState('');
@@ -97,7 +97,8 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose }) => {
             <ul>
               {cartItems.map(item => (
                 <li key={item.id}>
-                  {`${item.name} (${item.cafeteria}) [ x${item.quantity} ]  - RM${(item.price * item.quantity).toFixed(2)} `}
+                  <span>{`[ x${item.quantity} ] ${item.name} (${item.cafeteria})`}</span>
+                  <span>{`RM${(item.price * item.quantity).toFixed(2)} `}</span>
                 </li>
               ))}
             </ul>

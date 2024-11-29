@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import mealplanner from '../img/mealplanner.png'
 
-const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
+const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) => {
   if (!isOpen) return null;
 
   const [cafeteria, setCafeteria] = useState("");
@@ -73,59 +74,75 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems }) => {
           </span>
         </div>
         <h2>AI Meal Planner</h2>
-        <h3>Don't know what to eat?</h3>
-        <p>Let our AI Meal Planner decide for you...</p>
-        <label>
-          Select Cafeteria:
-          <select style={{marginLeft: "7px", cursor: "pointer"}}
-            value={cafeteria}
-            onChange={(e) => setCafeteria(e.target.value)}
-          >
-            <option value="">Any</option>
-            {cafeterias.map((cafeteria) => (
-              <option key={cafeteria.id} value={cafeteria.id}>
-                {cafeteria.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <p style = {{fontSize : "15px", color : "black"}}>Don't know what to eat? <br /> Let our AI Meal Planner decide for you...</p>
+        
+        <div className = "mealplanner-div">
+          <label>
+            Select Cafeteria:
+            <select style={{marginLeft: "7px", cursor: "pointer"}}
+              value={cafeteria}
+              onChange={(e) => setCafeteria(e.target.value)}
+            >
+              <option value="">Any</option>
+              {cafeterias.map((cafeteria) => (
+                <option key={cafeteria.id} value={cafeteria.id}>
+                  {cafeteria.name}
+                </option>
+              ))}
+            </select>
+          </label>
 
-        <label>
-          Price Range:
-          <select style={{marginLeft: "7px", cursor: "pointer"}}
-            value={priceRange}
-            onChange={(e) => setPriceRange(e.target.value)}
-          >
-            <option value="">Any</option>
-            <option value="0-3">RM 0 - RM 3</option>
-            <option value="3-5">RM 3 - RM 5</option>
-            <option value="5-8">RM 5 - RM 8</option>
-            <option value="8-10">RM 8 - RM 10</option>
-          </select>
-        </label>
+          <label>
+            Price Range:
+            <select style={{marginLeft: "7px", cursor: "pointer"}}
+              value={priceRange}
+              onChange={(e) => setPriceRange(e.target.value)}
+            >
+              <option value="">Any</option>
+              <option value="0-3">Below RM 3</option>
+              <option value="0-5">Below RM 5</option>
+              <option value="0-8">Below RM 8</option>
+              <option value="0-10">Below RM 10</option>
+            </select>
+          </label>
 
-        <label>
-          Dietary Preference:
-          <select style={{marginLeft: "7px", cursor: "pointer"}}
-            value={preference}
-            onChange={(e) => setPreference(e.target.value)}
-          >
-            <option value="">Any</option>
-            <option value="Vege">Vegetarian</option>
-            <option value="NonVege">Non-Vegetarian</option>
-          </select>
-        </label>
+          <label>
+            Dietary Preference:
+            <select style={{marginLeft: "7px", cursor: "pointer"}}
+              value={preference}
+              onChange={(e) => setPreference(e.target.value)}
+            >
+              <option value="">Any</option>
+              <option value="Vege">Vegetarian</option>
+              <option value="NonVege">Non-Vegetarian</option>
+            </select>
+          </label>
+        </div>
 
-        <button style={{ marginBottom: "20px", marginTop: "20px" }} onClick={generateMealPlan}>Generate Meal Plan</button>
+        <button className = "generate-meal-plan-btn" style={{ marginBottom: "20px", marginTop: "20px", backgroundColor : "#FFCB59", width : "100%" }} onClick={generateMealPlan}>GENERATE MEAL PLAN</button>
 
         {mealPlan && (
           <div className="meal-plan">
-            <h2 style={{ paddingTop: "15px", borderTop: "1px solid #e0e0e0" }}>Recommended Meals</h2>
+            
             {Object.keys(mealPlan).map((cafeteriaId) => (
               <div key={cafeteriaId}>
-                <h4>{mealPlan[cafeteriaId].name}</h4>
-                <h5>Food: {mealPlan[cafeteriaId].food.name}</h5>
-                <h5>Drink: {mealPlan[cafeteriaId].drink.name}</h5>
+                <h2 style={{ paddingTop: "15px", borderTop: "1px solid #e0e0e0" }}>{mealPlan[cafeteriaId].name} Recommended Meal</h2>
+                <ul>
+                  <li>
+                    <span>Food: {mealPlan[cafeteriaId].food.name}</span>
+                    <div className="right-icons" style={{gap : "3px"}}>
+                      <span>RM {(mealPlan[cafeteriaId].food.price).toFixed(2)}</span>
+                      <span class="material-symbols-rounded" onClick={() => onAddToCart(mealPlan[cafeteriaId].food)} style={{ fontSize: "25px" }}>add</span>
+                    </div>
+                  </li>
+                  <li>
+                    <span>Drink: {mealPlan[cafeteriaId].drink.name}</span>
+                    <div className="right-icons" style={{gap : "3px"}}>
+                      <span>RM {(mealPlan[cafeteriaId].drink.price).toFixed(2)}</span>
+                      <span class="material-symbols-rounded" onClick={() => onAddToCart(mealPlan[cafeteriaId].drink)} style={{ fontSize: "25px" }}>add</span>
+                    </div>
+                  </li>
+                </ul>
               </div>
             ))}
           </div>

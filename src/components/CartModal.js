@@ -27,7 +27,7 @@ const CartModal = ({ isOpen, onClose, cartItems, onRemoveFromCart, onDineInClick
             <p style={{fontSize: "20px"}}>Your cart is empty!</p>
           ) : (
             <ul>
-              <div className = "subcontent" style = {{height : "350px"}}>
+              <div className = "subcontent" style = {{height : "250px"}}>
               {cartItems.map(item => (
                 <li key={item.id} style = {{alignItems : "center"}}>
                   <span>

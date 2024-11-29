@@ -116,137 +116,131 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
         <div className = "close-btn">
           <span class="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
-        <h2>Checkout (Pick-Up)</h2>
-        
-        {/* Order Summary */}
-        <div className="order-summary">
-          <h3>Order Summary</h3>
-          <ul>
-            {cartItems.map((item) => (
-              <li key={item.id}>
-                {`${item.name} (${item.cafeteria}) [ x${item.quantity} ]  - RM${(
-                  item.price * item.quantity
-                ).toFixed(2)} `}
-              </li>
-            ))}
-          </ul>
+        <h2>Pick-Up Checkout</h2>
+        <div className = "subcontent">
+          {/* Order Summary */}
+          <div className="order-summary">
+            <h3>Order Summary</h3>
+            <ul>
+              {cartItems.map((item) => (
+                <li key={item.id}>
+                  <span>{`[ x${item.quantity} ] ${item.name} (${item.cafeteria})`}</span>
+                  <span>{`RM${(item.price * item.quantity).toFixed(2)} `}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Eco-friendly package option */}
+          <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                    <label >
+                      <input 
+                        type="checkbox"
+                        checked={isEcoFriendly}
+                        onChange={handleEcoFriendlyChange}
+                        className="reserve-checkbox"
+                      />
+                      <span> Choose eco-friendly packaging (+RM 1.00)</span>
+                    </label>
+            </div>
+            {/*Bring own tableware option */}
+          <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                    <label style={{paddingBottom: "5px"}}>
+                      <input type="checkbox" checked={isOwnContainer} onChange={handleOwnContainerChange} className="reserve-checkbox" />
+                      <span> Bring your own container (Get 10% discount!)</span>
+                    </label>
+                  </div>
+          <h4 className = "total-price">Total Price: RM{calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer).toFixed(2)} </h4>
+
+
+          {/* Form Section */}
+          <form onSubmit={handlePayment}>
+            {/* Pick-Up Time Section */}
+            <h3 className="pick-up-time">Select Pick-Up Date and Time</h3>
+            <div className="pickup-time-selector">
+              <div className="pickup-time-container">
+                {/* Date Picker */}
+                <label htmlFor="pickup-date">Date: &nbsp;
+                  <input
+                    type="date"
+                    id="pickup-date"
+                    value={pickupDate}
+                    onChange={handleDateChange}
+                    required
+                  />
+                </label>
+              </div>
+
+              <div className="pickup-time-container">
+                {/* Time Dropdown */}
+                <label htmlFor="pickup-time">Time: &nbsp;
+                <select
+                  id="pickup-time"
+                  value={pickupTime}
+                  onChange={handleTimeChange}
+                  required
+                >
+                  <option value="">Select a time</option>
+                  <option value="08:00 AM">08:00 AM</option>
+                  <option value="09:00 AM">09:00 AM</option>
+                  <option value="10:00 AM">10:00 AM</option>
+                  <option value="11:00 AM">11:00 AM</option>
+                  <option value="12:00 PM">12:00 PM</option>
+                  <option value="01:00 PM">01:00 PM</option>
+                  <option value="02:00 PM">02:00 PM</option>
+                  <option value="03:00 PM">03:00 PM</option>
+                  <option value="04:00 PM">04:00 PM</option>
+                  <option value="05:00 PM">05:00 PM</option>
+                </select>
+                </label>
+              </div>
+
+              {/* Display Selected Date and Time */}
+              {pickupDate && pickupTime && (
+                <p>
+                  Selected Pick-Up: <strong>{pickupDate}</strong> at{' '}
+                  <strong>{pickupTime}</strong>
+                </p>
+              )}
+            </div>
+
+            {/* Payment Method Section */}
+            <h3 className="payment-method">Choose Payment Method</h3>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  value="TouchNGo"
+                  checked={paymentMethod === 'TouchNGo'}
+                  onChange={handlePaymentMethodChange}
+                />
+                TouchNGo
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="creditCard"
+                  checked={paymentMethod === 'creditCard'}
+                  onChange={handlePaymentMethodChange}
+                />
+                Credit Card
+              </label>
+            </div>
+
+            {/* Submit Button */}
+            <button type="submit" className="pay-btn">
+              Checkout
+            </button>
+          </form>
+          {isPaymentOpen && (
+            <Payment
+              paymentMethod={paymentMethod}
+              onClose={() => setIsPaymentOpen(false)}
+              onSubmit={handlePaymentSubmit}
+              cardNumber={cardNumber}
+              setCardNumber={setCardNumber}
+            />
+          )}
         </div>
-        {/* Eco-friendly package option */}
-        <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                  <label >
-                    <input 
-                      type="checkbox"
-                      checked={isEcoFriendly}
-                      onChange={handleEcoFriendlyChange}
-                      className="reserve-checkbox"
-                    />
-                    <span >Choose eco-friendly packaging (+RM 1.00)</span>
-                  </label>
-          </div>
-           {/*Bring own tableware option */}
-         <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                  <label style={{paddingBottom: "5px"}}>
-                    <input 
-                      type="checkbox"
-                      checked={isOwnContainer}
-                      onChange={handleOwnContainerChange}
-                      className="reserve-checkbox"
-                    />
-                    <span  >Bring your own container (get 10% discount)</span>
-                  </label>
-                </div>
-        <div>-------------------------------------------------------</div>
-        <b>Total Price: RM{calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer).toFixed(2)} </b>
-        <div>-------------------------------------------------------</div>
-
-
-        {/* Form Section */}
-        <form onSubmit={handlePayment}>
-          {/* Pick-Up Time Section */}
-          <h3 className="pick-up-time">Select Pick-Up Date and Time</h3>
-          <div className="pickup-time-selector">
-            <div className="pickup-time-container">
-              {/* Date Picker */}
-              <label htmlFor="pickup-date">Date:</label>
-              <input
-                type="date"
-                id="pickup-date"
-                value={pickupDate}
-                onChange={handleDateChange}
-                required
-              />
-            </div>
-
-            <div className="pickup-time-container">
-              {/* Time Dropdown */}
-              <label htmlFor="pickup-time">Time:</label>
-              <select
-                id="pickup-time"
-                value={pickupTime}
-                onChange={handleTimeChange}
-                required
-              >
-                <option value="">Select a time</option>
-                <option value="08:00 AM">08:00 AM</option>
-                <option value="09:00 AM">09:00 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="11:00 AM">11:00 AM</option>
-                <option value="12:00 PM">12:00 PM</option>
-                <option value="01:00 PM">01:00 PM</option>
-                <option value="02:00 PM">02:00 PM</option>
-                <option value="03:00 PM">03:00 PM</option>
-                <option value="04:00 PM">04:00 PM</option>
-                <option value="05:00 PM">05:00 PM</option>
-              </select>
-            </div>
-
-            {/* Display Selected Date and Time */}
-            {pickupDate && pickupTime && (
-              <p>
-                Selected Pick-Up: <strong>{pickupDate}</strong> at{' '}
-                <strong>{pickupTime}</strong>
-              </p>
-            )}
-          </div>
-
-          {/* Payment Method Section */}
-          <div style={{paddingTop: "15px"}}>-------------------------------------------------------</div>
-          <h3 className="payment-method">Choose Payment Method</h3>
-          <div>
-            <label>
-              <input
-                type="radio"
-                value="TouchNGo"
-                checked={paymentMethod === 'TouchNGo'}
-                onChange={handlePaymentMethodChange}
-              />
-              TouchNGo
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="creditCard"
-                checked={paymentMethod === 'creditCard'}
-                onChange={handlePaymentMethodChange}
-              />
-              Credit Card
-            </label>
-          </div>
-
-          {/* Submit Button */}
-          <button type="submit" className="pay-btn">
-            Checkout
-          </button>
-        </form>
-        {isPaymentOpen && (
-          <Payment
-            paymentMethod={paymentMethod}
-            onClose={() => setIsPaymentOpen(false)}
-            onSubmit={handlePaymentSubmit}
-            cardNumber={cardNumber}
-            setCardNumber={setCardNumber}
-          />
-        )}
       </div>
     </div>
   );

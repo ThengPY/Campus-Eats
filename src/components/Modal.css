@@ -130,7 +130,9 @@ button {
     transform: scale(1.05);
 }
 
-.reserve-btn:hover {
+.reserve-btn:hover, .generate-meal-plan-btn:hover {
+  background-color: #F2BF50;
+  cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s ease-in-out;
   transform: scale(1.05);
@@ -149,7 +151,7 @@ button {
 
 /* Payments */
 
-.table-input, .num-ppl-input {
+.table-input, .num-ppl-input, #pickup-date, #pickup-time {
   margin-left: 3%;
   margin-bottom: 2%;
   cursor: pointer;
@@ -226,3 +228,9 @@ p {
   gap: 8px;
   font-size: 15px;
 }
+
+.mealplanner-div {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 15px;
+}
+

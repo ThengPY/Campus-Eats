@@ -571,6 +571,7 @@ const App = () => {
       onClose={handleCloseMealPlanner} 
       cafeterias={cafeterias}
       foodItems={foodItems} 
+      onAddToCart={(item) => handleAddToCart(item, selectedCafeteria)}
     />
     <DineIn
      isOpen={isDineInModalOpen} 

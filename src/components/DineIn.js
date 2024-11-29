@@ -68,40 +68,34 @@ const handleCheckboxChange = (item) => {
       <div className = "close-btn">
           <span class="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
-        <h2>Dine-In Reservations</h2>
+        <h2>Dine-In Checkout</h2>
 
         {/* Order Summary */}
-        <div className="order-summary">
-          <h3>Order Summary {`(${cartItems[0].cafeteria})`}</h3>
-          <ul>
-            {cartItems.map((item) => (
-              <li key={item.id}>
-                {`${item.name} [ x${item.quantity} ]  - RM${(
-                  item.price * item.quantity
-                ).toFixed(2)} `}
-              </li>
-            ))}
-          </ul>
+        <div className = "subcontent" style = {{height : "250px"}}>
+          <div className="order-summary">
+            <h3>Order Summary {`(${cartItems[0].cafeteria})`}</h3>
+            <ul>
+              {cartItems.map((item) => (
+                <li key={item.id}>
+                  <span>{`[ x${item.quantity} ] ${item.name}`}</span>
+                  <span>{`RM${(item.price * item.quantity ).toFixed(2)} `}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-         {/*Bring own tableware option */}
-         <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                  <label style={{paddingBottom: "5px"}}>
-                    <input 
-                      type="checkbox"
-                      checked={isOwnTableware}
-                      onChange={handleOwnTablewareChange}
-                      className="reserve-checkbox"
-                    />
-                    <span  >Bring your own tableware (get 10% discount)</span>
-                  </label>
-                </div>
-        <b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b>
+        {/*Bring own tableware option */}
+        <div style={{ marginTop: '15px', fontSize: '14px' }}>
+          <label style={{paddingBottom: "5px"}}>
+            <input type="checkbox" checked={isOwnTableware} onChange={handleOwnTablewareChange} className="reserve-checkbox" />
+            <span> Bring your own tableware (get 10% discount)</span>
+          </label>
+        </div>
+        <h4 className = "total-price">Total Price: RM{updatedTotalPrice.toFixed(2)} </h4>
 
          {/* Dine-In Reservations Section */}
          <div className="reservation-section">
-          <div style={{marginTop: "10px", marginBottom: "0px"}}>--------------------------------------------------------</div>
-
-          <h3 >Reserve A Seat:</h3>
+          <h3>Reserve A Seat:</h3>
           <form>
             <div>
               <label>
@@ -123,7 +117,7 @@ const handleCheckboxChange = (item) => {
                 </select>
               </label>
             </div>
-            <div>
+            <div style = {{marginBottom : "10px"}}>
               <label>
                 Table Number:
                 <select 
@@ -144,9 +138,7 @@ const handleCheckboxChange = (item) => {
               </label>
             </div>
           </form>
-          <button className="reserve-btn" onClick={handleReserveTable}>
-            Reserve
-          </button>
+          <button className="reserve-btn" onClick={handleReserveTable}>RESERVE</button>
         </div>
 
         <hr />
