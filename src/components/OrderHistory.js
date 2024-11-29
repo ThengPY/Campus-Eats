@@ -46,7 +46,7 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
 
     return (
       <div className="modal-overlay" onClick={onClose}>
-        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{overflow: "auto"}}>
             <div className="close-btn">
                 <span class="material-symbols-rounded" onClick={onClose}>close</span>
             </div>

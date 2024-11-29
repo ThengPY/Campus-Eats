@@ -140,7 +140,7 @@ app.post('/order/create/:username', (req, res) => {
     }
     console.log(`Processing payment for user: ${username}, price: ${price}`);
 
-    // Call the insertOrder function
+    // Call the insertOrder functions
     dbHandler.insertOrder(username, order_item, price, payment_method, option, reservation_time, delivery_name, eco_package, bring_container, address, phone_num, card_number, expiration_date, csv , pickup_date, pickup_time, own_tableware)
         .then(orderId => {
             console.log(`Order inserted with ID: ${orderId}`);

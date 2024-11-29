@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './Checkout.css';
-import {toast} from "react-toastify"; // Make sure to create a CSS file for styling
 
 const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [tableBooking, setTableBooking] = useState({ numPeople: '', tableNumber: '', location: '' }); // State for table booking
@@ -56,7 +55,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
         return response.text(); // Assuming your server responds with text (or you can change it to JSON)
       })
       .then(data => {
-        toast.success(`Reservation successful: ${localStorage.getItem('username')}`);
+        alert(`Reservation successful: ${localStorage.getItem('username')}`);
         setTableBooking({ numPeople: '', tableNumber: '', location: '' }); // Reset table booking details
         onClose(); // Close the modal after successful reservation
       })
