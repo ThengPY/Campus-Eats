@@ -216,7 +216,9 @@ p {
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 5px;
+  resize: none; /* Make textarea non-resizable */
 }
+
 
 .type {
   padding: 10px 20px;
