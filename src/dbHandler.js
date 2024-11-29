@@ -330,8 +330,6 @@ const createModelDataTable = () => {
         });
     });
 };
-
-//generate number model_data
 /*
 // Function to insert multiple rows of model data
 const insertMultipleModelData = (dataArray) => {
@@ -401,11 +399,8 @@ insertMultipleModelData(deliveriesData)
     .catch((err) => {
         console.error('Error inserting multiple model data:', err);
     })
-    .finally(() => {
-        db.close(); // Close the database connection
-    });
-*/
 
+ */
 
 
 // Export the database connection for use in other modules
