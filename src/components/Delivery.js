@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import Payment from './Payment';
+import qrcode from '../img/qrcode.jpg';
 
 const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -21,15 +22,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
 
     setIsEcoFriendly(!isEcoFriendly);
   };
-
-  const handlePayment = (e) => {
-    e.preventDefault();
-    console.log('Payment Method:', paymentMethod);
-    console.log('Name:', name);
-    console.log('Phone Number:', phoneNumber);
-    console.log('KK Location:', kkLocation);
-    setIsPaymentOpen(true);
-  }
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
@@ -122,7 +114,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
             <div className = "total-price"><b>Total Price: RM{updatedTotalPrice.toFixed(2)} </b></div>
           </div>    
 
-        <form onSubmit={handlePayment}>
+        <form onSubmit={handlePaymentSubmit}>
           {/* Delivery Information */}
           <h3>Delivery Information</h3>
           
@@ -194,6 +186,14 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
             </label>
           </div>
 
+          {paymentMethod === 'TouchNGo' && (
+            <div className="qr-code-container">
+            <div>
+              <img src={qrcode} alt="Touch N Go QR Code"/>
+            </div>        
+          </div>
+          )}
+
           {paymentMethod === 'creditCard' && (
             <div className="credit-card-details">
               <div>
@@ -204,6 +204,10 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
                   onChange={(e) => setCardNumber(e.target.value)}
                   required
                 />
+                <label>Expiration Date:</label>
+                <input type="text" required/>
+                <label>CVV:</label>
+                <input type="text" required/>
               </div>        
             </div>
           )}
@@ -216,8 +220,6 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
             paymentMethod={paymentMethod}
             onClose={() => setIsPaymentOpen(false)}
             onSubmit={handlePaymentSubmit}
-            cardNumber={setCardNumber}
-            setCardNumber={setCardNumber}
           />
         )}
       </div>
