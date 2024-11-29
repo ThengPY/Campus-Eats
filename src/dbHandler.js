@@ -331,7 +331,67 @@ const createModelDataTable = () => {
     });
 };
 
-//generate number model_data
+const processDeliveriesForToday = () => {
+    return new Promise((resolve, reject) => {
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+        // Step 1: Select orders where option is 'delivery' and order_date is today
+        const selectQuery = `SELECT order_date FROM orders WHERE option = 'Delivery' AND DATE(order_date) = ?`;
+
+        db.all(selectQuery, [todayString], (err, rows) => {
+            if (err) {
+                console.error('Error selecting orders:', err.message);
+                return reject(err);
+            }
+
+            // Step 2: Process the data to count deliveries by hour
+            const deliveryCounts = {};
+
+            rows.forEach(row => {
+                const orderDate = new Date(row.order_date);
+                const hour = orderDate.getHours();
+                const day = orderDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+                const key = `${day}-${hour}`; // Create a unique key for each hour of each day
+
+                if (!deliveryCounts[key]) {
+                    deliveryCounts[key] = 0;
+                }
+                deliveryCounts[key]++;
+            });
+
+            // Step 3: Insert processed data into model_data table
+            const insertQuery = `INSERT INTO model_data (hour, day_of_week, deliveries) VALUES (?, ?, ?)`;
+
+            const insertPromises = Object.entries(deliveryCounts).map(([key, count]) => {
+                const [day, hour] = key.split('-');
+                return new Promise((resolve, reject) => {
+                    db.run(insertQuery, [hour, day, count], function(err) {
+                        if (err) {
+                            console.error('Error inserting data into model_data:', err.message);
+                            return reject(err);
+                        } else {
+                            resolve(this.lastID);
+                        }
+                    });
+                });
+            });
+
+            Promise.all(insertPromises)
+                .then(() => {
+                    console.log('Deliveries processed and inserted successfully.');
+                    resolve(); // Resolve the promise on success
+                })
+                .catch(err => {
+                    console.error('Error inserting data into model_data:', err);
+                    reject(err); // Reject the promise on error
+                });
+        });
+    });
+};
+
 /*
 // Function to insert multiple rows of model data
 const insertMultipleModelData = (dataArray) => {
@@ -401,16 +461,14 @@ insertMultipleModelData(deliveriesData)
     .catch((err) => {
         console.error('Error inserting multiple model data:', err);
     })
-    .finally(() => {
-        db.close(); // Close the database connection
-    });
-*/
 
+ */
 
 
 // Export the database connection for use in other modules
 module.exports ={ db,createTable,insertUser,loginUser, getUser,
                     createOrdersTable, insertOrder, getUsersOrders,
                     createCommentsTable,insertComment, getComments,
-                    getDataForModelTraining,insertModelData,createModelDataTable
+                    getDataForModelTraining,insertModelData,createModelDataTable,
+                    processDeliveriesForToday
                 };
