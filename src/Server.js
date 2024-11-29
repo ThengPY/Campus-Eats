@@ -13,7 +13,7 @@ app.use(cors());
 dbHandler.createTable();
 dbHandler.createOrdersTable();
 dbHandler.createCommentsTable();
-dbHandler.createModelDataTable();
+dbHandler.createSchedulesTable()
 
 // Route to register a new user
 app.post('/user/register', (req, res) => {
@@ -198,8 +198,8 @@ const schedule = require('node-schedule');
 
 //time parameter(minute, hour, day of month, month of year, day of week)
 // Schedule order processing at 11:58 PM
-// take order from order table to model table
-const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
+// move order to model table
+schedule.scheduleJob('58 23 * * *', async () => {
     console.log('Triggering delivery processing...');
     try {
         await dbHandler.processDeliveriesForToday();
@@ -208,8 +208,9 @@ const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
         console.error('Error during delivery processing:', err);
     }
 });
+
 // Schedule model retraining at 11:59 PM
-const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
+schedule.scheduleJob('59 23 * * *', async () => {
     console.log('Triggering model retraining...');
     try {
         const data = await dbHandler.getDataForModelTraining();

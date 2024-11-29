@@ -18,9 +18,13 @@ async function deliveryPredictionModel(inputData) {
 async function scheduleDeliveriesForTheDay() {
     // First, reset the schedule table every day
     await dbHandler.dropSchedulesTable();
+    await dbHandler.createSchedulesTable()
 
     // Loop through every hour in the day
     for (let hour = 0; hour < 24; hour++) {
+        // Add 1 to the hour value to make it start from 1 instead of 0
+        const adjustedHour = hour + 1;
+
         // Get the current day of the week
         const dayOfWeek = new Date().getDay(); // Get the current day of the week (0 for Sunday, 6 for Saturday)
 
@@ -31,7 +35,7 @@ async function scheduleDeliveriesForTheDay() {
         try {
             const predictions = await deliveryPredictionModel(normalizedInputData);
             const predictedDeliveries = predictions.arraySync()[0]; // Extract predicted value from the tensor
-            console.log(`Predicted deliveries for ${hour} hour: ${predictedDeliveries}`);
+            console.log(`Predicted deliveries for ${adjustedHour} hour: ${predictedDeliveries}`);
 
             // Calculate the number of batches based on 15 deliveries per batch
             const batches = Math.ceil(predictedDeliveries / 15);
@@ -41,11 +45,11 @@ async function scheduleDeliveriesForTheDay() {
             for (let batch = 0; batch < batches; batch++) {
                 // Schedule a job for each batch
                 const batchTime = new Date();
-                batchTime.setHours(hour, minute, 0, 0); // Set the hour and minute
+                batchTime.setHours(adjustedHour - 1, minute, 0, 0); // Set the hour and minute (subtract 1 to keep hour 0-23 in Date object)
                 minute += Math.floor(60 / batches); // Increase minute for the next batch
 
                 // Store the scheduled delivery in the database
-                await dbHandler.insertSchedule(hour, minute, batch + 1, batchTime);
+                await dbHandler.insertSchedule(adjustedHour, minute, batch + 1, batchTime);
             }
         } catch (err) {
             console.error("Error predicting deliveries:", err);
