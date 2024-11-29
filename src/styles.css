@@ -8,16 +8,84 @@ body {
 }
 
 
-
 .header-h3 {
   margin-bottom: 0px;
   padding-top: 15px;
   border-top: 1px solid #959595;
 }
-h2 {
-  margin-bottom: 0px;
 
+/* Encapsulate styles within a specific class */
+.react-toastify-container {
+  /* Custom styles for the ToastContainer */
+  .Toastify__toast-container {
+    width: 280px; /* Set fixed or responsive width for toast container */
+    max-width: 100%;
+    position: absolute;
+  }
+
+  /* Custom styles for toasts */
+  .Toastify__toast {
+    font-family: "Poppins", sans-serif; /* Consistent font */
+    font-size: 16px; /* Toast text size */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 60px;
+    max-width: 350px;
+    display: flex; /* Enable flexbox for layout */
+    flex-direction: row; /* Arrange elements horizontally */
+    justify-content: space-between; /* Space between text and close button */
+    align-items: center; /* Align elements vertically */
+    position: relative; /* Allow positioning of the close button */
+    gap: 10px; /* Space between text and button */
+  }
+
+  /* Toast Body (Text Container) */
+  .Toastify__toast-body {
+    flex: 1; /* Allow text container to take available space */
+    font-size: 16px;
+    line-height: 1.5;
+    white-space: normal; /* Allow text to wrap */
+    overflow: hidden; /* Hide text overflow */
+    text-overflow: ellipsis; /* Show ellipsis (...) if text overflows */
+  }
+
+  /* Close Button */
+  .Toastify__close-button {
+    display: none;
+  }
 }
+
+.App {
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+
+.App {
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+
+.App {
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.App {
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
 
 .App {
   margin: 0 auto;
@@ -86,7 +154,6 @@ h2 {
   font-size: larger;
   border-radius: 40px;
   padding: 8px;
-  align-items: center;
   vertical-align: center;
   display: flex;
   justify-content: center;
@@ -135,6 +202,12 @@ header {
   flex: 0 0 auto;
 }
 
+main h3 {
+  margin-bottom: 0px;
+  padding-top: 15px;
+  border-top: 1px solid #FFCB59;
+}
+
 /* Header Icon Styling */
 .material-symbols-rounded {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -150,13 +223,6 @@ header {
 
 .cafeteria-list {
   padding-top: 10px;
-  cursor: pointer;
-}
-
-.cafeteria-list h3 {
-  margin-bottom: 0px;
-  padding-top: 15px;
-  border-top: 1px solid #959595;
 }
 
 .cafeteria-option {
@@ -189,7 +255,8 @@ header {
   padding: 10px;
   background-color: #ffffff;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 15px;}
+  margin-top: 15px;
+}
 
 .cafeteria-item:hover {
   transform: translateY(-5px);

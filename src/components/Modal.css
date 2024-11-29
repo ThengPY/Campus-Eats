@@ -62,6 +62,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   scrollbar-color: #e0e0e0;
+  overflow-x: hidden; /* Disable horizontal scroll */
 }
 
 /* Lists styling */

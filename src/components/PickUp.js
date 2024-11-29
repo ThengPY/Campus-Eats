@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState, useEffect } from 'react';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import qrcode from '../img/qrcode.jpg';
@@ -13,6 +12,14 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
   const [pickupTime, setPickupTime] = useState('');
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
+
+  useEffect(() => {
+    if (paymentMethod === 'TouchNGo') {
+      setCardNumber(null);
+      setExpiration_date(null);
+      setCsv(null);
+    }
+  }, [paymentMethod]);
 
   const handleEcoFriendlyChange = () => {
     if (isOwnContainer) {
@@ -54,7 +61,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     const updatedTotalPrice = calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer);
 
     if (!username) {
-      toast.error('Invalid user. Please log in again.');
+      alert('Invalid user. Please log in again.');
     }
 
     console.log('Payment Method:', paymentMethod);
@@ -91,14 +98,14 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .then(data => {
       console.log('Payment response:', data);
       if (data.success) {
-        toast.success(`Payment successful. ${data.message}`);
+        alerts.success(`Payment successful. ${data.message}`);
       } else {
-        toast.error('Payment failed.')
+        alert('Payment failed.');
       }
     })
     .catch(error => {
       console.error('Payment error:', error);
-      toast.error('An error occured while processing your payment.');
+      alert('An error occured while processing your payment.');
     })
   };
 
@@ -243,7 +250,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                   <label>Card Number:</label>
                   <input
                     type="text"
-                    value={cardNumber}
+                    value={cardNumber || ''}
                     onChange={(e) => setCardNumber(e.target.value)}
                     placeholder='XXXX XXXX XXXX'
                     required
@@ -251,14 +258,14 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
                   <label>Expiration Date:</label>
                   <input
                       type="text"
-                      value={expiration_date}
+                      value={expiration_date || ''}
                       onChange={(e) => setExpiration_date(e.target.value)}
                       placeholder='MM/YY' required
                   />
                   <label>CVV:</label>
                   <input
                       type="text"
-                      value={csv}
+                      value={csv || ''}
                       onChange={(e) => setCsv(e.target.value)}
                       placeholder='XXX' required
                   />

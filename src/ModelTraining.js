@@ -1,38 +1,55 @@
-// modelTraining.js
+
+const fs = require('fs');
 const tf = require('@tensorflow/tfjs');
 require('tfjs-node-save')
 
-// Load the existing model
 async function loadModel() {
-    let model;
+    const modelPath = 'file:///Users/keste/IdeaProjects/Campus-Eats/src/model/model.json';
+
+    // Check if the model file exists
     try {
-        model = await tf.loadLayersModel('file:///Users/keste/IdeaProjects/Campus-Eats/src/model/model.json'); // Load the saved model
+        // Use fs.promises to check for file existence
+        await fs.promises.access(modelPath, fs.constants.F_OK);
+        console.log('Model file exists. Deleting the existing model...');
+
+        // Delete the model file
+        await fs.promises.unlink(modelPath);
+        console.log('Existing model deleted.');
     } catch (error) {
+        // If the file does not exist, we can ignore the error
+        if (error.code !== 'ENOENT') {
+            console.error('Error checking for model file:', error);
+            return null; // Return null or handle the error as needed
+        }
         console.log('No existing model found. Creating a new one.');
-        model = createNewModel(); // If no model is found, create a new one
     }
+
+    // Create a new model if no existing model was found or after deletion
+    const model = createNewModel(); // Replace with your model creation logic
     return model;
 }
 
-// Create a new model if it doesn't exist
 function createNewModel() {
     const model = tf.sequential();
     model.add(tf.layers.dense({
-        units: 32,
+        units: 128,
         activation: 'relu',
         inputShape: [2],
-        kernelInitializer: 'heNormal'
+        kernelInitializer: 'heNormal',
+        kernelRegularizer: tf.regularizers.l2({ l2: 0.01 })
     }));
+    model.add(tf.layers.dropout({ rate: 0.2 }));
     model.add(tf.layers.dense({
-        units: 16,
+        units: 64,
         activation: 'relu',
         kernelInitializer: 'heNormal'
     }));
     model.add(tf.layers.dense({
         units: 1,
+        activation: 'linear',
         kernelInitializer: 'heNormal'
     }));
-    model.compile({optimizer: tf.train.adam(0.001), loss: 'meanSquaredError'}); // Adjust learning rate
+    model.compile({ optimizer: tf.train.adam(0.0001), loss: 'meanSquaredError' });
     return model;
 }
 
@@ -65,8 +82,27 @@ async function retrainModel(data) {
     console.log('Input features (xs):', xs.arraySync());
     console.log('Output labels (ys):', ys.arraySync());
 
+    // Split data into training and validation sets (80% train, 20% validation)
+    const [trainXs, valXs] = tf.split(xs, [Math.floor(xs.shape[0] * 0.8), Math.ceil(xs.shape[0] * 0.2)]);
+    const [trainYs, valYs] = tf.split(ys, [Math.floor(ys.shape[0] * 0.8), Math.ceil(ys.shape[0] * 0.2)]);
+
+    // Log the shapes of the training and validation sets
+    console.log('Training features shape:', trainXs.shape);
+    console.log('Validation features shape:', valXs.shape);
+    console.log('Training labels shape:', trainYs.shape);
+    console.log('Validation labels shape:', valYs.shape);
+
     // Retrain the model using new data
-    await model.fit(xs, ys, {epochs: 50});
+    await model.fit(trainXs, trainYs, {
+        epochs: 100, // Increased epochs for better training
+        validationData: [valXs, valYs], // Use validation data to monitor performance
+        callbacks: {
+            onEpochEnd: (epoch, logs) => {
+                console.log(`Epoch ${epoch + 1}: loss = ${logs.loss}, val_loss = ${logs.val_loss}`);
+            }
+        }
+    });
+
     console.log('Model retrained with new data');
 
     await model.save('file:///Users/keste/IdeaProjects/Campus-Eats/src/model');  // Save the updated model
