@@ -5,6 +5,16 @@
   margin: 10px 0; /* Add spacing between rows */
 }
 
+.generate-btn {
+  font-size: medium;
+  background-color: #a0a0a0;
+}
+
+.generate-btn:hover {
+  background-color: #858585;
+  transition: 0.3s ease-in-out;
+}
+
 .add-icon {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   transition: transform 0.3s ease-in-out; /* Smooth hover animation */
@@ -15,4 +25,60 @@
 
 .add-icon:hover {
   transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Style for the select dropdown */
+.select {
+  font-size: 12px;
+  border: 2px solid #cfcfcf;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  max-width: 200px;
+}
+
+/* Style for the select dropdown on focus */
+.select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+/* Hover effect for the select */
+.select:hover {
+  border-color: #bebebe;
+}
+
+/* Style for options inside the dropdown */
+.select option {
+  padding: 10px;
+  font-size: 15px;
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Style when option is selected */
+.select option:checked {
+  color: white;
+}
+
+/* Style for the select dropdown when it's open */
+.select:active, .select:focus {
+  border-color: #a4a4a4;
+  box-shadow: 0 0 8px rgba(228, 228, 228, 0.5);
+}
+
+/* Style for the select dropdown when it's disabled */
+.select:disabled {
+  background-color: #f1f1f1;
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Style for the select dropdown when it's disabled and hovered */
+.select:disabled:hover {
+  border-color: #ddd;
 }

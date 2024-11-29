@@ -125,7 +125,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
         <p>Let our AI Meal Planner decide for you...</p>
         <label>
           Select Cafeteria:
-          <select
+          <select className="select" 
             style={{ marginLeft: "7px", cursor: "pointer" }}
             value={cafeteria}
             onChange={(e) => setCafeteria(Number(e.target.value))} // Convert to number here
@@ -139,24 +139,24 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
           </select>
         </label>
 
-        <label style={{marginTop: "10px"}}>
+        <label style={{ marginTop: "10px" }}>
           Food & Drinks Price Range:
-          <select
+          <select className="select" 
             style={{ marginLeft: "7px", cursor: "pointer" }}
             value={priceRange}
             onChange={(e) => setPriceRange(e.target.value)}
           >
             <option value="">Any</option>
-            <option value="0-3">RM 0 - RM 3</option>
-            <option value="0-5">RM 0 - RM 5</option>
-            <option value="0-8">RM 0 - RM 8</option>
-            <option value="0-10">RM 0 - RM 10</option>
+            <option value="0-3">Affordable (RM 0 - RM 3)</option>
+            <option value="0-5">Budget (RM 0 - RM 5)</option>
+            <option value="0-8">Mid-range (RM 0 - RM 8)</option>
+            <option value="0-10">Premium (RM 0 - RM 10)</option>
           </select>
         </label>
 
         <label style={{marginTop: "10px"}}>
           Dietary Preferences:
-          <select
+          <select className="select" 
             style={{ marginLeft: "7px", cursor: "pointer" }}
             value={preferences}
             onChange={(e) => setPreferences(e.target.value)}
@@ -180,9 +180,9 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
             <h2 style={{ paddingTop: "15px", borderTop: "1px solid #e0e0e0" }}>Recommended Meals</h2>
             {Object.keys(mealPlan).map((cafeteriaId) => (
               <div key={cafeteriaId}>
-                <h4>{mealPlan[cafeteriaId].name}</h4>
+                <h3>{mealPlan[cafeteriaId].name}</h3>
                 <h5 className="meals-generated">
-                  <span>
+                  <span style={{fontSize: "15px"}}>
                     Food: {mealPlan[cafeteriaId].food.name}{" "}
                     {mealPlan[cafeteriaId].food.price && (
                       <span style={{ fontWeight: "bold", marginLeft: "5px" }}>
@@ -198,7 +198,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
                   </span>
                 </h5>
                 <h5 className="meals-generated">
-                  <span>
+                  <span style={{fontSize: "15px"}}>
                     Drink: {mealPlan[cafeteriaId].drink.name}{" "}
                     {mealPlan[cafeteriaId].drink.price && (
                       <span style={{ fontWeight: "bold", marginLeft: "5px" }}>
