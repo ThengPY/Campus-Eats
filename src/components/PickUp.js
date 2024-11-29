@@ -82,12 +82,13 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
       price: updatedTotalPrice,
       pickup_date: pickupDate,
       pickup_time: pickupTime,
+      payment_method: paymentMethod,
       card_number: cardNumber,
       expiration_date: expiration_date,
       csv: csv
     }
 
-    fetch(`http://localhost:5000/payment/${username}`, {
+    fetch(`http://localhost:5000/order/create/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -98,14 +99,13 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
     .then(data => {
       console.log('Payment response:', data);
       if (data.success) {
-        alert(`Payment successful.`);
+        alert(`${data.message}\nOrder received`);
       } else {
         alert('Payment failed.');
       }
     })
     .catch(error => {
       console.error('Payment error:', error);
-      alert('An error occured while processing your payment.');
     })
   };
 
@@ -182,33 +182,33 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
               <div className="pickup-time-container">
                 {/* Time Dropdown */}
                 <label htmlFor="pickup-time">Time: &nbsp;
-                <select
-                  id="pickup-time"
-                  value={pickupTime}
-                  onChange={handleTimeChange}
-                  required
-                >
-                  <option value="">Select a time</option>
-                  <option value="08:00 AM">08:00 AM</option>
-                  <option value="09:00 AM">09:00 AM</option>
-                  <option value="10:00 AM">10:00 AM</option>
-                  <option value="11:00 AM">11:00 AM</option>
-                  <option value="12:00 PM">12:00 PM</option>
-                  <option value="01:00 PM">01:00 PM</option>
-                  <option value="02:00 PM">02:00 PM</option>
-                  <option value="03:00 PM">03:00 PM</option>
-                  <option value="04:00 PM">04:00 PM</option>
-                  <option value="05:00 PM">05:00 PM</option>
-                </select>
+                  <select
+                      id="pickup-time"
+                      value={pickupTime}
+                      onChange={handleTimeChange}
+                      required
+                  >
+                    <option value="">Select a time</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="17:00">17:00</option>
+                  </select>
                 </label>
               </div>
 
               {/* Display Selected Date and Time */}
               {pickupDate && pickupTime && (
-                <p>
-                  Selected Pick-Up: <strong>{pickupDate}</strong> at{' '}
-                  <strong>{pickupTime}</strong>
-                </p>
+                  <p>
+                    Selected Pick-Up: <strong>{pickupDate}</strong> at{' '}
+                    <strong>{pickupTime}</strong>
+                  </p>
               )}
             </div>
 

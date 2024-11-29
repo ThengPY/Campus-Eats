@@ -11,7 +11,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 });
 
 // Function to create a table if it doesn't exist
-const createTable = () => {
+const createUserTable = () => {
     const sql = `
         CREATE TABLE IF NOT EXISTS users (
              id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -100,7 +100,7 @@ const createOrdersTable = () => {
               expiration_date TEXT,
               csv TEXT,
               pickup_date DATE,
-              pickup_time TIME,
+              pickup_time TEXT,
               FOREIGN KEY (username) REFERENCES users(Username)
         )
     `;
@@ -200,7 +200,7 @@ const getUsersOrders = (username, callback) => {
         price, 
         payment_method,  
         STRFTIME('%d/%m/%Y', pickup_date) AS formatted_pickup_date, 
-        STRFTIME('%H:%M', pickup_time) AS formatted_pickup_time 
+        pickup_time
     FROM 
         orders 
     WHERE 
@@ -272,18 +272,25 @@ const getComments = () => {
     });
 };
 
-
-const insertModelData = (hour, day_of_week, deliveries) => {
+// Create the table for model data
+// Function to initialize the model_data table
+const createModelDataTable = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO model_data (hour, day_of_week, deliveries) VALUES (?, ?, ?)';
-        db.run(sql, [hour, day_of_week, deliveries], function(err) {
-            if (err) {
-                console.error('Error inserting model data: ' + err.message);
-                reject(err);
-            } else {
-                console.log(`Model data added with ID: ${this.lastID}`);
-                resolve(); // Resolve the promise on success
-            }
+        db.serialize(() => {
+            db.run(`CREATE TABLE IF NOT EXISTS model_data (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                hour INTEGER,
+                day_of_week INTEGER,
+                deliveries INTEGER
+            )`, (err) => {
+                if (err) {
+                    console.error('Error creating model_data table: ' + err.message);
+                    reject(err);
+                } else {
+                    console.log('model_data table created successfully.');
+                    resolve(); // Resolve the promise on success
+                }
+            });
         });
     });
 };
@@ -308,29 +315,7 @@ const getDataForModelTraining = () => {
     });
 };
 
-// Create the table for model data
-// Function to initialize the model_data table
-const createModelDataTable = () => {
-    return new Promise((resolve, reject) => {
-        db.serialize(() => {
-            db.run(`CREATE TABLE IF NOT EXISTS model_data (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                hour INTEGER,
-                day_of_week INTEGER,
-                deliveries INTEGER
-            )`, (err) => {
-                if (err) {
-                    console.error('Error creating model_data table: ' + err.message);
-                    reject(err);
-                } else {
-                    console.log('model_data table created successfully.');
-                    resolve(); // Resolve the promise on success
-                }
-            });
-        });
-    });
-};
-
+// Process deliveries to model table
 const processDeliveriesForToday = () => {
     return new Promise((resolve, reject) => {
         // Get today's date in YYYY-MM-DD format
@@ -392,7 +377,84 @@ const processDeliveriesForToday = () => {
     });
 };
 
-/*
+// Function to create the 'schedules' table
+const createSchedulesTable = () => {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS schedules (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hour INTEGER NOT NULL,
+            minute INTEGER NOT NULL,
+            batch INTEGER NOT NULL,
+            scheduledAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `;
+
+    db.run(sql, (err) => {
+        if (err) {
+            console.error('Error creating schedules table: ' + err.message);
+        } else {
+            console.log('Schedules table created or already exists.');
+        }
+    });
+};
+
+// Function to drop the 'schedules' table (to start fresh)
+const dropSchedulesTable = () => {
+    const sql = 'DROP TABLE IF EXISTS schedules';
+    db.run(sql, (err) => {
+        if (err) {
+            console.error('Error dropping schedules table: ' + err.message);
+        } else {
+            console.log('Schedules table dropped successfully.');
+        }
+    });
+};
+
+// Function to insert a new schedule entry
+const insertSchedule = (hour, minute, batch) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO schedules (hour, minute, batch) VALUES (?, ?, ?)';
+        db.run(sql, [hour, minute, batch], function(err) {
+            if (err) {
+                console.error('Error inserting schedule: ' + err.message);
+                reject(err); // Reject the promise on error
+            } else {
+                console.log(`Schedule added with ID: ${this.lastID}`);
+                resolve(this.lastID); // Resolve the promise on success
+            }
+        });
+    });
+};
+
+// Function to get all schedules from the 'schedules' table
+const getSchedules = () => {
+    return new Promise((resolve, reject) => {
+        const currentHour = new Date().getHours();
+        const currentDayOfWeek = new Date().getDay();
+
+        // Query to find the closest schedule for the current time
+        const sql = `
+            SELECT *,
+            ABS(hour - ?) AS hour_difference
+            FROM model_data
+            WHERE day_of_week = ?
+              AND hour > ?  -- Only consider hours greater than the current hour
+            ORDER BY hour ASC, deliveries ASC
+            LIMIT 1
+        `;
+        db.all(sql, [currentHour, currentDayOfWeek, currentHour], (err, rows) => {
+            if (err) {
+                console.error('Error retrieving schedules: ' + err.message);
+                reject(err); // Reject the promise on error
+            } else {
+                resolve(rows); // Resolve the promise with the retrieved schedules
+            }
+        });
+    });
+};
+
+
+/* pending delete
 // Function to insert multiple rows of model data
 const insertMultipleModelData = (dataArray) => {
     return new Promise((resolve, reject) => {
@@ -466,9 +528,10 @@ insertMultipleModelData(deliveriesData)
 
 
 // Export the database connection for use in other modules
-module.exports ={ db,createTable,insertUser,loginUser, getUser,
+module.exports ={ db,createUserTable,insertUser,loginUser, getUser,
                     createOrdersTable, insertOrder, getUsersOrders,
                     createCommentsTable,insertComment, getComments,
-                    getDataForModelTraining,insertModelData,createModelDataTable,
-                    processDeliveriesForToday
+                    getDataForModelTraining,createModelDataTable,
+                    processDeliveriesForToday,createSchedulesTable,
+                    insertSchedule,dropSchedulesTable,getSchedules
                 };
