@@ -8,6 +8,8 @@ import qrcode from '../img/qrcode.jpg';
 const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
+  const [expiration_date, setExpiration_date] = useState('');
+  const [csv, setCsv] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [kkLocation, setKkLocation] = useState('');
@@ -48,7 +50,9 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
       price: updatedTotalPrice,
       delivery_name: name,
       phone_num: phoneNumber,
-      card_number: cardNumber
+      card_number: cardNumber,
+      expiration_date: expiration_date,
+      csv: csv
     }
 
     fetch(`http://localhost:5000/payment/${username}`, {
@@ -62,7 +66,7 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
     .then(data => {
       console.log('Payment response:', data);
       if (data.success) {
-        toast.success(`Payment successful. ${data.message}`);
+        toast.success(`${data.message}`);
       } else {
         toast.error('Payment failed.')
       }
@@ -199,24 +203,34 @@ const Delivery = ({ cartItems, totalPrice, isOpen, onClose, isPayment }) => {
               <div>
                 <label>Card Number:</label>
                 <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  required
+                    type="text"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    required
                 />
                 <label>Expiration Date:</label>
-                <input type="text" required/>
+                <input
+                    type="text"
+                    value={expiration_date}
+                    onChange={(e) => setExpiration_date(e.target.value)}
+                    required
+                />
                 <label>CVV:</label>
-                <input type="text" required/>
-              </div>        
+                <input
+                    type="text"
+                    value={csv}
+                    onChange={(e) => setCsv(e.target.value)}
+                    required
+                />
+              </div>
             </div>
           )}
 
           {/* Submit Button */}
           <button type="submit" className="pay-btn">Checkout</button>
         </form>
-        {isPaymentOpen && (
-          <Payment
+          {isPaymentOpen && (
+              <Payment
             paymentMethod={paymentMethod}
             onClose={() => setIsPaymentOpen(false)}
             onSubmit={handlePaymentSubmit}
