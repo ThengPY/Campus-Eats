@@ -77,7 +77,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
         <h2>Dine-In Checkout</h2>
 
         {/* Order Summary */}
-        <div className = "subcontent" style = {{maxheight : "250px"}}>
+        <div className = "subcontent" style = {{maxHeight : "250px"}}>
           <div className="order-summary">
             <h3>Order Summary {`(${cartItems[0].cafeteria})`}</h3>
             <ul>

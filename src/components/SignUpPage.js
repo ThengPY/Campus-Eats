@@ -35,7 +35,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
       alert('Please fill in all required fields.');
       return;
     }
-    alert('Signed up with:' + username);
+    alert('Signed up with: ' + username);
 
     const signUpData = {username, email, password,};
 
@@ -62,7 +62,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
       alert('Please fill in all required fields.');
       return;
     }
-    alert('Logged in with:' + username);
+    alert('Logged in with: ' + username);
     const loginData = {username, email, password,};
 
     fetch('http://localhost:5000/user/login', {
@@ -72,16 +72,28 @@ const SignUpPage = ({ isOpen, onClose }) => {
       },
       body: JSON.stringify(loginData),
     })
-        .then(response => response.text())
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error('Invalid credentials or login failed');
+          }
+        })
         .then(data => {
+          alert('Login successful!');
           console.log('Login response:', data);
           localStorage.setItem('username',username);
           onClose();
         })
         .catch(error => {
+          alert(`Login failed: ${error.message}`)
           console.error('Login error:', error);
+          
         });
-    onClose();
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
   };
 
   const handlePasswordChange = (e) => {
