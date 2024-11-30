@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './SignUpPage.css'; 
 import ForgetPasswordOverlay from './ForgetPasswordOverlay';
 import eating from '../img/eating.png';
+import {toast} from "react-toastify";
 
 const SignUpPage = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
@@ -62,9 +63,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
       alert('Please fill in all required fields.');
       return;
     }
-    alert('Logged in with:' + username);
     const loginData = {username, email, password,};
-
     fetch('http://localhost:5000/user/login', {
       method: 'POST',
       headers: {
@@ -72,16 +71,23 @@ const SignUpPage = ({ isOpen, onClose }) => {
       },
       body: JSON.stringify(loginData),
     })
-        .then(response => response.text())
+        .then(response => {
+          if (response.ok) {
+            return response.text(); // Parse JSON only if the response is OK (status 200)
+          } else {
+            throw new Error('Invalid username, email or password'); // Handle other status codes
+          }
+        })
         .then(data => {
+          alert('Logged in with:' + username);
           console.log('Login response:', data);
           localStorage.setItem('username',username);
           onClose();
         })
         .catch(error => {
+          alert('Wrong username, email or password');
           console.error('Login error:', error);
         });
-    onClose();
   };
 
   const handlePasswordChange = (e) => {
