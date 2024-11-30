@@ -1,5 +1,4 @@
 
-/*only uncomment if tensorflow is configured
 const tf = require('@tensorflow/tfjs-node');
 const dbHandler = require('./dbHandler');
 const schedule = require('node-schedule');
@@ -66,4 +65,3 @@ schedule.scheduleJob('1 0 * * *', () => {
     console.log('Resetting delivery schedule for the new day');
     scheduleDeliveriesForTheDay(); // Call the function to schedule deliveries for the day
 });
- */
