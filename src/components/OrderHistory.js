@@ -55,19 +55,18 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
             {loading && <p>Loading orders...</p>}
             {error && <p>{error}</p>}
 
-            <div className="orders-list">
+            <div className="subcontent">
                 {orders.length > 0 ? (
                     orders.map((order) => (
-                        <div key={order.id} className="order-item">
-                            <p className="order-id"><strong>Order ID:</strong> {order.id}</p>
-                            <p className="order-product"><strong>Product:</strong> {order.order_item}</p>
-                            <p className="order-price"><strong>Price:</strong> RM{order.price}</p>
-                            <p className="order-date"><strong>Date:</strong> {order.formatted_order_date}</p>
+                        <div key={order.id} className="order-item" style = {{borderBottom : "1px solid #e0e0e0"}}>
+                            <h3 style = {{borderBottom : "none", marginBottom : "0px"}}>Order ID: {order.id}</h3>
+                            <p className="order-product" style = {{color : "#333"}}><b>Product:</b> {order.order_item}</p>
+                            <p className="order-price" style = {{color : "#333"}}><b>Total Price:</b> RM{order.price}</p>
+                            <p className="order-date" style = {{color : "#333"}}><b>Order Date:</b> {order.formatted_order_date}</p>
                             {/* Conditional rendering for pickup info */}
                             {order.formatted_pickup_date!=null && order.pickup_time!=null && (
-                                <p className="pickup-info">
-                                    <strong>Pickup:</strong>
-                                    {order.formatted_pickup_date}, {order.pickup_time}
+                                <p className="pickup-info" style = {{color : "#333"}}>
+                                    <b>Pickup:</b> {order.formatted_pickup_date}, {order.pickup_time}
                                 </p>
                             )}
                         </div>
