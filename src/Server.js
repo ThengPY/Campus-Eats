@@ -179,8 +179,8 @@ app.get('/getDeliveryTime', (req, res) => {
 
 
 dbHandler.createModelDataTable()
-//only uncomment if tensorflow is configured
-/*
+
+/*only uncomment if tensorflow is configured
 const {retrainModel} = require('./ModelTraining');
 const schedule = require('node-schedule');
 // Alternate trigger to model training

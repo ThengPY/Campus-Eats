@@ -1,5 +1,5 @@
-//only uncomment if tensorflow is configured
-/*
+
+/*only uncomment if tensorflow is configured
 const tf = require('@tensorflow/tfjs-node');
 const dbHandler = require('./dbHandler');
 const schedule = require('node-schedule');
