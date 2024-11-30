@@ -178,9 +178,12 @@ app.get('/getDeliveryTime', (req, res) => {
 });
 
 
-//only uncomment if tensorflow is configured
-/*
-// Alternate endpoint to trigger model training
+dbHandler.createModelDataTable()
+
+/*only uncomment if tensorflow is configured
+const {retrainModel} = require('./ModelTraining');
+const schedule = require('node-schedule');
+// Alternate trigger to model training
 app.get('/model/train', (req, res) => {
     dbHandler.getDataForModelTraining()
         .then(data => {
@@ -195,10 +198,6 @@ app.get('/model/train', (req, res) => {
         });
 });
 
-dbHandler.createModelDataTable()
-const {retrainModel} = require('./ModelTraining');
-const {getDataForModelTraining} = require("./dbHandler");
-const schedule = require('node-schedule');
 
 //time parameter(minute, hour, day of month, month, day of week)
 // Schedule delivery processing at a specific time (e.g., every day at 11:58 PM)
@@ -211,26 +210,19 @@ const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
         console.error('Error during delivery processing:', err);
     }
 });
+
 // Schedule model retraining at a specific time (e.g., every day at 11:59 AM)
 const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
     console.log('Triggering model retraining...');
     try {
-        const data = await getDataForModelTraining();
+        const data = await dbHandler.getDataForModelTraining();
         await retrainModel(data);
         console.log('Model retraining completed successfully.');
     } catch (err) {
         console.error('Error during model retraining:', err);
     }
 });
-
-//schedule delivery at 00:01 PM
-const {scheduleDeliveriesForTheDay} = require('./DeliverySchedule');
-schedule.scheduleJob('1 0 * * *', () => {
-    console.log('Resetting delivery schedule for the new day');
-    scheduleDeliveriesForTheDay(); // Call the function to schedule deliveries for the day
-});
- */
-
+*/
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
