@@ -398,6 +398,10 @@ const App = () => {
         },
 };
 
+  const clearCart = () => {
+    setCartItems([]); // Clear all items from the cart
+  };
+
   const handleCartToggle = () => {
     setIsCartVisible(!isCartVisible);
   };
@@ -618,6 +622,7 @@ const App = () => {
      onClose={handleCloseDineInModal}
      cartItems={cartItems}
      totalPrice={calculateTotalPrice()}
+     clearCart={clearCart}
      />
 
     <OrderHistory

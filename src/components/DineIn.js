@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Checkout.css';
 
-const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
+const DineIn = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
   const [tableBooking, setTableBooking] = useState({ numPeople: '', tableNumber: '', location: '' }); // State for table booking
   const [isOwnTableware, setIsOwnTableware] = useState(false);
 
@@ -57,6 +57,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
       .then(data => {
         alert(`Reservation successful: ${localStorage.getItem('username')}`);
         setTableBooking({ numPeople: '', tableNumber: '', location: '' }); // Reset table booking details
+        clearCart();
         onClose(); // Close the modal after successful reservation
       })
       .catch(error => {
