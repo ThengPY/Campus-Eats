@@ -179,7 +179,6 @@ app.get('/getDeliveryTime', (req, res) => {
 
 
 //only uncomment if tensorflow is configured
-/*
 // Alternate endpoint to trigger model training
 app.get('/model/train', (req, res) => {
     dbHandler.getDataForModelTraining()
@@ -211,6 +210,7 @@ const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
         console.error('Error during delivery processing:', err);
     }
 });
+
 // Schedule model retraining at a specific time (e.g., every day at 11:59 AM)
 const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
     console.log('Triggering model retraining...');
@@ -223,9 +223,10 @@ const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
     }
 });
 
+/*
 //schedule delivery at 00:01 PM
 const {scheduleDeliveriesForTheDay} = require('./DeliverySchedule');
-schedule.scheduleJob('1 0 * * *', () => {
+schedule.scheduleJob('48 19 * * *', () => {
     console.log('Resetting delivery schedule for the new day');
     scheduleDeliveriesForTheDay(); // Call the function to schedule deliveries for the day
 });

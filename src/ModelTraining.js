@@ -3,31 +3,6 @@ const fs = require('fs');
 const tf = require('@tensorflow/tfjs');
 require('tfjs-node-save')
 
-async function loadModel() {
-    const modelPath = 'file:///Users/keste/IdeaProjects/Campus-Eats/src/model/model.json';
-
-    // Check if the model file exists
-    try {
-        // Use fs.promises to check for file existence
-        await fs.promises.access(modelPath, fs.constants.F_OK);
-        console.log('Model file exists. Deleting the existing model...');
-
-        // Delete the model file
-        await fs.promises.unlink(modelPath);
-        console.log('Existing model deleted.');
-    } catch (error) {
-        // If the file does not exist, we can ignore the error
-        if (error.code !== 'ENOENT') {
-            console.error('Error checking for model file:', error);
-            return null; // Return null or handle the error as needed
-        }
-        console.log('No existing model found. Creating a new one.');
-    }
-
-    // Create a new model if no existing model was found or after deletion
-    const model = createNewModel(); // Replace with your model creation logic
-    return model;
-}
 
 function createNewModel() {
     const model = tf.sequential();
@@ -70,7 +45,7 @@ function normalizeData(data, maxHour, maxDayOfWeek) {
 
 // Retrain the model using new data
 async function retrainModel(data) {
-    const model = await loadModel();  // Load the current model or create a new one
+    const model = await createNewModel();  // Load the current model or create a new one
 
     const normalizedData = normalizeData(data, 24, 7); // Normalize the data
 

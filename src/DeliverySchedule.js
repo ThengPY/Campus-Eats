@@ -1,5 +1,6 @@
 const tf = require('@tensorflow/tfjs-node');
 const dbHandler = require('./dbHandler');
+const schedule = require('node-schedule');
 
 // Function to use the model and make predictions
 async function deliveryPredictionModel(inputData) {
@@ -57,7 +58,10 @@ async function scheduleDeliveriesForTheDay() {
     }
 }
 
-// Export the function to be used in other files
-module.exports = {
-    scheduleDeliveriesForTheDay
-};
+//schedule delivery at 00:01 PM
+dbHandler.createSchedulesTable()
+schedule.scheduleJob('36 20 * * *', () => {
+    console.log('Resetting delivery schedule for the new day');
+    scheduleDeliveriesForTheDay(); // Call the function to schedule deliveries for the day
+});
+
