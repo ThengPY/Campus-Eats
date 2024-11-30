@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import qrcode from '../img/qrcode.jpg';
+import {toast} from "react-toastify";
 
 const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
@@ -72,7 +73,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
       csv: csv
     };
 
-    fetch(`http://localhost:5001/order/create/${username}`, {
+    fetch(`http://localhost:5000/order/create/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
