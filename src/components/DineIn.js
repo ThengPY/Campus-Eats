@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './Checkout.css';
-import {toast} from "react-toastify"; // Make sure to create a CSS file for styling
 
-const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
+const DineIn = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
   const [tableBooking, setTableBooking] = useState({ numPeople: '', tableNumber: '', location: '' }); // State for table booking
   const [isOwnTableware, setIsOwnTableware] = useState(false);
 
@@ -42,7 +41,7 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
       location: cafeteriaName
     };
 
-    fetch(`http://localhost:5000/payment/${username}`, {
+    fetch(`http://localhost:5000/order/create/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,8 +55,9 @@ const DineIn = ({ cartItems, totalPrice, isOpen, onClose }) => {
         return response.text(); // Assuming your server responds with text (or you can change it to JSON)
       })
       .then(data => {
-        toast.success(`Reservation successful: ${localStorage.getItem('username')}`);
+        alert(`Reservation successful: ${localStorage.getItem('username')}`);
         setTableBooking({ numPeople: '', tableNumber: '', location: '' }); // Reset table booking details
+        clearCart();
         onClose(); // Close the modal after successful reservation
       })
       .catch(error => {

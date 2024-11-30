@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './SignUpPage.css'; 
 import ForgetPasswordOverlay from './ForgetPasswordOverlay';
 import eating from '../img/eating.png';
+import {toast} from "react-toastify";
 
 const SignUpPage = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
@@ -64,7 +65,6 @@ const SignUpPage = ({ isOpen, onClose }) => {
     }
     alert('Logged in with: ' + username);
     const loginData = {username, email, password,};
-
     fetch('http://localhost:5000/user/login', {
       method: 'POST',
       headers: {

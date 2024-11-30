@@ -10,9 +10,10 @@ app.use(express.json());
 app.use(cors({ origin: '*' }));
 
 // Create the users table
-dbHandler.createTable();
+dbHandler.createUserTable();
 dbHandler.createOrdersTable();
-dbHandler.createCommentsTable()
+dbHandler.createCommentsTable();
+dbHandler.createSchedulesTable()
 
 // Route to register a new user
 app.post('/user/register', (req, res) => {
@@ -128,30 +129,8 @@ app.get('/comments', (req, res) => {
         });
 });
 
-// Route to create an order(dont delete first)
-// used as alternative test
-app.post('/order/create/:username', (req, res) => {
-    const username = req.params.username;
-    const { order_item, price, payment_method, card_number, pickup_date, pickup_time } = req.body;
-
-    // Input validation
-    if (!username || !order_item || !price) {
-        return res.status(400).send('Username, order item, and price are required');
-    }
-
-    // Insert order into the database
-    dbHandler.insertOrder(username, order_item, price, payment_method, card_number, pickup_date, pickup_time)
-        .then((orderId) => {
-            res.status(201).send(`Order created successfully with ID: ${orderId}`);
-        })
-        .catch((err) => {
-            console.error('Error creating order:', err);
-            res.status(500).send('Internal server error');
-        });
-});
-
 // Route to create order
-app.post('/payment/:username', (req, res) => {
+app.post('/order/create/:username', (req, res) => {
     const username = req.params.username;
     const { order_item, price, payment_method, option, reservation_time, delivery_name, eco_package, bring_container, address, phone_num, card_number, expiration_date, csv, pickup_date, pickup_time, own_tableware} = req.body;
 
@@ -173,9 +152,31 @@ app.post('/payment/:username', (req, res) => {
         });
 });
 
-// New endpoint to trigger model training
+//access schedules table to find available delivery time
+app.get('/getDeliveryTime', (req, res) => {
+    const username = req.params.username;
+
+    dbHandler.getSchedules()
+        .then(schedule => {
+            if (!schedule || schedule.length === 0) { // Check if schedule is empty
+                return res.status(404).json({ success: false, message: 'No delivery schedule found for the current time.' });
+            }
+
+            const deliveryTime = `${schedule[0].hour}:00`; // Access the first schedule
+            res.json({ success: true, deliveryTime });
+        })
+        .catch(err => {
+            console.error('Error fetching closest schedule:', err);
+            res.status(500).json({ success: false, message: 'An error occurred while fetching the delivery time.' });
+        });
+});
+
+
+//only uncomment if tensorflow is configured
+/*
+// Alternate endpoint to trigger model training
 app.get('/model/train', (req, res) => {
-    getDataForModelTraining()
+    dbHandler.getDataForModelTraining()
         .then(data => {
             return retrainModel(data); // Pass the retrieved data to retrain the model
         })
@@ -188,33 +189,43 @@ app.get('/model/train', (req, res) => {
         });
 });
 
-// dbHandler.createModelDataTable()
-// const {retrainModel} = require('./ModelTraining');
-// const {getDataForModelTraining} = require("./dbHandler");
-// const schedule = require('node-schedule');
+//create table before importing functions
+dbHandler.createModelDataTable()
+const {retrainModel} = require('./ModelTraining');
+const schedule = require('node-schedule');
 
-// //time parameter(minute, hour, day of month, month, day of week)
-// // Schedule delivery processing at a specific time (e.g., every day at 11:58 PM)
-// const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
-//     console.log('Triggering delivery processing...');
-//     try {
-//         await dbHandler.processDeliveriesForToday();
-//         console.log('Delivery processing completed successfully.');
-//     } catch (err) {
-//         console.error('Error during delivery processing:', err);
-//     }
-// });
-// // Schedule model retraining at a specific time (e.g., every day at 11:59 AM)
-// const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
-//     console.log('Triggering model retraining...');
-//     try {
-//         const data = await getDataForModelTraining();
-//         await retrainModel(data);
-//         console.log('Model retraining completed successfully.');
-//     } catch (err) {
-//         console.error('Error during model retraining:', err);
-//     }
-// });
+//time parameter(minute, hour, day of month, month of year, day of week)
+// Schedule order processing at 11:58 PM
+// move order to model table
+schedule.scheduleJob('58 23 * * *', async () => {
+    console.log('Triggering delivery processing...');
+    try {
+        await dbHandler.processDeliveriesForToday();
+        console.log('Delivery processing completed successfully.');
+    } catch (err) {
+        console.error('Error during delivery processing:', err);
+    }
+});
+
+// Schedule model retraining at 11:59 PM
+schedule.scheduleJob('59 23 * * *', async () => {
+    console.log('Triggering model retraining...');
+    try {
+        const data = await dbHandler.getDataForModelTraining();
+        await retrainModel(data);
+        console.log('Model retraining completed successfully.');
+    } catch (err) {
+        console.error('Error during model retraining:', err);
+    }
+});
+
+//schedule delivery at 00:01 PM
+const {scheduleDeliveriesForTheDay} = require('./DeliverySchedule');
+schedule.scheduleJob('1 0 * * *', () => {
+    console.log('Resetting delivery schedule for the new day');
+    scheduleDeliveriesForTheDay(); // Call the function to schedule deliveries for the day
+});
+ */
 
 // Start the server
 app.listen(PORT, () => {
