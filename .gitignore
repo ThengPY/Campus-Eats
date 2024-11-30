@@ -14,6 +14,7 @@ node_modules/
 .idea
 
 #prevent database changes
+#.db
 
 #machine learning model
 #/model/
