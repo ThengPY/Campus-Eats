@@ -3,7 +3,7 @@ import './Checkout.css'; // Make sure to create a CSS file for styling
 import '../styles.css';
 import qrcode from '../img/qrcode.jpg';
 
-const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
+const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardNumber, setCardNumber] = useState('');
   const [expiration_date, setExpiration_date] = useState('');
@@ -100,6 +100,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose }) => {
       console.log('Payment response:', data);
       if (data.success) {
         alert(`${data.message}\nOrder received`);
+        clearCart();
       } else {
         alert('Payment failed.');
       }

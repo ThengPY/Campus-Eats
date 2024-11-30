@@ -600,6 +600,7 @@ const App = () => {
      onClose={handleClosePickUpModal}
      cartItems={cartItems}
      totalPrice={calculateTotalPrice()}
+     clearCart={clearCart}
      />
 
     <Delivery
@@ -607,6 +608,7 @@ const App = () => {
      onClose={handleCloseDeliveryModal}
      cartItems={cartItems}
      totalPrice={calculateTotalPrice()}
+     clearCart={clearCart}
      />
 
     <AiMealPlanner
