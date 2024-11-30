@@ -13,55 +13,39 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
   const [isOwnContainer, setIsOwnContainer] = useState(false);
   const [isEcoFriendly, setIsEcoFriendly] = useState(false);
 
+  const availableTimes = [
+    '08:00', '09:00', '10:00', '11:00', '12:00',
+    '13:00', '14:00', '15:00', '16:00', '17:00'
+  ];
+
   useEffect(() => {
     if (paymentMethod === 'TouchNGo') {
-      setCardNumber(null);
-      setExpiration_date(null);
-      setCsv(null);
+      setCardNumber('');
+      setExpiration_date('');
+      setCsv('');
     }
   }, [paymentMethod]);
 
-  const handleEcoFriendlyChange = () => {
-    if (isOwnContainer) {
-      setIsOwnContainer(false); // Uncheck the "Own Container" option if "Eco-Friendly" is selected
-    }
-    setIsEcoFriendly(!isEcoFriendly);
-  };
-
-  const handleOwnContainerChange = () => {
-    if (isEcoFriendly) {
-      setIsEcoFriendly(false); // Uncheck the "Eco-Friendly" option if "Own Container" is selected
-    }
-    setIsOwnContainer(!isOwnContainer);
-  };
-
-  const handlePaymentMethodChange = (e) => {
-    setPaymentMethod(e.target.value);
-  };
-  
-  // Calculate the total price including both eco-friendly package and bring own container
-  // Function to calculate the total price based on eco-friendly and own container options
   const calculateTotalPrice = (totalPrice, isEcoFriendly, isOwnContainer) => {
     let updatedTotalPrice = totalPrice;
-  
+
     if (isEcoFriendly) {
-      updatedTotalPrice = updatedTotalPrice + 1; // Add RM 1 for eco-friendly
-    } 
-    else if (isOwnContainer) {
+      updatedTotalPrice = updatedTotalPrice + 1; // Add RM 1 for eco-friendly packaging
+    } else if (isOwnContainer) {
       updatedTotalPrice = updatedTotalPrice * 0.9; // Apply 10% discount for own container
     }
 
-  return updatedTotalPrice;
-};
+    return updatedTotalPrice;
+  };
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
-    // Handle payment submission logic here
     const username = localStorage.getItem('username');
     const updatedTotalPrice = calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer);
 
     if (!username) {
       alert('Invalid user. Please log in again.');
+      return;
     }
 
     console.log('Payment Method:', paymentMethod);
@@ -86,36 +70,80 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
       card_number: cardNumber,
       expiration_date: expiration_date,
       csv: csv
-    }
+    };
 
-    fetch(`http://localhost:5000/order/create/${username}`, {
+    fetch(`http://localhost:5001/order/create/${username}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(paymentData),
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Payment response:', data);
-      if (data.success) {
-        alert(`${data.message}\nOrder received`);
-        clearCart();
-      } else {
-        alert('Payment failed.');
-      }
-    })
-    .catch(error => {
-      console.error('Payment error:', error);
-    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Payment response:', data);
+        if (data.success) {
+          alert(`${data.message}\nOrder received`);
+          clearCart();
+          onClose(); // Close the modal after successful reservation
+        } else {
+          alert('Payment failed.');
+        }
+      })
+      .catch(error => {
+        console.error('Payment error:', error);
+      });
   };
 
   const handleDateChange = (e) => {
     setPickupDate(e.target.value);
+    setPickupTime(''); // Reset time when date is changed
   };
 
   const handleTimeChange = (e) => {
     setPickupTime(e.target.value);
+  };
+
+  // Function to check if the date is in the past
+  const isPastDate = (date) => {
+    const selectedDate = new Date(date);
+    const currentDate = new Date();
+    return selectedDate < currentDate;
+  };
+
+  // Function to check if the time is in the past for today's date
+  const isPastTime = (date, time) => {
+    const selectedDateTime = new Date(`${date}T${time}`);
+    const currentDateTime = new Date();
+    return selectedDateTime < currentDateTime;
+  };
+
+  // Disable past times logic
+  const isTimeDisabled = (time) => {
+    if (pickupDate === new Date().toISOString().split('T')[0]) {
+      return isPastTime(pickupDate, time); // For today, check if the time is in the past
+    }
+    return false; // For future dates, times are always enabled
+  };
+
+  const handleEcoFriendlyChange = () => {
+    // If eco-friendly packaging is selected, uncheck the own container option
+    setIsEcoFriendly(!isEcoFriendly);
+    if (!isEcoFriendly) {
+      setIsOwnContainer(false); // Deselect own container if eco-friendly is selected
+    }
+  };
+
+  const handleOwnContainerChange = () => {
+    // If bring own container is selected, uncheck the eco-friendly packaging option
+    setIsOwnContainer(!isOwnContainer);
+    if (!isOwnContainer) {
+      setIsEcoFriendly(false); // Deselect eco-friendly if own container is selected
+    }
+  };
+
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
   };
 
   if (!isOpen) return null; // If the modal isn't open, don't render anything
@@ -123,11 +151,11 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className = "close-btn">
-          <span class="material-symbols-rounded" onClick={onClose}>close</span>
+        <div className="close-btn">
+          <span className="material-symbols-rounded" onClick={onClose}>close</span>
         </div>
         <h2>Pick-Up Checkout</h2>
-        <div className = "subcontent">
+        <div className="subcontent">
           {/* Order Summary */}
           <div className="order-summary">
             <h3>Order Summary</h3>
@@ -140,27 +168,36 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
               ))}
             </ul>
           </div>
+
           {/* Eco-friendly package option */}
           <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                    <label >
-                      <input 
-                        type="checkbox"
-                        checked={isEcoFriendly}
-                        onChange={handleEcoFriendlyChange}
-                        className="reserve-checkbox"
-                      />
-                      <span> Choose eco-friendly packaging (+RM 1.00)</span>
-                    </label>
-            </div>
-            {/*Bring own tableware option */}
-          <div style={{ marginTop: '15px', fontSize: '14px' }}>
-                    <label style={{paddingBottom: "5px"}}>
-                      <input type="checkbox" checked={isOwnContainer} onChange={handleOwnContainerChange} className="reserve-checkbox" />
-                      <span> Bring your own container (Get 10% discount!)</span>
-                    </label>
-                  </div>
-          <h4 className = "total-price">Total Price: RM{calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer).toFixed(2)} </h4>
+            <label>
+              <input
+                type="checkbox"
+                checked={isEcoFriendly}
+                onChange={handleEcoFriendlyChange}
+                className="reserve-checkbox"
+              />
+              <span> Choose eco-friendly packaging (+RM 1.00)</span>
+            </label>
+          </div>
 
+          {/* Bring own tableware option */}
+          <div style={{ marginTop: '15px', fontSize: '14px' }}>
+            <label style={{ paddingBottom: "5px" }}>
+              <input
+                type="checkbox"
+                checked={isOwnContainer}
+                onChange={handleOwnContainerChange}
+                className="reserve-checkbox"
+              />
+              <span> Bring your own container (Get 10% discount!)</span>
+            </label>
+          </div>
+
+          <h4 className="total-price">
+            Total Price: RM{calculateTotalPrice(totalPrice, isEcoFriendly, isOwnContainer).toFixed(2)}
+          </h4>
 
           {/* Form Section */}
           <form onSubmit={handlePaymentSubmit}>
@@ -175,6 +212,7 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
                     id="pickup-date"
                     value={pickupDate}
                     onChange={handleDateChange}
+                    min={new Date().toISOString().split('T')[0]} // Disable past dates
                     required
                   />
                 </label>
@@ -184,32 +222,31 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
                 {/* Time Dropdown */}
                 <label htmlFor="pickup-time">Time: &nbsp;
                   <select
-                      id="pickup-time"
-                      value={pickupTime}
-                      onChange={handleTimeChange}
-                      required
+                    id="pickup-time"
+                    value={pickupTime}
+                    onChange={handleTimeChange}
+                    required
                   >
                     <option value="">Select a time</option>
-                    <option value="08:00">08:00</option>
-                    <option value="09:00">09:00</option>
-                    <option value="10:00">10:00</option>
-                    <option value="11:00">11:00</option>
-                    <option value="12:00">12:00</option>
-                    <option value="13:00">13:00</option>
-                    <option value="14:00">14:00</option>
-                    <option value="15:00">15:00</option>
-                    <option value="16:00">16:00</option>
-                    <option value="17:00">17:00</option>
+                    {availableTimes.map((time, index) => (
+                      <option
+                        key={index}
+                        value={time}
+                        disabled={isTimeDisabled(time)} // Use the new function to disable past times
+                      >
+                        {time}
+                      </option>
+                    ))}
                   </select>
                 </label>
               </div>
 
               {/* Display Selected Date and Time */}
               {pickupDate && pickupTime && (
-                  <p>
-                    Selected Pick-Up: <strong>{pickupDate}</strong> at{' '}
-                    <strong>{pickupTime}</strong>
-                  </p>
+                <p>
+                  Selected Pick-Up: <strong>{pickupDate}</strong> at{' '}
+                  <strong>{pickupTime}</strong>
+                </p>
               )}
             </div>
 
@@ -278,8 +315,11 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
               </div>
             )}
 
+
             {/* Submit Button */}
-            <button type="submit" className="pay-btn">CHECKOUT</button>
+            <button type="submit" className="pay-btn">
+              CHECKOUT
+            </button>
           </form>
         </div>
       </div>
@@ -288,3 +328,6 @@ const PickUp = ({ cartItems, totalPrice, isOpen, onClose, clearCart }) => {
 };
 
 export default PickUp;
+
+
+
