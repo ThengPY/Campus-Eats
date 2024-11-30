@@ -67,7 +67,6 @@ const SignUpPage = ({ isOpen, onClose }) => {
       alert('Please fill in all required fields.');
       return;
     }
-    alert('Logging in with: ' + username);
     const loginData = {username, email, password,};
     fetch('http://localhost:5000/user/login', {
       method: 'POST',
@@ -84,7 +83,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
           }
         })
         .then(data => {
-          alert('Login successful!');
+          alert('Logging in with: ' + username);
           console.log('Login response:', data);
           localStorage.setItem('username',username);
           onClose();
