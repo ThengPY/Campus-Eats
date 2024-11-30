@@ -96,7 +96,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
           }
         })
         .then(data => {
-          alert('Logging in with: ' + username);
+          alert('Logged in with: ' + username);
           console.log('Login response:', data);
           localStorage.setItem('username',username);
           onClose();
