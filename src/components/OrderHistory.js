@@ -62,7 +62,7 @@ const OrderHistory = ({ isOpen, onClose, username}) => {
                             <h3 style = {{borderBottom : "none", marginBottom : "0px"}}>Order ID: {order.id}</h3>
                             <p className="order-product" style = {{color : "#333"}}><b>Product:</b> {order.order_item}</p>
                             <p className="order-price" style = {{color : "#333"}}><b>Total Price:</b> RM{order.price}</p>
-                            <p className="order-date" style = {{color : "#333"}}><b>Order Date:</b> {order.formatted_order_date}</p>
+                            <p className="order-date" style = {{color : "#333"}}><b>Order Date:</b> {order.formatted_order_date.toLocaleString()}</p>
                             {/* Conditional rendering for pickup info */}
                             {order.formatted_pickup_date!=null && order.pickup_time!=null && (
                                 <p className="pickup-info" style = {{color : "#333"}}>

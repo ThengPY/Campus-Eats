@@ -100,7 +100,7 @@ const createOrdersTable = () => {
               reservation_time TIME,
               username TEXT NOT NULL,
               delivery_name TEXT,
-              order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              order_date TIMESTAMP DEFAULT (datetime('now','+8 hours')),
               order_item TEXT NOT NULL,
               eco_package TEXT,
               own_tableware TEXT,
