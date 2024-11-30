@@ -26,7 +26,7 @@ app.post('/user/register', (req, res) => {
     // Insert the user into the database
     dbHandler.insertUser (username, email, password, status || 'buyer') // Default to 'buyer' if status is not provided
         .then(() => {
-            res.status(201).send('User  registered successfully');
+            res.status(201).send('User registered successfully');
         })
         .catch((err) => {
             console.error('Error registering user:', err);
@@ -189,15 +189,14 @@ app.get('/model/train', (req, res) => {
         });
 });
 
-//create table before importing functions
 dbHandler.createModelDataTable()
 const {retrainModel} = require('./ModelTraining');
+const {getDataForModelTraining} = require("./dbHandler");
 const schedule = require('node-schedule');
 
-//time parameter(minute, hour, day of month, month of year, day of week)
-// Schedule order processing at 11:58 PM
-// move order to model table
-schedule.scheduleJob('58 23 * * *', async () => {
+//time parameter(minute, hour, day of month, month, day of week)
+// Schedule delivery processing at a specific time (e.g., every day at 11:58 PM)
+const deliveryProcessing = schedule.scheduleJob('58 23 * * *', async () => {
     console.log('Triggering delivery processing...');
     try {
         await dbHandler.processDeliveriesForToday();
@@ -206,12 +205,11 @@ schedule.scheduleJob('58 23 * * *', async () => {
         console.error('Error during delivery processing:', err);
     }
 });
-
-// Schedule model retraining at 11:59 PM
-schedule.scheduleJob('59 23 * * *', async () => {
+// Schedule model retraining at a specific time (e.g., every day at 11:59 AM)
+const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
     console.log('Triggering model retraining...');
     try {
-        const data = await dbHandler.getDataForModelTraining();
+        const data = await getDataForModelTraining();
         await retrainModel(data);
         console.log('Model retraining completed successfully.');
     } catch (err) {

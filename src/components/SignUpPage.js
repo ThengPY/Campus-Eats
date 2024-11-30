@@ -36,7 +36,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
       alert('Please fill in all required fields.');
       return;
     }
-    alert('Signed up with: ' + username);
+    alert('Signing up with: ' + username);
 
     const signUpData = {username, email, password,};
 
@@ -49,13 +49,17 @@ const SignUpPage = ({ isOpen, onClose }) => {
     })
         .then(response => response.text())
         .then(data => {
+          alert('Sign up is successful! Please log in now!');
           console.log('Sign up response:', data);
-          onClose();
         })
         .catch(error => {
           console.error('Sign up error:', error);
         });
-    onClose();
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setPasswordMatchError(false);
   };
   
   const handleLogin = () => {
@@ -63,7 +67,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
       alert('Please fill in all required fields.');
       return;
     }
-    alert('Logged in with: ' + username);
+    alert('Logging in with: ' + username);
     const loginData = {username, email, password,};
     fetch('http://localhost:5000/user/login', {
       method: 'POST',
@@ -74,7 +78,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
     })
         .then(response => {
           if (response.ok) {
-            return response.text();
+            return response.text(); // Or `response.json()` if server sends JSON
           } else {
             throw new Error('Invalid credentials or login failed');
           }
@@ -94,6 +98,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
+        setPasswordMatchError(false);
   };
 
   const handlePasswordChange = (e) => {
@@ -180,7 +185,7 @@ const SignUpPage = ({ isOpen, onClose }) => {
             </div>
           </div>
           {passwordMatchError && (
-            <p style={{ color: 'red', marginTop: '-10px' }}>Passwords do not match</p>
+            <p style={{ color : "#FF906B", fontSize: '12px', marginBottom : "0px"}}><span class="material-symbols-rounded" style = {{fontSize : "12px", color : "#FF906B"}}>error</span> Passwords do not match!</p>
           )}
           <div className="account-btns">
             <button type="button" className="submit-btn" onClick={handleSignUp}><b>SIGN UP</b></button>
