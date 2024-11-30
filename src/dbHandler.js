@@ -29,6 +29,19 @@ const createUserTable = () => {
     });
 };
 
+const checkUserExists  = (username, email) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM users WHERE Username = ? OR Email = ?`;
+        db.get(sql, [username, email], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row);
+            }
+        });
+    });
+};
+
 const insertUser  = (name, email, password, status ='buyer') => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO users (Username, Email, Password, status) VALUES (?, ?, ?, ?)';
@@ -528,7 +541,7 @@ insertMultipleModelData(deliveriesData)
 
 
 // Export the database connection for use in other modules
-module.exports ={ db,createUserTable,insertUser,loginUser, getUser,
+module.exports ={ db,createUserTable, checkUserExists, insertUser,loginUser, getUser,
                     createOrdersTable, insertOrder, getUsersOrders,
                     createCommentsTable,insertComment, getComments,
                     getDataForModelTraining,createModelDataTable,

@@ -47,12 +47,25 @@ const SignUpPage = ({ isOpen, onClose }) => {
       },
       body: JSON.stringify(signUpData),
     })
-        .then(response => response.text())
+        .then(response => {
+          if (response.status === 201) {
+              return response.text();
+          } else if (response.status === 409) {
+              return response.text().then(message => {
+                  throw new Error(message);
+              });
+          } else {
+              return response.text().then(message => {
+                  throw new Error(message);
+              });
+          }
+      })
         .then(data => {
           alert('Sign up is successful! Please log in now!');
           console.log('Sign up response:', data);
         })
         .catch(error => {
+          alert('Sign up error: ' + error.message);
           console.error('Sign up error:', error);
         });
       setUsername("");

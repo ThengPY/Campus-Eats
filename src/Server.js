@@ -7,7 +7,7 @@ const PORT =  5000;
 //process.env.PORT ||
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: '*' }));
+app.use(cors());
 
 // Create the users table
 dbHandler.createUserTable();
@@ -23,8 +23,14 @@ app.post('/user/register', (req, res) => {
         return res.status(400).send('Username and password are required');
     }
 
-    // Insert the user into the database
-    dbHandler.insertUser (username, email, password, status || 'buyer') // Default to 'buyer' if status is not provided
+    // Check if the username or email already exists
+    dbHandler.checkUserExists(username, email)
+        .then((user) => {
+            if (user) {
+                return res.status(409).send('Username or email already exists. Please log in or use a different username/email instead.');
+            }
+            return dbHandler.insertUser(username, email, password, status || 'buyer');
+        })
         .then(() => {
             res.status(201).send('User registered successfully');
         })
