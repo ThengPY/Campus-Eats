@@ -180,7 +180,7 @@ app.get('/getDeliveryTime', (req, res) => {
 
 dbHandler.createModelDataTable()
 
-/*only uncomment if tensorflow is configured
+
 const {retrainModel} = require('./ModelTraining');
 const schedule = require('node-schedule');
 // Alternate trigger to model training
@@ -222,7 +222,7 @@ const modelRetraining = schedule.scheduleJob('59 23 * * *', async () => {
         console.error('Error during model retraining:', err);
     }
 });
-*/
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
