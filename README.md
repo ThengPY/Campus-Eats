@@ -68,39 +68,44 @@ Campus Eats is a web application designed to help students and staff at a univer
    - Post and discuss on the community board.
 
 ## Project Structure 
-campus-eats/
+<pre>campus-eats/
 ├── public/
 │   ├── index.html
-│   └── ...
 ├── src/
 │   ├── components/
 │   │   ├── AiMealPlanner.js
+│   │   ├── AiMealPlanner.css
 │   │   ├── CafeteriaList.js
 │   │   ├── CartModal.js
 │   │   ├── CommunityBoard.js
 │   │   ├── Delivery.js
 │   │   ├── DineIn.js
+│   │   ├── Checkout.css
 │   │   ├── Header.js
 │   │   ├── MenuModal.js
+│   │   ├── Modal.css
 │   │   ├── OrderHistory.js
 │   │   ├── PickUp.js
+│   │   ├── DeliveryPopUp.js
+│   │   ├── DeliveryPopUp.css  
+│   │   ├── SignUpPage.css
 │   │   └── SignUpPage.js
 │   ├── img/
 │   │   ├── kk1.png
 │   │   ├── kk2.png
 │   │   └── ...
-│   ├── styles/
-│   │   ├── styles.css
-│   │   ├── Modal.css
-│   │   └── Checkout.css
 │   ├── App.js
 │   ├── dbHandler.js
-│   ├── ModelTraining.js
 │   ├── Server.js
-│   └── index.js
+│   ├── index.js
+│   ├── DeliverySchedule.js
+│   ├── ModelTraining.js
+│   ├── database.db
+│   ├── styles.css
 ├── .gitignore
-├── [package.json](http://_vscodecontentref_/0)
-└── [README.md](http://_vscodecontentref_/1)
+├── package.json
+├── package-lock.json
+└── README.md</pre>
 
 ## Contributing
 
