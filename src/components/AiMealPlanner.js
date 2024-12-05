@@ -146,7 +146,7 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
           </label>
 
           <label style={{ marginTop: "10px" }}>
-            Food & Drinks Price Range:
+            Price Range:
             <select className="select"
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
