@@ -2,6 +2,10 @@
 
 Campus Eats is a web application designed to help students and staff at a university campus find and order food from various cafeterias. The application provides features such as meal planning, order history, community board, and different delivery options.
 
+## Demo
+
+https://github.com/user-attachments/assets/43d46173-18ac-4951-b6fb-daa321ae5d1a
+
 ## Table of Contents
 
 - [Features](#features)
