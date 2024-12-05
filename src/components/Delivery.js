@@ -11,14 +11,14 @@ const kkDistances = {
   kk5: { kk1: 1.5, kk2: 1.8, kk3: 3, kk4: 1.8, kk6: 1.9, kk7: 3.1, kk8: 2.3, kk9: 3.5, kk10: 2.1, kk11: 0.35, kk12: 0.26, kk13: 5.7, he_and_she: 3.9, QBistro: 1.1 },
   kk6: { kk1: 2.7, kk2: 0.35, kk3: 1.9, kk4: 2.0, kk5: 2.5, kk7: 2, kk8: 2.7, kk9: 3.5, kk10: 2.6, kk11: 2.8, kk12: 2.7, kk13: 3.4, he_and_she: 1.2, QBistro: 2.3 },
   kk7: { kk1: 2.4, kk2: 2.7, kk3: 0.3, kk4: 0.35, kk5: 2.3, kk6: 2.8, kk8: 1.2, kk9: 1.6, kk10: 1.1, kk11: 2.9, kk12: 2.4, kk13: 3.1, he_and_she: 3, QBistro: 2.0 },
-  kk8: { kk1: 3.0, kk2: 4.0, kk3: 4.0, kk4: 4.0, kk5: 4.0, kk6: 4.0, kk7: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk9: { kk1: 4.5, kk2: 4.5, kk3: 4.5, kk4: 4.5, kk5: 4.5, kk6: 4.5, kk7: 4.5, kk8: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk10: { kk1: 5.0, kk2: 5.0, kk3: 5.0, kk4: 5.0, kk5: 5.0, kk6: 5.0, kk7: 5.0, kk8: 5.0, kk9: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk11: { kk1: 5.5, kk2: 5.5, kk3: 5.5, kk4: 5.5, kk5: 5.5, kk6: 5.5, kk7: 5.5, kk8: 5.5, kk9: 5.5, kk10: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk12: { kk1: 6.0, kk2: 6.0, kk3: 6.0, kk4: 6.0, kk5: 6.0, kk6: 6.0, kk7: 6.0, kk8: 6.0, kk9: 6.0, kk10: 6.0, kk11: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk13: { kk1: 6.5, kk2: 6.5, kk3: 6.5, kk4: 6.5, kk5: 6.5, kk6: 6.5, kk7: 6.5, kk8: 6.5, kk9: 6.5, kk10: 6.5, kk11: 4.5, kk12: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  he_shecoffee: { kk1: 2.5, kk2: 3.0, kk3: 3.5, kk4: 3.5, kk5: 4.0, kk6: 4.0, kk7: 4.5, kk8: 5.0, kk9: 5.5, kk10: 4.0, kk11: 3.5, kk12: 3.0, kk13: 4.5, QBistro: 3.0 },
-  qbistro: { kk1: 3.0, kk2: 3.5, kk3: 4.0, kk4: 4.5, kk5: 5.0, kk6: 5.5, kk7: 6.0, kk8: 6.5, kk9: 7.0, kk10: 4.5, kk11: 3.0, kk12: 3.5, kk13: 4.0, he_and_she: 3.5},
+  kk8: { kk1: 3.0, kk2: 3.4, kk3: 1.1, kk4: 1.2, kk5: 2.5, kk6: 3.4, kk7: 1.2, kk9: 2.2, kk10: 0.25, kk11: 2, kk12: 2.4, kk13: 3.3, he_and_she: 3.6, QBistro: 2.6 },
+  kk9: { kk1: 4.1, kk2: 4.4, kk3: 1.5, kk4: 1.7, kk5: 3, kk6: 4.5, kk7: 1.6, kk8: 2.4, kk10: 2.2, kk11: 3.2, kk12: 3.1, kk13: 1.7, he_and_she: 2, QBistro: 3.7 },
+  kk10: { kk1: 3.0, kk2: 3.3, kk3: 1.0, kk4: 1.1, kk5: 2.3, kk6: 3.3, kk7: 1.1, kk8: 0.35, kk9: 2.1, kk11: 1.9, kk12: 2.3, kk13: 3.3, he_and_she: 3.6, QBistro: 2.6 },
+  kk11: { kk1: 1.8, kk2: 2.2, kk3: 2.8, kk4: 2.9, kk5: 0.55, kk6: 2.2, kk7: 2.9, kk8: 2.1, kk9: 3.9, kk10: 1.9, kk12: 0.55, kk13: 4.6, he_and_she: 2.4, QBistro: 1.4 },
+  kk12: { kk1: 1.6, kk2: 2.0, kk3: 3.2, kk4: 3.3, kk5: 0.45, kk6: 2.0, kk7: 3.3, kk8: 2.5, kk9: 4.4, kk10: 2.3, kk11: 0.55, kk13: 4.4, he_and_she: 2.2, QBistro: 1.2 },
+  kk13: { kk1: 4.7, kk2: 5, kk3: 2.5, kk4: 2.6, kk5: 4.1, kk6: 5.1, kk7: 2.6, kk8: 3.3, kk9: 1.9, kk10: 3.2, kk11: 4.3, kk12: 4.2, he_and_she: 2.6, QBistro: 4.3 },
+  he_shecoffee: { kk1: 1.8, kk2: 2.1, kk3: 0.75, kk4: 0.85, kk5: 1.5, kk6: 2.1, kk7: 0.85, kk8: 1.5, kk9: 1.5, kk10: 1.4, kk11: 1.9, kk12: 1.8, kk13: 2.6, QBistro: 1.4 },
+  qbistro: { kk1: 0.5, kk2: 0.85, kk3: 1.8, kk4: 1.9, kk5: 2.6, kk6: 0.9, kk7: 1.9, kk8: 2.7, kk9: 3.4, kk10: 2.5, kk11: 2.7, kk12: 2.6, kk13: 3.3, he_and_she: 1.1},
 };
 
 const baseRatePerKm = 0.5; // Base rate per km for delivery fee
