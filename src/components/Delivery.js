@@ -4,14 +4,14 @@ import '../styles.css';
 import qrcode from '../img/qrcode.jpg';
 
 const kkDistances = {
-  kk1: { kk2: 0.8, kk3: 1.8, kk4: 1.9, kk5: 2.3, kk6: 0.8, kk7: 1.9, kk8: 2.6, kk9: 1.8, kk10: 2.4, kk11: 2.7, kk12: 2.6, kk13: 3.2, he_and_she: 2.4, QBistro: 2.2 },
-  kk2: { kk1: 1.5, kk3: 1.0, kk4: 2.0, kk5: 2.5, kk6: 3.0, kk7: 3.5, kk8: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 2.5 },
-  kk3: { kk1: 2.0, kk2: 1.0, kk4: 1.5, kk5: 2.5, kk6: 3.0, kk7: 3.5, kk8: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk4: { kk1: 2.5, kk2: 2.0, kk3: 1.5, kk5: 2.5, kk6: 3.0, kk7: 3.5, kk8: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk5: { kk1: 2.5, kk2: 2.5, kk3: 2.5, kk4: 2.5, kk6: 3.0, kk7: 3.5, kk8: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk6: { kk1: 3.0, kk2: 3.0, kk3: 3.0, kk4: 3.0, kk5: 3.0, kk7: 3.5, kk8: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk7: { kk1: 3.5, kk2: 3.5, kk3: 3.5, kk4: 3.5, kk5: 3.5, kk6: 3.5, kk8: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
-  kk8: { kk1: 4.0, kk2: 4.0, kk3: 4.0, kk4: 4.0, kk5: 4.0, kk6: 4.0, kk7: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
+  kk1: { kk2: 0.6, kk3: 1.6, kk4: 1.7, kk5: 2.3, kk6: 0.6, kk7: 1.7, kk8: 2.4, kk9: 3.2, kk10: 2.3, kk11: 2.5, kk12: 2.4, kk13: 3, he_and_she: 0.85, QBistro: 2 },
+  kk2: { kk1: 2.7, kk3: 1.9, kk4: 2.0, kk5: 2.6, kk6: 0.35, kk7: 2, kk8: 2.7, kk9: 3.5, kk10: 2.6, kk11: 2.8, kk12: 2.7, kk13: 3.3, he_and_she: 1.2, QBistro: 2.3 },
+  kk3: { kk1: 2.3, kk2: 2.6, kk4: 0.3, kk5: 2, kk6: 2.7, kk7: 0.29, kk8: 1.1, kk9: 1.5, kk10: 1.0, kk11: 2.8, kk12: 2.3, kk13: 3, he_and_she: 2.9, QBistro: 1.9 },
+  kk4: { kk1: 2.4, kk2: 2.7, kk3: 0.3, kk5: 2.1, kk6: 2.8, kk7: 0.35, kk8: 1.3, kk9: 1.6, kk10: 1.1, kk11: 2.9, kk12: 2.4, kk13: 2.7, he_and_she: 3, QBistro: 2 },
+  kk5: { kk1: 1.5, kk2: 1.8, kk3: 3, kk4: 1.8, kk6: 1.9, kk7: 3.1, kk8: 2.3, kk9: 3.5, kk10: 2.1, kk11: 0.35, kk12: 0.26, kk13: 5.7, he_and_she: 3.9, QBistro: 1.1 },
+  kk6: { kk1: 2.7, kk2: 0.35, kk3: 1.9, kk4: 2.0, kk5: 2.5, kk7: 2, kk8: 2.7, kk9: 3.5, kk10: 2.6, kk11: 2.8, kk12: 2.7, kk13: 3.4, he_and_she: 1.2, QBistro: 2.3 },
+  kk7: { kk1: 2.4, kk2: 2.7, kk3: 0.3, kk4: 0.35, kk5: 2.3, kk6: 2.8, kk8: 1.2, kk9: 1.6, kk10: 1.1, kk11: 2.9, kk12: 2.4, kk13: 3.1, he_and_she: 3, QBistro: 2.0 },
+  kk8: { kk1: 3.0, kk2: 4.0, kk3: 4.0, kk4: 4.0, kk5: 4.0, kk6: 4.0, kk7: 4.0, kk9: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
   kk9: { kk1: 4.5, kk2: 4.5, kk3: 4.5, kk4: 4.5, kk5: 4.5, kk6: 4.5, kk7: 4.5, kk8: 4.5, kk10: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
   kk10: { kk1: 5.0, kk2: 5.0, kk3: 5.0, kk4: 5.0, kk5: 5.0, kk6: 5.0, kk7: 5.0, kk8: 5.0, kk9: 5.0, kk11: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
   kk11: { kk1: 5.5, kk2: 5.5, kk3: 5.5, kk4: 5.5, kk5: 5.5, kk6: 5.5, kk7: 5.5, kk8: 5.5, kk9: 5.5, kk10: 5.5, kk12: 4.0, kk13: 4.5, he_and_she: 2.5, QBistro: 3.0 },
