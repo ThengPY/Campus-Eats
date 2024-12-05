@@ -124,7 +124,7 @@ const calculateDeliveryFee = (normalizedSourceKK, normalizedDestinationKK) => {
   };
 
   const handleEcoFriendlyChange = () => {
-    setIsEcoFriendly(!isEcoFriendly);
+      setIsEcoFriendly(!isEcoFriendly);
   };
 
   const handlePaymentSubmit = (e) => {
@@ -134,6 +134,11 @@ const calculateDeliveryFee = (normalizedSourceKK, normalizedDestinationKK) => {
     if (!username) {
       alert('Invalid user. Please log in again.');
       return;
+    }
+
+    if (!kkLocation) {
+      alert('Please select a KK location before proceeding to checkout.');
+      return; // Prevent submission if KK location is not selected
     }
 
     console.log('Payment Method:', paymentMethod);
