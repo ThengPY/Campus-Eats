@@ -125,8 +125,8 @@ const AiMealPlanner = ({ isOpen, onClose, cafeterias, foodItems, onAddToCart }) 
             close
           </span>
         </div>
-        <h2>AI Meal Planner</h2>
-        <p style={{ fontSize: "15px", color: "black" }}>Don't know what to eat? <br /> Let our AI Meal Planner decide for you!</p>
+        <h2>Meal Planner</h2>
+        <p style={{ fontSize: "15px", color: "black" }}>Don't know what to eat? <br /> Let our Meal Planner decide for you!</p>
 
         <div className="mealplanner-div">
           <label>
