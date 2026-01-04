@@ -3,6 +3,7 @@
   justify-content: space-between; /* Push the items to opposite sides */
   align-items: center; /* Vertically center the text and icon */
   margin: 10px 0; /* Add spacing between rows */
+  overflow: auto;
 }
 
 .generate-btn {
